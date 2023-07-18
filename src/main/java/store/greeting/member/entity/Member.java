@@ -34,7 +34,7 @@ public class Member extends BaseEntity {
 
   private String name;
 
-  private String tel; // 전화번호 추가
+  private String tel;
 
   @Column(unique = true)
   private String email;
