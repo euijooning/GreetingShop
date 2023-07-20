@@ -14,9 +14,8 @@ import store.greeting.enums.SellStatus;
 import store.greeting.product.entity.Product;
 
 @Getter
-@Builder
+@Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class ProductFormDto {
 
   private Long id;
