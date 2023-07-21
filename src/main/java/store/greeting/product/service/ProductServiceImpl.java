@@ -29,7 +29,7 @@ public class ProductServiceImpl implements ProductService {
   private final ProductImageRepository productImageRepository;
 
 
-  public Long saveProduct(ProductFormDto productFormDto, ProductImageDto productImageDto, List<MultipartFile> productImageFileList) throws Exception {
+  public Long saveProduct(ProductFormDto productFormDto, List<MultipartFile> productImageFileList) throws Exception {
     // 상품 등록
     Product product= productFormDto.createProduct();
     productRepository.save(product);
@@ -37,11 +37,7 @@ public class ProductServiceImpl implements ProductService {
     //이미지 등록
     for (int i = 0; i < productImageFileList.size(); i++) {
       ProductImage productImage =  ProductImage.builder()
-          .imageName(productImageFileList.get(i).getOriginalFilename())
-          .originImage(productImageDto.getOriginImageName())
-          .imageUrl(productImageDto.getImageUrl())
           .mainImageYn(i == 0 ? "Y" : "N")
-          .product(product)
           .build();
 
 
