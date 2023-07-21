@@ -12,7 +12,7 @@ import store.greeting.product.entity.Product;
 
 public interface ProductService {
 
-  Long saveProduct(ProductFormDto productFormDto, ProductImageDto productImageDto, List<MultipartFile> productImageFileList) throws Exception;
+  Long saveProduct(ProductFormDto productFormDto, List<MultipartFile> productImageFileList) throws Exception;
   ProductFormDto getProductDetail(Long productId);
   Long updateProduct(ProductFormDto productFormDto, List<MultipartFile> productImageFileList) throws Exception;
   Page<Product> getAdminProductPage(ProductSearchDto productSearchDto, Pageable pageable);
