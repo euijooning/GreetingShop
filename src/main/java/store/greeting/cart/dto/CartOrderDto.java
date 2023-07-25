@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 public class CartOrderDto {
 
-  private Long cartProductId;
-  private List<CartDetailDto> cartDetailDtoList;
+  Long cartProductId;
+  List<CartOrderDto> cartDetailDtoList;
 
 }
