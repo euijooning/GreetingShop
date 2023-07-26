@@ -9,6 +9,6 @@ import lombok.Setter;
 public class CartOrderDto {
 
   Long cartProductId;
-  List<CartOrderDto> cartDetailDtoList;
+  List<CartOrderDto> cartOrderDtoList;
 
 }
