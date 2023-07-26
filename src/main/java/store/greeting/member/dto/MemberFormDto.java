@@ -11,6 +11,9 @@ import org.hibernate.validator.constraints.Length;
 @Setter
 public class MemberFormDto {
 
+  @NotBlank(message = "사용자 타입은 필수 입력 값입니다.")
+  private String type;
+
   @NotBlank(message = "이름은 필수 입력 값입니다.")
   private String name;
 
