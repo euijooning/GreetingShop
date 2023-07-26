@@ -11,7 +11,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.thymeleaf.util.StringUtils;
 import store.greeting.enums.SellStatus;
-import store.greeting.product.dto.MainProductDto;
+import store.greeting.product.dto.ProductDto;
 import store.greeting.product.dto.ProductSearchDto;
 import store.greeting.product.dto.QMainProductDto;
 import store.greeting.product.entity.Product;
@@ -74,18 +74,18 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
   }
 
   @Override
-  public Page<MainProductDto> getMainProductPage(ProductSearchDto productSearchDto, Pageable pageable) {
+  public Page<ProductDto> getMainProductPage(ProductSearchDto productSearchDto, Pageable pageable) {
     QProduct product = QProduct.product;
     QProductImage productImage = QProductImage.productImage;
 
 
-    QueryResults<MainProductDto> results = queryFactory.select(new QMainProductDto(product.id, product.productName, product.productDetail
+    QueryResults<ProductDto> results = queryFactory.select(new QMainProductDto(product.id, product.productName, product.productDetail
             , productImage.imageUrl, product.price))
 
         .from(productImage).join(productImage.product, product).where(productImage.mainImageYn.eq("Y"))
         .where(productNameLike(productSearchDto.getSearchQuery()))
         .orderBy(product.id.desc()).offset(pageable.getOffset()).limit(pageable.getPageSize()).fetchResults();
-    List<MainProductDto> content = results.getResults();
+    List<ProductDto> content = results.getResults();
     long total = results.getTotal();
     return new PageImpl<>(content, pageable, total);
   }

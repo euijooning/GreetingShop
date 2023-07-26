@@ -10,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import store.greeting.product.dto.MainProductDto;
+import store.greeting.product.dto.ProductDto;
 import store.greeting.product.dto.ProductFormDto;
 import store.greeting.product.dto.ProductImageDto;
 import store.greeting.product.dto.ProductSearchDto;
@@ -82,7 +82,7 @@ public class ProductServiceImpl implements ProductService {
   }
 
   @Transactional(readOnly = true)
-  public Page<MainProductDto> getMainProductPage(ProductSearchDto productSearchDto, Pageable pageable) {
+  public Page<ProductDto> getMainProductPage(ProductSearchDto productSearchDto, Pageable pageable) {
     return productRepository.getMainProductPage(productSearchDto, pageable);
   }
 
