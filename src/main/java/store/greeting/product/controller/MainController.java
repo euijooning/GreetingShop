@@ -16,23 +16,8 @@ import store.greeting.product.service.ProductServiceImpl;
 @RequiredArgsConstructor
 public class MainController {
 
-  private final ProductServiceImpl productService;
-
   @GetMapping(value = "/")
-  public String main(ProductSearchDto productSearchDto, Optional<Integer> page, Model model) {
-    Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 5);
-
-    if (productSearchDto.getSearchQuery() == null) {
-      productSearchDto.setSearchQuery("");
-    }
-    Page<MainProductDto> products = productService.getMainProductPage(productSearchDto, pageable);
-
-    System.out.println(products.getNumber() + "!!!!!");
-    System.out.println(products.getTotalPages() + "#####");
-
-    model.addAttribute("products", products);
-    model.addAttribute("productSearchDto", productSearchDto);
-    model.addAttribute("maxPage", 5);
+  public String main() {
     return "main";
   }
 
