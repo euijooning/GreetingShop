@@ -13,7 +13,7 @@ import org.thymeleaf.util.StringUtils;
 import store.greeting.enums.SellStatus;
 import store.greeting.product.dto.ProductDto;
 import store.greeting.product.dto.ProductSearchDto;
-import store.greeting.product.dto.QMainProductDto;
+import store.greeting.product.dto.QProductDto;
 import store.greeting.product.entity.Product;
 import store.greeting.product.entity.QProduct;
 import store.greeting.product.entity.QProductImage;
@@ -79,7 +79,7 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
     QProductImage productImage = QProductImage.productImage;
 
 
-    QueryResults<ProductDto> results = queryFactory.select(new QMainProductDto(product.id, product.productName, product.productDetail
+    QueryResults<ProductDto> results = queryFactory.select(new QProductDto(product.id, product.productName, product.productDetail
             , productImage.imageUrl, product.price))
 
         .from(productImage).join(productImage.product, product).where(productImage.mainImageYn.eq("Y"))
