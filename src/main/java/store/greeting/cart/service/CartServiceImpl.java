@@ -61,18 +61,14 @@ public class CartServiceImpl implements CartService{
   @Transactional(readOnly = true)
   public List<CartDetailDto> getCartList(String email) {
 
-    List<CartDetailDto> cartDetailDtoList = new ArrayList<>();
-
     Member member = memberRepository.findByEmail(email);
+
     Cart cart = cartRepository.findByMemberId(member.getId());
 
     if (cart == null) {
-      return cartDetailDtoList;
+      return new ArrayList<>();
     }
-
-    cartDetailDtoList = cartProductRepository.findCartDetailDtoList(cart.getId());
-
-    return cartDetailDtoList;
+    return cartProductRepository.findCartDetailDtoList(cart.getId());
   }
 
   // 현재 로그인한 회원과 해당 장바구니를 저장한 회원이 같은지 검사
