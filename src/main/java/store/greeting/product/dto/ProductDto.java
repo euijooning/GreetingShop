@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class MainProductDto {
+public class ProductDto {
 
   private Long id;
   private String productName;
@@ -15,7 +15,7 @@ public class MainProductDto {
   private Integer price;
 
   @QueryProjection
-  public MainProductDto(Long id, String productName, String productDetail, String imageUrl,
+  public ProductDto(Long id, String productName, String productDetail, String imageUrl,
       Integer price) {
     this.id = id;
     this.productName = productName;
