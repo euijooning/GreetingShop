@@ -16,4 +16,7 @@ public interface ProductService {
   Long updateProduct(ProductFormDto productFormDto, List<MultipartFile> productImageFileList) throws Exception;
   Page<Product> getAdminProductPage(ProductSearchDto productSearchDto, Pageable pageable);
   Page<ProductDto> getMainProductPage(ProductSearchDto productSearchDto, Pageable pageable);
+
+  Page<ProductDto> getProducts(ProductSearchDto productSearchDto, Pageable pageable);
+
 }

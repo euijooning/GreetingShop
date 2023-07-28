@@ -5,6 +5,7 @@ import java.util.Optional;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,13 +17,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import store.greeting.product.dto.ProductDto;
 import store.greeting.product.dto.ProductFormDto;
 import store.greeting.product.dto.ProductSearchDto;
 import store.greeting.product.entity.Product;
+import store.greeting.product.repository.ProductRepository;
 import store.greeting.product.service.ProductServiceImpl;
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class ProductController {
 
   private final ProductServiceImpl productService;
@@ -100,6 +104,8 @@ public class ProductController {
     return "product/productManage";
   }
 
+
+
   // 상품 상세 페이지
   @GetMapping(value = "/product/{productId}")
   public String productDetail(Model model, @PathVariable("productId") Long productId){
@@ -107,5 +113,25 @@ public class ProductController {
     model.addAttribute("product", productFormDto);
     return "product/productDetail";
   }
+
+  // 상품 목록 조회 페이지
+  @GetMapping(value = "/product")
+  public String orderHistory(ProductSearchDto productSearchDto, Optional<Integer> page, Model model) {
+    Pageable pageable = PageRequest.of(page.orElse(0), 6);
+
+    if (productSearchDto.getSearchQuery() == null) {
+      productSearchDto.setSearchQuery("");
+    }
+    Page<ProductDto> products = productService.getProducts(productSearchDto, pageable);
+
+    log.debug("{}!!!!!", products.getNumber());
+    log.debug("{}#####", products.getTotalPages());
+
+    model.addAttribute("products", products);
+    model.addAttribute("productSearchDto", productSearchDto);
+    model.addAttribute("maxPage", 5);
+    return "product/productList";
+  }
+
 }
 
