@@ -82,9 +82,8 @@ public class ProductServiceImpl implements ProductService {
   }
 
   @Transactional(readOnly = true)
-  public Page<ProductDto> getMainProductPage(ProductSearchDto productSearchDto, Pageable pageable) {
+  public Page<ProductDto> getProducts(ProductSearchDto productSearchDto, Pageable pageable) {
     return productRepository.getMainProductPage(productSearchDto, pageable);
   }
-
 }
 
