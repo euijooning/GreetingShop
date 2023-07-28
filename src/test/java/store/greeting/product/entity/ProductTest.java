@@ -16,14 +16,13 @@ class ProductTest {
   @DisplayName("상품 업데이트 테스트")
   public void updateProduct() {
     // given
-    ProductFormDto formDto = ProductFormDto.builder()
-        .productName("PhotoCard")
-        .price(5000)
-        .stockNumber(20)
-        .productDetail("포토카드 상세 설명")
-        .requestDetail("배송 전 연락주세요")
-        .sellStatus(SellStatus.SELL)
-        .build();
+    ProductFormDto formDto = new ProductFormDto();
+    formDto.setProductName("PhotoCard");
+    formDto.setPrice(5000);
+    formDto.setStockNumber(20);
+    formDto.setProductDetail("포토카드 상세 설명");
+    formDto.setRequestDetail("배송 전 연락주세요");
+    formDto.setSellStatus(SellStatus.SELL);
 
     Product product = Product.builder().build();
 
