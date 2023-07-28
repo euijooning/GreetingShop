@@ -124,8 +124,8 @@ public class ProductController {
     }
     Page<ProductDto> products = productService.getProducts(productSearchDto, pageable);
 
-    log.debug("{}!!!!!", products.getNumber());
-    log.debug("{}#####", products.getTotalPages());
+    log.debug("{}!", products.getNumber());
+    log.debug("{}#", products.getTotalPages());
 
     model.addAttribute("products", products);
     model.addAttribute("productSearchDto", productSearchDto);
