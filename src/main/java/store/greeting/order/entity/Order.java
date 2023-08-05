@@ -56,6 +56,7 @@ public class Order {
   // 상품 주문하기
   public void addOrderProduct(OrderProduct orderProduct) {
     orderProducts.add(orderProduct);
+    OrderProduct.builder().order(this).build();
   }
 
   public static Order createOrder(Member member, List<OrderProduct> orderProductList) {
