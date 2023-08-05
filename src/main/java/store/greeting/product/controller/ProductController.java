@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import store.greeting.enums.Category;
 import store.greeting.product.dto.ProductDto;
 import store.greeting.product.dto.ProductFormDto;
 import store.greeting.product.dto.ProductSearchDto;
@@ -30,12 +31,14 @@ import store.greeting.product.service.ProductServiceImpl;
 public class ProductController {
 
   private final ProductServiceImpl productService;
+  private final ProductRepository productRepository;
 
   @GetMapping(value = "/admin/product/new")
   public String productForm(Model model) {
     model.addAttribute("productFormDto", new ProductFormDto());
     return "product/productForm";
   }
+
 
   // 새로운 상품 등록
   @PostMapping(value = "/admin/product/new")
@@ -57,6 +60,8 @@ public class ProductController {
     return "redirect:/";
   }
 
+
+  //상품 상세 정보
   @GetMapping(value = "/admin/product/{productId}")
   public String productDetail(@PathVariable("productId")Long productId, Model model) {
     try {
@@ -70,6 +75,8 @@ public class ProductController {
     return "product/productForm";
   }
 
+
+  //상품 업데이트(관리자)
   @PostMapping(value = "/admin/product/{productId}")
   public String updateProduct(@Valid ProductFormDto productFormDto, BindingResult bindingResult,
       @RequestParam("productImageFile") List<MultipartFile> productImageFileList, Model model) {
@@ -91,6 +98,8 @@ public class ProductController {
     return "redirect:/";
   }
 
+
+  //상품 관리(관리자)
   @GetMapping(value = {"/admin/products", "/admin/products/{page}"})
   public String productManage(ProductSearchDto productSearchDto, @PathVariable("page") Optional<Integer> page, Model model){
 
@@ -105,7 +114,6 @@ public class ProductController {
   }
 
 
-
   // 상품 상세 페이지
   @GetMapping(value = "/product/{productId}")
   public String productDetail(Model model, @PathVariable("productId") Long productId){
@@ -114,18 +122,23 @@ public class ProductController {
     return "product/productDetail";
   }
 
-  // 상품 목록 조회 페이지
+
+
+  //상품 목록 조회
   @GetMapping(value = "/product")
-  public String orderHistory(ProductSearchDto productSearchDto, Optional<Integer> page, Model model) {
+  public String getProduct(ProductSearchDto productSearchDto,
+      Optional<Integer> page,
+      Model model,
+      @RequestParam String category) {
     Pageable pageable = PageRequest.of(page.orElse(0), 6);
 
     if (productSearchDto.getSearchQuery() == null) {
       productSearchDto.setSearchQuery("");
     }
-    Page<ProductDto> products = productService.getProducts(productSearchDto, pageable);
 
-    log.debug("{}!", products.getNumber());
-    log.debug("{}#", products.getTotalPages());
+    productSearchDto.setSearchCategory(Category.from(category));
+
+    Page<ProductDto> products = productService.getProducts(productSearchDto, pageable);
 
     model.addAttribute("products", products);
     model.addAttribute("productSearchDto", productSearchDto);
