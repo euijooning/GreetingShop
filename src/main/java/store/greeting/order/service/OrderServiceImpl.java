@@ -3,7 +3,6 @@ package store.greeting.order.service;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityNotFoundException;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -24,7 +23,6 @@ import store.greeting.product.entity.ProductImage;
 import store.greeting.product.repository.ProductImageRepository;
 import store.greeting.product.repository.ProductRepository;
 
-@Getter
 @Service
 @Transactional
 @RequiredArgsConstructor

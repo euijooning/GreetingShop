@@ -47,6 +47,7 @@ public class OrderProduct extends BaseEntity {
         .orderPrice(product.getPrice())
         .build();
     product.removeStock(count);
+
     return orderProduct;
   }
 
