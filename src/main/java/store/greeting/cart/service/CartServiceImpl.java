@@ -62,7 +62,6 @@ public class CartServiceImpl implements CartService{
   public List<CartDetailDto> getCartList(String email) {
 
     Member member = memberRepository.findByEmail(email);
-
     Cart cart = cartRepository.findByMemberId(member.getId());
 
     if (cart == null) {
@@ -78,10 +77,7 @@ public class CartServiceImpl implements CartService{
     CartProduct cartProduct = cartProductRepository.findById(cartProductId).orElseThrow(EntityNotFoundException::new);
     Member savedMember = cartProduct.getCart().getMember();
 
-    if (!StringUtils.equals(currentMember.getEmail(), savedMember.getEmail())) {
-      return false;
-    }
-    return true;
+    return StringUtils.equals(currentMember.getEmail(), savedMember.getEmail());
   }
 
 
@@ -92,13 +88,16 @@ public class CartServiceImpl implements CartService{
     cartProduct.updateCount(count);
   }
 
+  // 장바구니 상품 삭제
   public void deleteCartProduct(Long cartProductId) {
     CartProduct cartProduct = cartProductRepository.findById(cartProductId)
         .orElseThrow(EntityNotFoundException::new);
+
     cartProductRepository.delete(cartProduct);
   }
 
 
+  // 장바구니 상품 주문
   public Long orderCartProduct(List<CartOrderDto> cartOrderDtoList, String email){
     List<OrderDto> orderDtoList = new ArrayList<>();
 
