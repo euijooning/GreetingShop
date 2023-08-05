@@ -20,6 +20,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import store.greeting.common.BaseEntity;
+import store.greeting.enums.Category;
 import store.greeting.enums.SellStatus;
 import store.greeting.exception.OutOfStockException;
 import store.greeting.member.entity.Member;
@@ -53,6 +54,9 @@ public class Product extends BaseEntity {
 
   @Enumerated(EnumType.STRING)
   private SellStatus sellStatus; // 상품 판매 상태
+
+  @Enumerated(EnumType.STRING)
+  private Category category; // 상품 분류
 
 
   @ManyToMany
