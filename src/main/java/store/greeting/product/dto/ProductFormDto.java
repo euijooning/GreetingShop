@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
+import store.greeting.enums.Category;
 import store.greeting.enums.SellStatus;
 import store.greeting.product.entity.Product;
 
@@ -36,6 +37,8 @@ public class ProductFormDto {
   private Integer stockNumber;
 
   private SellStatus sellStatus;
+
+  private Category category;
 
   private List<ProductImageDto> productImageDtoList =new ArrayList<>();
 
