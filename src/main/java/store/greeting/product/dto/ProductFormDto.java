@@ -30,9 +30,6 @@ public class ProductFormDto {
   @NotBlank(message = "상품 상세는 필수 입력 값입니다.")
   private String productDetail;
 
-  @NotBlank(message = "요청 사항은 필수 입력 값입니다.")
-  private String request;
-
   @NotNull(message = "재고는 필수 입력 값입니다.")
   private Integer stockNumber;
 
