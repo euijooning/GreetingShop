@@ -1,10 +1,111 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-</head>
-<body>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
 
-</body>
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
+</head>
+
+<!-- 사용자 스크립트 추가 -->
+<th:block layout:fragment="script">
+  <script th:inline="javascript">
+    $(document).ready(function(){
+      $("searchBtn").on("click",function(e){
+        e.preventDefault();
+        page(0);
+      });
+    });
+
+    function page(page){
+      var searchDateType = $("#searchDateType").val();
+      var searchSellStatus = $("#searchSellStatus").val();
+      var searchBy = $("#searchBy").val();
+      var searchQuery = $("#searchQuery").val();
+
+      location.href="/admin/products/" + page + "?searchDateType=" + searchDateType
+          + "&searchSellStatus=" + searchSellStatus + "&searchBy=" + searchBy
+          + "&searchQuery=" + searchQuery;
+    }
+  </script>
+</th:block>
+
+<!-- 사용자 CSS 추가 -->
+<th:block layout:fragment="css">
+  <style>
+    body {
+      font-family: 'Gowun Batang', serif;
+    }
+    select{
+      margin-right : 10px
+    }
+  </style>
+</th:block>
+
+<div layout:fragment="content">
+  <form th:action="@{'/admin/products/'+${products.number}}" role="form" method="get" th:object="${products}">
+    <table class="table">
+      <thead>
+      <tr>
+        <td>상품명</td>
+        <td>상태</td>
+        <td>등록자</td>
+        <td>등록일</td>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="product, status : ${products.getContent()}">
+        <td>
+          <a th:href="'/admin/product/'+${product.id}" th:text="${product.productName}"></a>
+        </td>
+        <td th:text="${product.sellStatus == T(store.greeting.enums.SellStatus).SELL} ? '판매중' : '품절'"></td>
+        <td th:text="${product.createdBy}"></td>
+        <td th:text="${#temporals.format(product.createTime, 'yyyy-MM-dd')}"></td>
+      </tr>
+      </tbody>
+    </table>
+
+    <div th:with="start=${(products.number/maxPage)*maxPage +1},
+        end=(${(products.totalPages == 0) ? 1 : (start + (maxPage-1) < products.totalPages ? start + (maxPage - 1) : products.totalPages)})">
+      <ul class="pagination justify-content-center">
+        <li class="page-product" th:classappend="${products.first}?'disabled'">
+          <a th:onclick="'javascript:page('+${products.number - 1} + ')'" aria-label='Previous' class="page-link" style="color: black;">
+            <span aria-hidden="true">Previous</span>
+          </a>
+        </li>
+        <li class="page-product" th:each="page: ${#numbers.sequence(start,end)}" th:classappend="${products.number eq page-1}?'active':''">
+          <a th:onclick="'javascript:page('+${page -1} + ')'" th:inline="text" class="page-link">[[${page}]]</a>
+        </li>
+        <li class="page-product" th:classappend="${products.last}?'disabled'">
+          <a th:onclick="'javascript:page(' + ${products.number + 1} + ')'" aria-label="Next" class="page-link" style="color: black;">
+            <span aria-hidden="true">Next</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="form-inline justify-content-center" th:object="${productSearchDto}">
+      <select th:field="*{searchDateType}" class="form-control" style="width:auto;">
+        <option value="all">전체기간</option>
+        <option value="1d">1일</option>
+        <option value="1w">1주</option>
+        <option value="1m">1개월</option>
+        <option value="6m">6개월</option>
+      </select>
+      <select th:field="*{searchSellStatus}" class="form-control" style="width:auto;">
+        <option value="">판매상태(전체)</option>
+        <option value="SELL">판매</option>
+        <option value="SOLD_OUT">품절</option>
+      </select>
+      <select th:field="*{searchBy}" class="form-control" style="width:auto;">
+        <option value="productName">상품명</option>
+        <option value="createdBy">등록자</option>
+      </select>
+      <input th:field="*{searchQuery}" type="text" class="form-control" placeholder="검색어를 입력해주세요">
+      <button id="searchBtn" type="submit" class="btn btn-warning">검색</button>
+    </div>
+  </form>
+</div>
 </html>
