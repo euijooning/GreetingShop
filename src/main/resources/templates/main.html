@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<!-- 사용자 css 추가 -->
+<th:block layout:fragment="css">
+  <style>
+    body {
+      font-family: 'Gowun Batang', serif;
+    }
+
+    .carousel-inner > .product {
+      height: 350px;
+    }
+
+    .margin {
+      margin-bottom: 30px;
+    }
+
+    .banner {
+      height: 300px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100px;
+      height: 100%;
+    }
+
+    a:hover {
+      text-decoration: none;
+    }
+  </style>
+</th:block>
+
+<div layout:fragment="content">
+  <script>
+    $(document).ready(function () {
+      $('.carousel').carousel({
+        interval: 2000 // 이미지가 자동으로 슬라이드되는 시간(밀리초)
+      });
+    });
+  </script>
+
+  <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="/img/greeting1.png" class="d-block w-100" alt="...">
+      </div>
+      <div class="carousel-item">
+        <img src="/img/greeting2.png" class="d-block w-100" alt="...">
+      </div>
+      <div class="carousel-item">
+        <img src="/img/greeting3.png" class="d-block w-100" alt="...">
+      </div>
+      <div class="carousel-item">
+        <img src="/img/greeting4.png" class="d-block w-100" alt="...">
+      </div>
+      <div class="carousel-item">
+        <img src="/img/greeting5.png" class="d-block w-100" alt="...">
+      </div>
+    </div>
+  </div>
+</div>
