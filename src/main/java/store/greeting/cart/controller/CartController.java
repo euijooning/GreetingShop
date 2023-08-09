@@ -34,27 +34,6 @@ public class CartController {
   private final CartServiceImpl cartService;
   private final CartOrderDtoValidator cartOrderDtoValidator;
 
-  // 주문하기
-  @PostMapping(value = "/cart")
-  public @ResponseBody ResponseEntity order(@RequestBody @Valid CartProductDto cartProductDto,
-      BindingResult bindingResult, Principal principal) {
-    if (bindingResult.hasErrors()) {
-      StringBuilder sb = new StringBuilder();
-      List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-      for (FieldError fieldError : fieldErrors) {
-        sb.append(fieldError.getDefaultMessage());
-      }
-      return new ResponseEntity<String>(sb.toString(), HttpStatus.BAD_REQUEST);
-    }
-    String email = principal.getName();
-    Long cartProductId;
-    try {
-      cartProductId = cartService.addCart(cartProductDto, email);
-    } catch (Exception e) {
-      return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-    return new ResponseEntity<Long>(cartProductId, HttpStatus.OK);
-  }
 
   // 주문 내역 조회
   @GetMapping(value = "/cart")
