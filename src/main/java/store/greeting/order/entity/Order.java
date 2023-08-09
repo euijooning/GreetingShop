@@ -65,8 +65,6 @@ public class Order {
         .orderStatus(OrderStatus.ORDER)
         .orderDate(LocalDateTime.now())
         .orderProducts(orderProductList)
-        .createTime(LocalDateTime.now())
-        .updateTime(LocalDateTime.now())
         .build();
     return order;
   }

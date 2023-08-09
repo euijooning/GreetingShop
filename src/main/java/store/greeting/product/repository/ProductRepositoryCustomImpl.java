@@ -20,10 +20,10 @@ import store.greeting.product.entity.QProductImage;
 
 public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 
-  private JPAQueryFactory queryFactory;
+  private JPAQueryFactory queryFactory; // 동적 쿼리 사용하기 위해 JPAQueryFactory 변수 선언
 
   public ProductRepositoryCustomImpl(EntityManager em) {
-    this.queryFactory = new JPAQueryFactory(em);
+    this.queryFactory = new JPAQueryFactory(em); // JPAQueryFactory 실질적인 객체가 만들어진다.
   }
 
   private BooleanExpression searchSellStatusEq(SellStatus searchSellStatus) {
@@ -31,7 +31,7 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
   }
 
   private BooleanExpression createdDatesAfter(String searchDateType) {
-    LocalDateTime dateTime = LocalDateTime.now();
+    LocalDateTime dateTime = LocalDateTime.now(); //현재시간을 추출해서 변수에 대입
 
     if (StringUtils.equals("all", searchDateType) || searchDateType == null) {
       return null;
@@ -79,12 +79,18 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
     QProductImage productImage = QProductImage.productImage;
 
 
-    QueryResults<ProductDto> results = queryFactory.select(new QProductDto(product.id, product.productName, product.productDetail
-            , productImage.imageUrl, product.price))
+    QueryResults<ProductDto> results = queryFactory.select(new QProductDto(product.id,
+            product.productName,
+            product.productDetail,
+            productImage.imageUrl,
+            product.price))
 
-        .from(productImage).join(productImage.product, product).where(productImage.mainImageYn.eq("Y"))
+        .from(productImage)
+        .join(productImage.product, product)
+        .where(productImage.mainImageYn.eq("Y"))
         .where(productNameLike(productSearchDto.getSearchQuery()))
         .orderBy(product.id.desc()).offset(pageable.getOffset()).limit(pageable.getPageSize()).fetchResults();
+
     List<ProductDto> content = results.getResults();
     long total = results.getTotal();
     return new PageImpl<>(content, pageable, total);

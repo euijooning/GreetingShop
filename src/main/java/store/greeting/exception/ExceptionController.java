@@ -1,6 +1,5 @@
 package store.greeting.exception;
 
-import javax.naming.NoPermissionException;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -19,7 +18,7 @@ public class ExceptionController {
     return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
   }
 
-  @ExceptionHandler(NoPermissionException.class)
+  @ExceptionHandler(PermissionDeniedException.class)
   public ResponseEntity<String> handleNoPermissionException(HttpServletRequest req, Exception ex) {
     log.warn(ex.getMessage());
     return new ResponseEntity<>(ex.getMessage(), HttpStatus.FORBIDDEN);

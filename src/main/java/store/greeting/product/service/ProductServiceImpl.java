@@ -39,8 +39,6 @@ public class ProductServiceImpl implements ProductService {
       ProductImage productImage =  ProductImage.builder()
           .mainImageYn(i == 0 ? "Y" : "N")
           .build();
-
-
       productImageService.saveProductImage(productImage, productImageFileList.get(i));
     }
     return product.getId();
@@ -48,6 +46,7 @@ public class ProductServiceImpl implements ProductService {
 
   @Transactional(readOnly = true)
   public ProductFormDto getProductDetail(Long productId){
+
     List<ProductImage> productImageList = productImageRepository.findByProductIdOrderByIdAsc(productId);
     List<ProductImageDto> productImageDtoList = new ArrayList<>();
 
@@ -62,7 +61,7 @@ public class ProductServiceImpl implements ProductService {
     return productFormDto;
   }
 
-  // 수정 만들기
+  // 상품 수정
   public Long updateProduct(ProductFormDto productFormDto, List<MultipartFile> productImageFileList) throws Exception {
     Product product = productRepository.findById(productFormDto.getId()).orElseThrow(
         EntityExistsException::new);
@@ -76,11 +75,13 @@ public class ProductServiceImpl implements ProductService {
     return product.getId();
   }
 
+  //상품 관리 페이지 조회
   @Transactional(readOnly = true)
   public Page<Product> getAdminProductPage(ProductSearchDto productSearchDto, Pageable pageable) {
     return productRepository.getAdminProductPage(productSearchDto, pageable);
   }
 
+  // 상품 조회하기
   @Transactional(readOnly = true)
   public Page<ProductDto> getProducts(ProductSearchDto productSearchDto, Pageable pageable) {
     return productRepository.getMainProductPage(productSearchDto, pageable);

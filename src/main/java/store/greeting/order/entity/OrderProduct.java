@@ -55,7 +55,7 @@ public class OrderProduct extends BaseEntity {
     return orderPrice*count;
   }
 
-  // 주문취소
+  // 주문 취소
   public void cancel() {
     this.getProduct().addStock(count);
   }

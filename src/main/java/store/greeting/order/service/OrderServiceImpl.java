@@ -34,6 +34,7 @@ public class OrderServiceImpl implements OrderService {
   private final ProductImageRepository productImageRepository;
 
 
+  //주문
   public Long order(OrderDto orderDto, String email) {
 
     // 아이템 추출
@@ -52,6 +53,7 @@ public class OrderServiceImpl implements OrderService {
     return order.getId();
   }
 
+  // 주문 목록 조회
   @Transactional(readOnly = true)
   public Page<OrderHistoryDto> getOrderList(String email, Pageable pageable) {
 
@@ -72,6 +74,7 @@ public class OrderServiceImpl implements OrderService {
     return new PageImpl<OrderHistoryDto>(historyDtos, pageable, totalCount);
   }
 
+  // 주문 유효성 검사
   @Transactional(readOnly = true)
   public boolean validateOrder(Long orderId, String email) {
     Member currentMember = memberRepository.findByEmail(email);
@@ -81,11 +84,14 @@ public class OrderServiceImpl implements OrderService {
     return StringUtils.equals(currentMember.getEmail(), savedMember.getEmail());
   }
 
+  //주문 취소
   public void cancelOrder(Long orderId) {
     Order order = orderRepository.findById(orderId).orElseThrow(EntityNotFoundException::new);
     order.cancelOrder();
   }
 
+
+  //주문
   public Long orders(List<OrderDto> orderDtoList, String email) {
     Member member = memberRepository.findByEmail(email);
 

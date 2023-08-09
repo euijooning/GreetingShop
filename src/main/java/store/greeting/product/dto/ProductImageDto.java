@@ -17,7 +17,7 @@ public class ProductImageDto {
 
   private String imageUrl;
 
-  private String mainImageYn;
+  private String mainImageYn; // 상품 메인 이미지 여부
 
   private static ModelMapper modelMapper = new ModelMapper();
 

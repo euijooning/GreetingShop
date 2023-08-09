@@ -49,6 +49,7 @@ public class CartProduct extends BaseEntity {
     return cartProduct;
   }
 
+  // 수량 증가
   public void addCount(int count) {
     this.count += count;
   }
