@@ -1,10 +1,83 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-</head>
-<body>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
 
-</body>
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
+  <title>그리팅스토어</title>
+</head>
+<!-- 사용자 css 추가 -->
+<th:block layout:fragment="css">
+  <style>
+    body {
+      font-family: 'Gowun Batang', serif;
+    }
+    .carousel-inner > .product {
+      height: 350px;
+    }
+    .margin {
+      margin-bottom: 30px;
+    }
+    .banner {
+      height: 300px;
+      position: absolute; top: 0; left: 0;
+      width: 100px;
+      height: 100%;
+    }
+    .card-text {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    a:hover {
+      text-decoration: none;
+    }
+    .center {
+      text-align: center;
+    }
+    .big-box {
+      border: 1px solid #ccc;
+      padding: 20px;
+      background-color: #f8f8f8;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</th:block>
+
+<div layout:fragment="content">
+  <div class="big-box"> <!-- 큰 박스 -->
+    <h2>글 목록</h2>
+    <br>
+    <div class="row">
+      <ul>
+        <th:block th:each="board: ${boards}">
+          <li><a th:href="'/boards/' +${board.id}" th:text="${board.title}" class="text-dark"></a></li>
+        </th:block>
+      </ul>
+    </div>
+    <br>
+  </div> <!-- 큰 박스 닫기 -->
+
+  <br>
+
+  <h2>문의 등록하기</h2>
+
+  <form th:action="@{/board}" th:object="${dto}" method="post">
+    <div class="form-group">
+      <input type="text" class="form-control" th:field="*{title}" placeholder="Title"/>
+      <p th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="fieldError">Incorrect data</p>
+    </div>
+    <div class="form-group">
+      <input type="text" class="form-control" th:field="*{content}" placeholder="Content"/>
+      <p th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="fieldError">Incorrect data</p>
+    </div>
+    <button type="submit" class="btn btn-warning">등록</button>
+  </form>
+
+
+</div>
 </html>

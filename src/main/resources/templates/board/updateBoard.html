@@ -1,10 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-</head>
-<body>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
 
-</body>
+<head>
+  <meta name="_csrf" th:content="${_csrf.token}"/>
+  <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
+</head>
+
+<th:block layout:fragment="script">
+  <script src="/js/board.js"></script>
+</th:block>
+
+<!-- 사용자 css 추가 -->
+<th:block layout:fragment="css">
+  <style>
+    body {
+      font-family: 'Gowun Batang', serif;
+    }
+    .carousel-inner > .product {
+      height: 350px;
+    }
+    .margin {
+      margin-bottom: 30px;
+    }
+    .banner {
+      height: 300px;
+      position: absolute; top: 0; left: 0;
+      width: 100px;
+      height: 100%;
+    }
+    .card-text {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    a:hover {
+      text-decoration: none;
+    }
+    .center {
+      text-align: center;
+    }
+  </style>
+</th:block>
+
+<div layout:fragment="content">
+  <h2>Board Details</h2>
+
+  <!--  @{|/resources/libs/css/${view_name}.css|}-->
+
+  <!--  '@{/boards/update/{boardId}(boardId=${board.id})}'-->
+  <form th:object="${dto}">
+    <div class="form-group">
+      <input type="hidden" id="board_id" th:value="${dto.id}">
+      <input type="text" class="form-control" th:field="*{title}" placeholder="Title"/>
+      <p th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="fieldError">Incorrect data</p>
+    </div>
+    <div class="form-group">
+      <input type="text" class="form-control" th:field="*{content}" placeholder="Content"/>
+      <p th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="fieldError">Incorrect data</p>
+    </div>
+    <button th:onclick="updateBoard()" class="btn btn-warning">게시글 수정하기</button>
+  </form>
+</div>
 </html>
