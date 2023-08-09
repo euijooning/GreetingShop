@@ -48,7 +48,7 @@ public class CartController {
   public @ResponseBody ResponseEntity updateCartProduct(@PathVariable("cartProductId") Long cartProductId,
       int count, Principal principal) {
 
-    if (count <=0) {
+    if (count <= 0) {
       return new ResponseEntity<String>("최소 1개 이상 담아주세요.", HttpStatus.BAD_REQUEST);
     } else if (!cartService.validateCartProduct(cartProductId, principal.getName())) {
       return new ResponseEntity<String>("수정 권한이 없습니다.", HttpStatus.FORBIDDEN);
@@ -63,9 +63,10 @@ public class CartController {
   @ResponseBody
   public ResponseEntity addCartProduct(@RequestBody @Valid CartProductDto cartProductDto,
       BindingResult bindingResult, Principal principal) {
+
     if (bindingResult.hasErrors()) {
-      List<String> messages = bindingResult.getFieldErrors().stream().map(
-          DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
+      List<String> messages = bindingResult.getFieldErrors().stream()
+          .map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
       return new ResponseEntity<>(messages.toString(), HttpStatus.BAD_REQUEST);
     }
 
@@ -77,7 +78,8 @@ public class CartController {
 
   // 장바구니 상품 삭제
   @DeleteMapping("/cartProduct/{cartProductId}")
-  public @ResponseBody ResponseEntity deleteCartProduct(@PathVariable("cartProductId") Long cartProductId, Principal principal) {
+  public @ResponseBody ResponseEntity deleteCartProduct(@PathVariable("cartProductId") Long cartProductId,
+      Principal principal) {
 
     if (!cartService.validateCartProduct(cartProductId, principal.getName())) {
       return new ResponseEntity<String>("수정 권한이 없습니다.", HttpStatus.FORBIDDEN);
@@ -89,7 +91,8 @@ public class CartController {
 
   // 장바구니 상품 주문하기
   @PostMapping(value = "/cart/orders")
-  public @ResponseBody ResponseEntity orderCartProduct(@RequestBody CartOrderDto cartOrderDto, Principal principal){
+  public @ResponseBody ResponseEntity orderCartProduct(@RequestBody CartOrderDto cartOrderDto,
+      Principal principal) {
 
     List<CartOrderDto> cartOrderDtoList = cartOrderDto.getCartOrderDtoList();
     Long orderId = cartService.orderCartProduct(cartOrderDtoList, principal.getName());

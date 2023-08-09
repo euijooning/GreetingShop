@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Log
-public class FileService {
+public class FileService { // 이미지 파일이 실제 저장소에 생성
 
   public String uploadFile(String uploadPath, String originalFileName, byte[] fileData) throws Exception {
 
@@ -28,7 +28,7 @@ public class FileService {
     File deleteFile = new File(filePath);
     if (deleteFile.exists()) {
       deleteFile.delete();
-      log.info("파일을 삭제하였습니다.");
+      log.info("파일을 삭제했습니다.");
     } else {
       log.info("파일이 존재하지 않습니다.");
     }

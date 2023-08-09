@@ -34,6 +34,7 @@ import store.greeting.product.dto.ProductFormDto;
 @AllArgsConstructor
 @ToString
 public class Product extends BaseEntity {
+
   @Id
   @Column(name="product_id")
   @GeneratedValue(strategy = GenerationType.AUTO)

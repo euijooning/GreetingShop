@@ -31,19 +31,24 @@ public class ProductImageServiceImpl implements ProductImageService{
     log.info(originImageName); // 뉴진스.jpg
 
     //파일 업로드
-    if(!StringUtils.isEmpty(originImageName)) { //oriImgName이 문자열로 비어 있지 않으면 실행
+    if(!StringUtils.isEmpty(originImageName)) { //orinalImageName이 문자열로 비어 있지 않으면 실행
       System.out.println("******");
       imageName = fileService.uploadFile(productImageLocation, originImageName, productImageFile.getBytes());
       System.out.println(imageName);
       imageUrl = "/images/product/" + imageName;
     }
 
+    // 상품 이미지 정보 저장
+    // originImageName : 상품 이미지 파일의 오리지널 이름.
+    // imageName : 실제 로컬에 저장된 상품 이미지 파일의 이름.
+    // imageUrl : 로컬에 저장된 상품 이미지 파일을 불러오는 경로.
+
     productImage.updateProductImage(originImageName, imageName, imageUrl);
     productImageRepository.save(productImage);
   }
 
   public void updateProductImage(Long productImageId, MultipartFile productImageFile) throws Exception {
-    if(!productImageFile.isEmpty()) { // 상품의 이미지를 수정한 경우 상품 이미지 업데이트
+    if(!productImageFile.isEmpty()) { // 상품의 이미지를 수정한 경우 상품 이미지가 업데이트
       ProductImage savedProductImage = productImageRepository.findById(productImageId).orElseThrow(
           EntityExistsException::new); // 기존 엔티티 조회
 

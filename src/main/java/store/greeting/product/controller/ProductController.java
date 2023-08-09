@@ -33,6 +33,7 @@ public class ProductController {
   private final ProductServiceImpl productService;
   private final ProductRepository productRepository;
 
+  // 상품 등록 폼
   @GetMapping(value = "/admin/product/new")
   public String productForm(Model model) {
     model.addAttribute("productFormDto", new ProductFormDto());
@@ -129,14 +130,18 @@ public class ProductController {
   public String getProduct(ProductSearchDto productSearchDto,
       Optional<Integer> page,
       Model model,
-      @RequestParam String category) {
+      @RequestParam(required = false) String category) {
     Pageable pageable = PageRequest.of(page.orElse(0), 6);
 
     if (productSearchDto.getSearchQuery() == null) {
       productSearchDto.setSearchQuery("");
     }
 
-    productSearchDto.setSearchCategory(Category.from(category));
+    // category 파라미터가 비어있지 않은 경우에만 setSearchCategory() 메서드를 사용하여 설정
+    if (category != null && !category.isEmpty()) {
+      productSearchDto.setSearchCategory(Category.from(category));
+    }
+//    productSearchDto.setSearchCategory(Category.from(category));
 
     Page<ProductDto> products = productService.getProducts(productSearchDto, pageable);
 
