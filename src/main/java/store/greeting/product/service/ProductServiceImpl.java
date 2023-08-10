@@ -38,6 +38,7 @@ public class ProductServiceImpl implements ProductService {
     for (int i = 0; i < productImageFileList.size(); i++) {
       ProductImage productImage =  ProductImage.builder()
           .mainImageYn(i == 0 ? "Y" : "N")
+          .product(product)
           .build();
       productImageService.saveProductImage(productImage, productImageFileList.get(i));
     }

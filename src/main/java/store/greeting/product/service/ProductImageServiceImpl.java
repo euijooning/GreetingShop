@@ -35,7 +35,7 @@ public class ProductImageServiceImpl implements ProductImageService{
       System.out.println("******");
       imageName = fileService.uploadFile(productImageLocation, originImageName, productImageFile.getBytes());
       System.out.println(imageName);
-      imageUrl = "/images/product/" + imageName;
+      imageUrl = "/img/" + imageName;
     }
 
     // 상품 이미지 정보 저장
