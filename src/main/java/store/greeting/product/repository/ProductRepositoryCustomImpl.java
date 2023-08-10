@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.thymeleaf.util.StringUtils;
+import store.greeting.enums.Category;
 import store.greeting.enums.SellStatus;
 import store.greeting.product.dto.ProductDto;
 import store.greeting.product.dto.ProductSearchDto;
@@ -73,6 +74,10 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
     return StringUtils.isEmpty(searchQuery) ? null : QProduct.product.productName.like("%" + searchQuery + "%");
   }
 
+  private BooleanExpression categoryEqual(Category category) {
+    return category == null ? null : QProduct.product.category.eq(category);
+  }
+
   @Override
   public Page<ProductDto> getMainProductPage(ProductSearchDto productSearchDto, Pageable pageable) {
     QProduct product = QProduct.product;
@@ -89,6 +94,7 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
         .join(productImage.product, product)
         .where(productImage.mainImageYn.eq("Y"))
         .where(productNameLike(productSearchDto.getSearchQuery()))
+        .where(categoryEqual(productSearchDto.getSearchCategory()))
         .orderBy(product.id.desc()).offset(pageable.getOffset()).limit(pageable.getPageSize()).fetchResults();
 
     List<ProductDto> content = results.getResults();
