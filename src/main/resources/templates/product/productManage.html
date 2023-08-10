@@ -72,7 +72,7 @@
       <ul class="pagination justify-content-center">
         <li class="page-product" th:classappend="${products.first}?'disabled'">
           <a th:onclick="'javascript:page('+${products.number - 1} + ')'" aria-label='Previous' class="page-link" style="color: black;">
-            <span aria-hidden="true">Previous</span>
+            <span aria-hidden="true">이전</span>
           </a>
         </li>
         <li class="page-product" th:each="page: ${#numbers.sequence(start,end)}" th:classappend="${products.number eq page-1}?'active':''">
@@ -80,7 +80,7 @@
         </li>
         <li class="page-product" th:classappend="${products.last}?'disabled'">
           <a th:onclick="'javascript:page(' + ${products.number + 1} + ')'" aria-label="Next" class="page-link" style="color: black;">
-            <span aria-hidden="true">Next</span>
+            <span aria-hidden="true">다음</span>
           </a>
         </li>
       </ul>

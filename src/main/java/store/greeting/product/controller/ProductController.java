@@ -141,7 +141,6 @@ public class ProductController {
     if (category != null && !category.isEmpty()) {
       productSearchDto.setSearchCategory(Category.from(category));
     }
-//    productSearchDto.setSearchCategory(Category.from(category));
 
     Page<ProductDto> products = productService.getProducts(productSearchDto, pageable);
 
