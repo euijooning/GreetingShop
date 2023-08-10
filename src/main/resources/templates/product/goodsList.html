@@ -70,18 +70,18 @@
     <ul class="pagination justify-content-center">
 
       <li class="page-product" th:classappend="${products.number eq 0}?'disabled':''">
-        <a th:href="@{'/product?category=GOODS' + '&searchQuery=' + ${productSearchDto.searchQuery} + '&page=' + ${products.number-1}} + '&category=ALBUM'"
+        <a th:href="@{'/product?category=GOODS' + '&searchQuery=' + ${productSearchDto.searchQuery} + '&page=' + ${products.number-1}} + '&category=GOODS'"
            aria-label='Previous' class="page-link">
           <span aria-hidden='true' style="color: #000000">이전</span>
         </a>
       </li>
       <li class="page-product" th:each="page: ${#numbers.sequence(start, end)}"
           th:classappend="${products.number eq page-1}?'active':''">
-        <a th:href="@{'/product?category=GOODS' +'&searchQuery=' + ${productSearchDto.searchQuery} + '&page=' + ${page-1}} + '&category=ALBUM'"
+        <a th:href="@{'/product?category=GOODS' +'&searchQuery=' + ${productSearchDto.searchQuery} + '&page=' + ${page-1}} + '&category=GOODS'"
            th:inline="text" class="page-link">[[${page}]]</a>
       </li>
       <li class="page-product" th:classappend="${products.number+1 ge products.totalPages}?'disabled':''">
-        <a th:href="@{'/product?category=GOODS' +'&searchQuery=' + ${productSearchDto.searchQuery} + '&page=' + ${products.number+1}} + '&category=ALBUM'"
+        <a th:href="@{'/product?category=GOODS' +'&searchQuery=' + ${productSearchDto.searchQuery} + '&page=' + ${products.number+1}} + '&category=GOODS'"
            aria-label='Next' class="page-link">
           <span aria-hidden='true' style="color: #000000">다음</span>
         </a>

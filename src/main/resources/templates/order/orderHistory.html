@@ -136,7 +136,7 @@
 
       <li class="page-product" th:classappend="${orders.number eq 0}?'disabled':''">
         <a th:href="@{'/orders/' + ${orders.number-1}}" aria-label='Previous' class="page-link">
-          <span aria-hidden='true'>Previous</span>
+          <span aria-hidden='true'>이전</span>
         </a>
       </li>
 
@@ -146,7 +146,7 @@
 
       <li class="page-product" th:classappend="${orders.number+1 ge orders.totalPages}?'disabled':''"> <!-- ge는 초과. disabled는 활성화 x, ''는 활성화-->
         <a th:href="@{'/orders/' + ${orders.number+1}}" aria-label='Next' class="page-link">
-          <span aria-hidden='true'>Next</span>
+          <span aria-hidden='true'>다음</span>
         </a>
       </li>
 
