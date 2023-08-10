@@ -57,7 +57,7 @@ public class ProductImageServiceImpl implements ProductImageService{
       }
       String originImageName = productImageFile.getOriginalFilename();
       String imgName = fileService.uploadFile(productImageLocation, originImageName, productImageFile.getBytes()); // 파일 업로드
-      String imgUrl = "/images/product" + imgName;
+      String imgUrl = "/img/" + imgName;
 
       savedProductImage.updateProductImage(originImageName, imgName,imgUrl); // 이것 역시 save 부르지 않고 변경감지로 변경만 됨.
 
