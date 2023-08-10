@@ -46,7 +46,14 @@ public class ProductFormDto {
   private String requestDetail;
 
   public Product createProduct(){
-    return modelMapper.map(this, Product.class);
+    return Product.builder()
+        .productName(this.productName)
+        .price(this.price)
+        .productDetail(this.productDetail)
+        .stockNumber(this.stockNumber)
+        .sellStatus(this.sellStatus)
+        .category(this.category)
+        .build();
   }
 
   public static ProductFormDto of(Product product){
