@@ -36,10 +36,15 @@ public class GreetingApplication {
   @Autowired
   BoardRepository boardRepository;
 
+  public static void main(String[] args) {
+    SpringApplication.run(GreetingApplication.class, args);
+  }
+
   @Bean
   public ApplicationRunner applicationRunner() {
     return args -> {
-      Board board1 = Board.builder().title("배송 문의드립니다.").content("안녕하세요. 이틀 전 주문한 상품 배송추적 하고 싶습니다.").build();
+      Board board1 = Board.builder().title("배송 문의드립니다.").content("안녕하세요. 이틀 전 주문한 상품 배송추적 하고 싶습니다.")
+          .build();
       Board board2 = Board.builder().title("휴무일").content("이번 명절에 쉬시나요?").build();
 
       boardRepository.save(board1);
@@ -63,8 +68,6 @@ public class GreetingApplication {
           .build();
       memberRepository.save(adminMember);
 
-
-
       Product goods1 = Product.builder()
           .productName("뉴진스 빙키봉")
           .price(49000)
@@ -81,8 +84,6 @@ public class GreetingApplication {
           .mainImageYn("Y")
           .build();
       productImageRepository.save(goodsImage1);
-
-
 
       Product goods2 = Product.builder()
           .productName("아이브 응원봉")
@@ -101,8 +102,6 @@ public class GreetingApplication {
           .build();
       productImageRepository.save(goodsImage2);
 
-
-
       Product goods3 = Product.builder()
           .productName("BTS 에어팟 케이스")
           .price(24000)
@@ -120,7 +119,28 @@ public class GreetingApplication {
           .build();
       productImageRepository.save(goodsImage3);
 
+      // TODO REMOVE ME
+      for (int i = 0; i < 10; i++) {
+        Product newAlbum = Product.builder()
+            .productName(i + "엑소 (EXO) 7집 - EXIST [Digipack Ver.]")
+            .price(14700)
+            .sellStatus(SellStatus.SELL)
+            .stockNumber(30)
+            .productDetail("이번 앨범에는 총 9곡이 수록되어 있으며, "
+                + "4월 엑소 데뷔 11주년 기념 팬미팅에서 무대로 보여줘 화제를 모은 "
+                + "선공개곡 ‘Let Me In’을 비롯한 다채로운 분위기의 음악을 만날 수 있어 "
+                + "글로벌 팬들의 관심이 집중될 것으로 보인다.")
+            .category(Category.GOODS)
+            .build();
+        productRepository.save(newAlbum);
 
+        ProductImage newAlbumImage = ProductImage.builder()
+            .product(newAlbum)
+            .imageUrl("/img/image" + 8 + ".jpg")
+            .mainImageYn("Y")
+            .build();
+        productImageRepository.save(newAlbumImage);
+      }
 
       Product photoCard1 = Product.builder()
           .productName("르세라핌 포토카드 세트")
@@ -139,8 +159,6 @@ public class GreetingApplication {
           .build();
       productImageRepository.save(pcImage1);
 
-
-
       Product photoCard2 = Product.builder()
           .productName("IVE 포토카드 세트")
           .price(23000)
@@ -158,8 +176,6 @@ public class GreetingApplication {
           .build();
       productImageRepository.save(pcImage2);
 
-
-
       Product photoCard3 = Product.builder()
           .productName("NewJeans 포토카드 세트")
           .price(25000)
@@ -176,7 +192,6 @@ public class GreetingApplication {
           .mainImageYn("Y")
           .build();
       productImageRepository.save(pcImage3);
-
 
       Product album1 = Product.builder()
           .productName("뉴진스 (NewJeans) - 1st EP 'New Jeans' Weverse Albums")
@@ -198,7 +213,6 @@ public class GreetingApplication {
           .build();
       productImageRepository.save(albumImage1);
 
-
       Product album2 = Product.builder()
           .productName("엑소 (EXO) 7집 - EXIST [Digipack Ver.]")
           .price(14700)
@@ -218,7 +232,28 @@ public class GreetingApplication {
           .mainImageYn("Y")
           .build();
       productImageRepository.save(albumImage2);
+// TODO REMOVE ME
+      for (int i = 0; i < 10; i++) {
+        Product newAlbum = Product.builder()
+            .productName(i + "엑소 (EXO) 7집 - EXIST [Digipack Ver.]")
+            .price(14700)
+            .sellStatus(SellStatus.SELL)
+            .stockNumber(30)
+            .productDetail("이번 앨범에는 총 9곡이 수록되어 있으며, "
+                + "4월 엑소 데뷔 11주년 기념 팬미팅에서 무대로 보여줘 화제를 모은 "
+                + "선공개곡 ‘Let Me In’을 비롯한 다채로운 분위기의 음악을 만날 수 있어 "
+                + "글로벌 팬들의 관심이 집중될 것으로 보인다.")
+            .category(Category.ALBUM)
+            .build();
+        productRepository.save(newAlbum);
 
+        ProductImage newAlbumImage = ProductImage.builder()
+            .product(newAlbum)
+            .imageUrl("/img/image" + 8 + ".jpg")
+            .mainImageYn("Y")
+            .build();
+        productImageRepository.save(newAlbumImage);
+      }
 
       Product album3 = Product.builder()
           .productName("오마이걸 (OH MY GIRL) - 미니앨범 9집 : Golden Hourglass")
@@ -237,11 +272,6 @@ public class GreetingApplication {
           .build();
       productImageRepository.save(albumImage3);
     };
-  }
-
-
-  public static void main(String[] args) {
-    SpringApplication.run(GreetingApplication.class, args);
   }
 
 }

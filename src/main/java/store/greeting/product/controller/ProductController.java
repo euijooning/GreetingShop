@@ -131,16 +131,16 @@ public class ProductController {
   public String getProduct(ProductSearchDto productSearchDto,
       Optional<Integer> page,
       Model model,
-      @RequestParam(required = false) String category) {
+      @RequestParam(name = "category", required = false) String categoryString) {
     Pageable pageable = PageRequest.of(page.orElse(0), 6);
 
     if (productSearchDto.getSearchQuery() == null) {
       productSearchDto.setSearchQuery("");
     }
 
-    // category 파라미터가 비어있지 않은 경우에만 setSearchCategory() 메서드를 사용하여 설정
-    if (category != null && !category.isEmpty()) {
-      productSearchDto.setSearchCategory(Category.from(category));
+    if (categoryString != null && !categoryString.isEmpty()) {
+      Category category = Category.from(categoryString);
+      productSearchDto.setSearchCategory(category);
     }
 
     Page<ProductDto> products = productService.getProducts(productSearchDto, pageable);
@@ -148,7 +148,28 @@ public class ProductController {
     model.addAttribute("products", products);
     model.addAttribute("productSearchDto", productSearchDto);
     model.addAttribute("maxPage", 5);
-    return "product/productList";
+
+    if (Category.PHOTO_CARD.name().equals(categoryString)) {
+      return "product/albumList";
+    } else if (Category.GOODS.name().equals(categoryString)) {
+      return "product/goodsList";
+    } else if (Category.ALBUM.name().equals(categoryString)) {
+      return "product/productList";
+    } else {
+      return "product/searchList";
+    }
+  }
+
+  // 상품 검색
+  @GetMapping("/product/search")
+  public String searchProduct(@RequestParam String keyword,
+      Model model) {
+    Page<ProductDto> products = productRepository.getProductByProductNameOrProductDetailLike(
+        keyword, PageRequest.of(0, 6));
+    model.addAttribute("products", products);
+    model.addAttribute("maxPage", 5);
+
+    return "product/searchList";
   }
 
 }
