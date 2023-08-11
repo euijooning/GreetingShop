@@ -12,11 +12,9 @@ import org.springframework.util.ResourceUtils;
 @Service
 @RequiredArgsConstructor
 @Log
-public class FileService {
+public class FileService { // 이미지 파일이 실제 저장소에 생성
 
-
-  public String uploadFile(String uploadPath, String originalFileName, byte[] fileData)
-      throws Exception {
+  public String uploadFile(String originalFileName, byte[] fileData) throws Exception {
     String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
     String savedFileName =
         LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + extension;
@@ -31,7 +29,7 @@ public class FileService {
     return savedFileName;
   }
 
-  public void deleteFile(String filePath) throws Exception {
+  public void deleteFile(String filePath) {
     File deleteFile = new File(filePath);
     if (deleteFile.exists()) {
       deleteFile.delete();

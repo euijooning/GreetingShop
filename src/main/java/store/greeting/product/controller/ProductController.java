@@ -40,10 +40,10 @@ public class ProductController {
     return "product/productForm";
   }
 
-
   // 새로운 상품 등록
   @PostMapping(value = "/admin/product/new")
-  public String productNew(@Valid ProductFormDto productFormDto, BindingResult bindingResult,
+  public String productNew(@Valid ProductFormDto productFormDto,
+      BindingResult bindingResult,
       Model model,
       @RequestParam("productImageFile") List<MultipartFile> productImageFileList) {
     if (bindingResult.hasErrors()) {
@@ -80,8 +80,10 @@ public class ProductController {
 
   //상품 업데이트(관리자)
   @PostMapping(value = "/admin/product/{productId}")
-  public String updateProduct(@Valid ProductFormDto productFormDto, BindingResult bindingResult,
-      @RequestParam("productImageFile") List<MultipartFile> productImageFileList, Model model) {
+  public String updateProduct(@Valid ProductFormDto productFormDto,
+      BindingResult bindingResult,
+      @RequestParam("productImageFile") List<MultipartFile> productImageFileList,
+      Model model) {
 
     if (bindingResult.hasErrors()) {
       return "product/productForm";
@@ -173,4 +175,3 @@ public class ProductController {
   }
 
 }
-

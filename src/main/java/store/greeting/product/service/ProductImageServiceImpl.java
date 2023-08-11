@@ -34,8 +34,7 @@ public class ProductImageServiceImpl implements ProductImageService {
     //파일 업로드
     if (!StringUtils.isEmpty(originImageName)) { //orinalImageName이 문자열로 비어 있지 않으면 실행
       System.out.println("******");
-      imageName = fileService.uploadFile(productImageLocation, originImageName,
-          productImageFile.getBytes());
+      imageName = fileService.uploadFile(productImageLocation, productImageFile.getBytes());
       System.out.println(imageName);
       imageUrl = "/img/" + imageName;
     }
@@ -60,13 +59,13 @@ public class ProductImageServiceImpl implements ProductImageService {
         fileService.deleteFile(productImageLocation + "/" + savedProductImage.getImageName());
       }
       String originImageName = productImageFile.getOriginalFilename();
-      String imgName = fileService.uploadFile(productImageLocation, originImageName,
+      String imgName = fileService.uploadFile(productImageLocation,
           productImageFile.getBytes()); // 파일 업로드
       String imgUrl = "/img/" + imgName;
 
       savedProductImage.updateProductImage(originImageName, imgName,
           imgUrl); // 이것 역시 save 부르지 않고 변경감지로 변경만 됨.
-
     }
   }
+
 }

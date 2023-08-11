@@ -28,7 +28,6 @@ public class ProductServiceImpl implements ProductService {
   private final ProductImageServiceImpl productImageService;
   private final ProductImageRepository productImageRepository;
 
-
   public Long saveProduct(ProductFormDto productFormDto, List<MultipartFile> productImageFileList)
       throws Exception {
     // 상품 등록
@@ -91,5 +90,5 @@ public class ProductServiceImpl implements ProductService {
   public Page<ProductDto> getProducts(ProductSearchDto productSearchDto, Pageable pageable) {
     return productRepository.getMainProductPage(productSearchDto, pageable);
   }
-}
 
+}

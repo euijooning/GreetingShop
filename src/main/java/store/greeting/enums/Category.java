@@ -21,7 +21,7 @@ public enum Category {
         .filter(category -> category.id == id)
         .findFirst()
         .orElseThrow();
-  }
+
 //    Category[] values = Category.values();
 //    for (Category category : values) {
 //      if (category.id == id) {
@@ -29,6 +29,7 @@ public enum Category {
 //      }
 //    }
 //    throw new RuntimeException();
+  }
 
   public static Category from(String name) {
     return Arrays.stream(Category.values())
@@ -36,5 +37,4 @@ public enum Category {
         .findFirst()
         .orElseThrow();
   }
-
 }

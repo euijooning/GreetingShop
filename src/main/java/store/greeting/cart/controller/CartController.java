@@ -49,21 +49,19 @@ public class CartController {
       int count, Principal principal) {
 
     if (count <= 0) {
-      return new ResponseEntity<String>("최소 1개 이상 담아주세요.", HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>("최소 1개 이상 담아주세요.", HttpStatus.BAD_REQUEST);
     } else if (!cartService.validateCartProduct(cartProductId, principal.getName())) {
-      return new ResponseEntity<String>("수정 권한이 없습니다.", HttpStatus.FORBIDDEN);
+      return new ResponseEntity<>("수정 권한이 없습니다.", HttpStatus.FORBIDDEN);
     }
     cartService.updateCartProductCount(cartProductId, count);
     return new ResponseEntity(HttpStatus.OK);
   }
-
 
   // 장바구니 상품 추가
   @PostMapping(value = "/cart")
   @ResponseBody
   public ResponseEntity addCartProduct(@RequestBody @Valid CartProductDto cartProductDto,
       BindingResult bindingResult, Principal principal) {
-
     if (bindingResult.hasErrors()) {
       List<String> messages = bindingResult.getFieldErrors()
           .stream()
@@ -81,13 +79,14 @@ public class CartController {
   // 장바구니 상품 삭제
   @DeleteMapping("/cartProduct/{cartProductId}")
   public @ResponseBody ResponseEntity deleteCartProduct(
-      @PathVariable("cartProductId") Long cartProductId, Principal principal) {
+      @PathVariable("cartProductId") Long cartProductId,
+      Principal principal) {
 
     if (!cartService.validateCartProduct(cartProductId, principal.getName())) {
-      return new ResponseEntity<String>("수정 권한이 없습니다.", HttpStatus.FORBIDDEN);
+      return new ResponseEntity<>("수정 권한이 없습니다.", HttpStatus.FORBIDDEN);
     }
     cartService.deleteCartProduct(cartProductId);
-    return new ResponseEntity<Long>(cartProductId, HttpStatus.OK);
+    return new ResponseEntity<>(cartProductId, HttpStatus.OK);
   }
 
 
@@ -95,10 +94,9 @@ public class CartController {
   @PostMapping(value = "/cart/orders")
   public @ResponseBody ResponseEntity orderCartProduct(@RequestBody CartOrderDto cartOrderDto,
       Principal principal) {
-
     List<CartOrderDto> cartOrderDtoList = cartOrderDto.getCartOrderDtoList();
     Long orderId = cartService.orderCartProduct(cartOrderDtoList, principal.getName());
-    return new ResponseEntity<Long>(orderId, HttpStatus.OK);
+    return new ResponseEntity<>(orderId, HttpStatus.OK);
   }
 
   @InitBinder("cartOrderDto")
@@ -107,4 +105,3 @@ public class CartController {
   }
 
 }
-
