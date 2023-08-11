@@ -24,7 +24,7 @@ import store.greeting.product.repository.ProductRepository;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class CartServiceImpl implements CartService{
+public class CartServiceImpl implements CartService {
 
   private final ProductRepository productRepository;
   private final MemberRepository memberRepository;
@@ -32,6 +32,7 @@ public class CartServiceImpl implements CartService{
   private final CartProductRepository cartProductRepository;
   private final OrderServiceImpl orderService;
 
+  @Override
   public Long addCart(CartProductDto cartProductDto, String email) {
     Product product = productRepository.findById(cartProductDto.getProductId()).orElseThrow(
         EntityNotFoundException::new);
@@ -43,14 +44,15 @@ public class CartServiceImpl implements CartService{
       cartRepository.save(cart);
     }
 
-    CartProduct savedCartProduct = cartProductRepository.findByCartIdAndProductId(cart.getId(), product.getId());
+    CartProduct savedCartProduct = cartProductRepository.findByCartIdAndProductId(cart.getId(),
+        product.getId());
 
     if (savedCartProduct != null) {
       savedCartProduct.addCount(cartProductDto.getCount());
       return savedCartProduct.getId();
-    }
-    else { // 카트에 아이템이 없는 경우
-      CartProduct cartProduct = CartProduct.createCartProduct(cart, product, cartProductDto.getCount());
+    } else { // 카트에 아이템이 없는 경우
+      CartProduct cartProduct = CartProduct.createCartProduct(cart, product,
+          cartProductDto.getCount());
       cartProductRepository.save(cartProduct); // 카트아이템 저장
       return cartProduct.getId();
     }
@@ -58,6 +60,7 @@ public class CartServiceImpl implements CartService{
 
 
   // 장바구니 아이템 조회
+  @Override
   @Transactional(readOnly = true)
   public List<CartDetailDto> getCartList(String email) {
 
@@ -71,10 +74,12 @@ public class CartServiceImpl implements CartService{
   }
 
   // 현재 로그인한 회원과 해당 장바구니를 저장한 회원이 같은지 검사
+  @Override
   @Transactional(readOnly = true)
   public boolean validateCartProduct(Long cartProductId, String email) {
     Member currentMember = memberRepository.findByEmail(email);
-    CartProduct cartProduct = cartProductRepository.findById(cartProductId).orElseThrow(EntityNotFoundException::new);
+    CartProduct cartProduct = cartProductRepository.findById(cartProductId)
+        .orElseThrow(EntityNotFoundException::new);
     Member savedMember = cartProduct.getCart().getMember();
 
     return StringUtils.equals(currentMember.getEmail(), savedMember.getEmail());
@@ -82,13 +87,16 @@ public class CartServiceImpl implements CartService{
 
 
   // 장바구니 수량 업데이트 로직
+  @Override
   public void updateCartProductCount(Long cartProductId, int count) {
-    CartProduct cartProduct = cartProductRepository.findById(cartProductId).orElseThrow(EntityNotFoundException::new);
+    CartProduct cartProduct = cartProductRepository.findById(cartProductId)
+        .orElseThrow(EntityNotFoundException::new);
 
     cartProduct.updateCount(count);
   }
 
   // 장바구니 상품 삭제
+  @Override
   public void deleteCartProduct(Long cartProductId) {
     CartProduct cartProduct = cartProductRepository.findById(cartProductId)
         .orElseThrow(EntityNotFoundException::new);
@@ -98,11 +106,13 @@ public class CartServiceImpl implements CartService{
 
 
   // 장바구니 상품 주문
-  public Long orderCartProduct(List<CartOrderDto> cartOrderDtoList, String email){
+  @Override
+  public Long orderCartProduct(List<CartOrderDto> cartOrderDtoList, String email) {
     List<OrderDto> orderDtoList = new ArrayList<>();
 
     for (CartOrderDto cartOrderDto : cartOrderDtoList) {
-      CartProduct cartProduct = cartProductRepository.findById(cartOrderDto.getCartProductId()).orElseThrow(EntityNotFoundException::new);
+      CartProduct cartProduct = cartProductRepository.findById(cartOrderDto.getCartProductId())
+          .orElseThrow(EntityNotFoundException::new);
 
       OrderDto orderDto = new OrderDto();
       orderDto.setProductId(cartProduct.getProduct().getId());

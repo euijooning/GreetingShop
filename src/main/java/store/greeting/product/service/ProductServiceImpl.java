@@ -29,14 +29,15 @@ public class ProductServiceImpl implements ProductService {
   private final ProductImageRepository productImageRepository;
 
 
-  public Long saveProduct(ProductFormDto productFormDto, List<MultipartFile> productImageFileList) throws Exception {
+  public Long saveProduct(ProductFormDto productFormDto, List<MultipartFile> productImageFileList)
+      throws Exception {
     // 상품 등록
-    Product product= productFormDto.createProduct();
+    Product product = productFormDto.createProduct();
     productRepository.save(product);
 
     //이미지 등록
     for (int i = 0; i < productImageFileList.size(); i++) {
-      ProductImage productImage =  ProductImage.builder()
+      ProductImage productImage = ProductImage.builder()
           .mainImageYn(i == 0 ? "Y" : "N")
           .product(product)
           .build();
@@ -46,9 +47,10 @@ public class ProductServiceImpl implements ProductService {
   }
 
   @Transactional(readOnly = true)
-  public ProductFormDto getProductDetail(Long productId){
+  public ProductFormDto getProductDetail(Long productId) {
 
-    List<ProductImage> productImageList = productImageRepository.findByProductIdOrderByIdAsc(productId);
+    List<ProductImage> productImageList = productImageRepository.findByProductIdOrderByIdAsc(
+        productId);
     List<ProductImageDto> productImageDtoList = new ArrayList<>();
 
     for (ProductImage productImage : productImageList) {
@@ -56,21 +58,23 @@ public class ProductServiceImpl implements ProductService {
       productImageDtoList.add(productImageDto);
     }
 
-    Product product = productRepository.findById(productId).orElseThrow(EntityNotFoundException::new);
+    Product product = productRepository.findById(productId)
+        .orElseThrow(EntityNotFoundException::new);
     ProductFormDto productFormDto = ProductFormDto.of(product);
     productFormDto.setProductImageDtoList(productImageDtoList);
     return productFormDto;
   }
 
   // 상품 수정
-  public Long updateProduct(ProductFormDto productFormDto, List<MultipartFile> productImageFileList) throws Exception {
+  public Long updateProduct(ProductFormDto productFormDto, List<MultipartFile> productImageFileList)
+      throws Exception {
     Product product = productRepository.findById(productFormDto.getId()).orElseThrow(
         EntityExistsException::new);
     product.updateProduct(productFormDto); // save 따로 부르지 않아도 변경이 됨.
 
     List<Long> productImageIds = productFormDto.getProductImageIds();
 
-    for (int i =0; i<productImageFileList.size();i++) {
+    for (int i = 0; i < productImageFileList.size(); i++) {
       productImageService.updateProductImage(productImageIds.get(i), productImageFileList.get(i));
     }
     return product.getId();
