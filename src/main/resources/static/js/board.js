@@ -26,8 +26,8 @@ function updateBoard() {
   let title = document.getElementById('title').value;
   let content = document.getElementById('content').value;
 
-  fetch(`/boards2/${id}`, {
-    method: 'DELETE',
+  fetch(`/boards/${id}`, {
+    method: 'PATCH',
     headers: {
       'header': header,
       "Content-Type": "application/json",
@@ -43,30 +43,4 @@ function updateBoard() {
     location.replace('/boards');
   });
 }
-/*
-// $.ajax({
-  //   url : `/boards/${id}`,
-  //   type : "PUT",
-  //   beforeSend : function (xhr){
-  //     /*데이터를전송하기 전에 헤더에 csrf 값을 설정*/
-//     xhr.setRequestHeader(header, token);
-//   },
-//   dataType : "json",
-//   data: JSON.stringify(body),
-//   contentType : "application/json; charset=utf-8",
-//   cache : false,
-//   success : function (result, status) {
-//     window.location.reload();
-//     console.log("board is updated.");
-//     location.href=`/boards/${id}`;
-//   },
-//   error : function (jqxHR, status, error) {
-//     window.location.reload();
-//     if (jqxHR.status == '401') {
-//       alert("로그인 후 이용하세요");
-//       location.href = '/members/login';
-//     } else {
-//       alert(jqxHR.responseText);
-//     }
-//   }
-// });
+
