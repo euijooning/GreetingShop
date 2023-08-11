@@ -12,4 +12,6 @@ public interface ProductRepositoryCustom {
 
   Page<ProductDto> getMainProductPage(ProductSearchDto productSearchDto, Pageable pageable);
 
+  Page<ProductDto> getProductByProductNameOrProductDetailLike(String keyword, Pageable pageable);
+
 }

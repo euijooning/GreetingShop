@@ -45,10 +45,11 @@ public class OrderServiceImpl implements OrderService {
     Member member = memberRepository.findByEmail(email);
 
     List<OrderProduct> orderProductList = new ArrayList<>();
-    OrderProduct orderProduct = OrderProduct.createOrderProduct(product, orderDto.getCount());
+    Order order = Order.createOrder(member, orderProductList);
+    OrderProduct orderProduct = OrderProduct.createOrderProduct(product, order,
+        orderDto.getCount());
     orderProductList.add(orderProduct);
 
-    Order order = Order.createOrder(member, orderProductList);
     orderRepository.save(order);
 
     return order.getId();
@@ -103,14 +104,16 @@ public class OrderServiceImpl implements OrderService {
     Member member = memberRepository.findByEmail(email);
 
     List<OrderProduct> orderProductList = new ArrayList<>();
-
+    Order order = Order.createOrder(member, orderProductList);
     for (OrderDto orderDto : orderDtoList) {
       Product product = productRepository.findById(orderDto.getProductId())
           .orElseThrow(EntityNotFoundException::new);
-      OrderProduct orderProduct = OrderProduct.createOrderProduct(product, orderDto.getCount());
+
+      OrderProduct orderProduct = OrderProduct.createOrderProduct(product, order,
+          orderDto.getCount());
       orderProductList.add(orderProduct);
     }
-    Order order = Order.createOrder(member, orderProductList);
+
     orderRepository.save(order);
 
     return order.getId();

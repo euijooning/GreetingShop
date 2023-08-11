@@ -33,7 +33,6 @@ public class OrderController {
   @PostMapping(value = "/order")
   public @ResponseBody ResponseEntity order(@RequestBody @Valid OrderDto orderDto,
       BindingResult bindingResult, Principal principal) {
-
     if (bindingResult.hasErrors()) {
       StringBuilder sb = new StringBuilder();
       List<FieldError> fieldErrors = bindingResult.getFieldErrors();
@@ -41,15 +40,14 @@ public class OrderController {
       for (FieldError fieldError : fieldErrors) {
         sb.append(fieldError.getDefaultMessage());
       }
-
-      return new ResponseEntity<String>(sb.toString(), HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(sb.toString(), HttpStatus.BAD_REQUEST);
     }
 
     String email = principal.getName();
     Long orderId;
 
     orderId = orderService.order(orderDto, email);
-    return new ResponseEntity<Long>(orderId, HttpStatus.OK);
+    return new ResponseEntity<>(orderId, HttpStatus.OK);
   }
 
 
@@ -57,7 +55,6 @@ public class OrderController {
   @GetMapping(value = {"/orders", "/orders/{page}"})
   public String orderHistory(@PathVariable("page") Optional<Integer> page, Principal principal,
       Model model) {
-
     Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 4);
     Page<OrderHistoryDto> historyDtoList = orderService.getOrderList(principal.getName(), pageable);
 
@@ -73,13 +70,11 @@ public class OrderController {
   @PostMapping("/order/{orderId}/cancel")
   public @ResponseBody ResponseEntity cancelOrder(@PathVariable("orderId") Long orderId,
       Principal principal) {
-
     if (!orderService.validateOrder(orderId, principal.getName())) {
-      return new ResponseEntity<String>("주문 취소 권한이 없습니다.", HttpStatus.FORBIDDEN);
+      return new ResponseEntity<>("주문 취소 권한이 없습니다.", HttpStatus.FORBIDDEN);
     }
 
     orderService.cancelOrder(orderId);
-    return new ResponseEntity<Long>(orderId, HttpStatus.OK);
+    return new ResponseEntity<>(orderId, HttpStatus.OK);
   }
-
 }

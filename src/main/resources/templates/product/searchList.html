@@ -2,6 +2,7 @@
 <html layout:decorate="~{layouts/layout}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
@@ -9,6 +10,7 @@
 </head>
 
 <body>
+
 <!-- 사용자 css 추가 -->
 <th:block layout:fragment="css">
   <style>
@@ -54,13 +56,13 @@
          type="hidden">
   <div class="center"
        th:if="${not #strings.isEmpty(productSearchDto.searchQuery)}">
-    <p class="h3 font-weight-bold" th:text="${productSearchDto.searchQuery} + '검색 결과'"></p>
+    <p class="h3 font-weight-bold" th:text="${productSearchDto.searchQuery} + ' 검색 결과'"></p>
   </div>
   <div class="row">
     <th:block th:each="product, status: ${products.getContent()}">
       <div class="col-md-4 margin">
         <div class="card">
-          <a class="text-dark" th:href="'/product/goods/' +${product.id}">
+          <a class="text-dark" th:href="'/product/' +${product.id}">
             <img class="card-img-top" height="400" th:alt="${product.productName}"
                  th:src="${product.imageUrl}">
             <div class="card-body">
@@ -80,19 +82,19 @@
 
       <li class="page-product" th:classappend="${products.number eq 0}?'disabled':''">
         <a aria-label='Previous'
-           class="page-link" th:href="@{'/product?category=GOODS' + '&searchQuery=' + ${productSearchDto.searchQuery} + '&page=' + ${products.number-1}}">
+           class="page-link" th:href="@{'/product?category=PHOTO_CARD' + '&searchQuery=' + ${productSearchDto.searchQuery} + '&page=' + ${products.number-1}}">
           <span aria-hidden='true' style="color: #000000">이전</span>
         </a>
       </li>
       <li class="page-product" th:classappend="${products.number eq page-1}?'active':''"
           th:each="page: ${#numbers.sequence(start, end)}">
         <a class="page-link"
-           th:href="@{'/product?category=GOODS' +'&searchQuery=' + ${productSearchDto.searchQuery} + '&page=' + ${page-1}}" th:inline="text">[[${page}]]</a>
+           th:href="@{'/product?category=PHOTO_CARD' +'&searchQuery=' + ${productSearchDto.searchQuery} + '&page=' + ${page-1}}" th:inline="text">[[${page}]]</a>
       </li>
       <li class="page-product"
           th:classappend="${products.number+1 ge products.totalPages}?'disabled':''">
         <a aria-label='Next'
-           class="page-link" th:href="@{'/product?category=GOODS' +'&searchQuery=' + ${productSearchDto.searchQuery} + '&page=' + ${products.number+1}}">
+           class="page-link" th:href="@{'/product?category=PHOTO_CARD' +'&searchQuery=' + ${productSearchDto.searchQuery} + '&page=' + ${products.number+1}}">
           <span aria-hidden='true' style="color: #000000">다음</span>
         </a>
       </li>

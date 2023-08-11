@@ -71,9 +71,14 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
   }
 
   private BooleanExpression productNameLike(String searchQuery) {
-    return StringUtils.isEmpty(searchQuery) ? null
-        : QProduct.product.productName.like("%" + searchQuery + "%");
+    return QProduct.product.productName.like("%" + searchQuery + "%");
   }
+
+  private BooleanExpression productDetailLike(String searchQuery) {
+    return StringUtils.isEmpty(searchQuery) ? null
+        : QProduct.product.productDetail.like("%" + searchQuery + "%");
+  }
+
 
   private BooleanExpression categoryEqual(Category category) {
     return category == null ? null : QProduct.product.category.eq(category);
@@ -93,8 +98,33 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
         .from(productImage)
         .join(productImage.product, product)
         .where(productImage.mainImageYn.eq("Y"))
-        .where(productNameLike(productSearchDto.getSearchQuery()))
+        .where(productNameLike(productSearchDto.getSearchQuery()).or(
+            productDetailLike(productSearchDto.getSearchQuery())))
         .where(categoryEqual(productSearchDto.getSearchCategory()))
+        .orderBy(product.id.desc()).offset(pageable.getOffset()).limit(pageable.getPageSize())
+        .fetchResults();
+
+    List<ProductDto> content = results.getResults();
+    long total = results.getTotal();
+    return new PageImpl<>(content, pageable, total);
+  }
+
+  @Override
+  public Page<ProductDto> getProductByProductNameOrProductDetailLike(String keyword,
+      Pageable pageable) {
+    QProduct product = QProduct.product;
+    QProductImage productImage = QProductImage.productImage;
+
+    QueryResults<ProductDto> results = queryFactory.select(new QProductDto(product.id,
+            product.productName,
+            product.productDetail,
+            productImage.imageUrl,
+            product.price))
+
+        .from(productImage)
+        .join(productImage.product, product)
+        .where(productImage.mainImageYn.eq("Y"))
+        .where(productNameLike(keyword).or(productDetailLike(keyword)))
         .orderBy(product.id.desc()).offset(pageable.getOffset()).limit(pageable.getPageSize())
         .fetchResults();
 

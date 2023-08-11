@@ -1,6 +1,6 @@
 package store.greeting.order.entity;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -8,9 +8,6 @@ import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import store.greeting.product.entity.Product;
 
 class OrderProductTest {
@@ -24,7 +21,7 @@ class OrderProductTest {
     when(product.getPrice()).thenReturn(1000);
 
     // when
-    OrderProduct orderProduct = OrderProduct.createOrderProduct(product, orderCount);
+    OrderProduct orderProduct = OrderProduct.createOrderProduct(product, null, orderCount);
 
     // then
     assertEquals(product, orderProduct.getProduct());
