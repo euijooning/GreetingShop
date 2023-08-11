@@ -24,16 +24,16 @@ public class CartOrderDtoValidator implements Validator {
 
   @Override
   public void validate(Object target, Errors errors) {
-    CartOrderDto dto = (CartOrderDto)target;
+    CartOrderDto dto = (CartOrderDto) target;
     List<CartOrderDto> cartOrderDtoList = dto.getCartOrderDtoList();
 
-    if(cartOrderDtoList == null || cartOrderDtoList.size() == 0){
+    if (cartOrderDtoList == null || cartOrderDtoList.isEmpty()) {
       throw new RuntimeException("주문할 상품을 선택해주세요");
     }
 
     for (CartOrderDto cartOrder : cartOrderDtoList) {
       String name = SecurityContextHolder.getContext().getAuthentication().getName();
-      if(!cartService.validateCartProduct(cartOrder.getCartProductId(), name)){
+      if (!cartService.validateCartProduct(cartOrder.getCartProductId(), name)) {
         throw new PermissionDeniedException("주문 권한이 없습니다.");
       }
     }

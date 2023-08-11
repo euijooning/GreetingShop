@@ -35,6 +35,7 @@ public class OrderServiceImpl implements OrderService {
 
 
   //주문
+  @Override
   public Long order(OrderDto orderDto, String email) {
 
     // 아이템 추출
@@ -54,6 +55,7 @@ public class OrderServiceImpl implements OrderService {
   }
 
   // 주문 목록 조회
+  @Override
   @Transactional(readOnly = true)
   public Page<OrderHistoryDto> getOrderList(String email, Pageable pageable) {
 
@@ -65,8 +67,10 @@ public class OrderServiceImpl implements OrderService {
       OrderHistoryDto historyDto = new OrderHistoryDto(order);
       List<OrderProduct> orderProducts = order.getOrderProducts();
       for (OrderProduct orderProduct : orderProducts) {
-        ProductImage productImage = productImageRepository.findByProductIdAndMainImageYn(orderProduct.getProduct().getId(),"Y");
-        OrderProductDto orderProductDto = new OrderProductDto(orderProduct, productImage.getImageUrl());
+        ProductImage productImage = productImageRepository.findByProductIdAndMainImageYn(
+            orderProduct.getProduct().getId(), "Y");
+        OrderProductDto orderProductDto = new OrderProductDto(orderProduct,
+            productImage.getImageUrl());
         historyDto.addOrderProductDto(orderProductDto);
       }
       historyDtos.add(historyDto);
@@ -75,6 +79,7 @@ public class OrderServiceImpl implements OrderService {
   }
 
   // 주문 유효성 검사
+  @Override
   @Transactional(readOnly = true)
   public boolean validateOrder(Long orderId, String email) {
     Member currentMember = memberRepository.findByEmail(email);
@@ -85,6 +90,7 @@ public class OrderServiceImpl implements OrderService {
   }
 
   //주문 취소
+  @Override
   public void cancelOrder(Long orderId) {
     Order order = orderRepository.findById(orderId).orElseThrow(EntityNotFoundException::new);
     order.cancelOrder();
@@ -92,13 +98,15 @@ public class OrderServiceImpl implements OrderService {
 
 
   //주문
+  @Override
   public Long orders(List<OrderDto> orderDtoList, String email) {
     Member member = memberRepository.findByEmail(email);
 
     List<OrderProduct> orderProductList = new ArrayList<>();
 
     for (OrderDto orderDto : orderDtoList) {
-      Product product = productRepository.findById(orderDto.getProductId()).orElseThrow(EntityNotFoundException::new);
+      Product product = productRepository.findById(orderDto.getProductId())
+          .orElseThrow(EntityNotFoundException::new);
       OrderProduct orderProduct = OrderProduct.createOrderProduct(product, orderDto.getCount());
       orderProductList.add(orderProduct);
     }

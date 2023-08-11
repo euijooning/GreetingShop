@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,7 +44,8 @@ public class CartController {
 
   // 수량 업데이트 로직
   @PatchMapping(value = "/cartProduct/{cartProductId}")
-  public @ResponseBody ResponseEntity updateCartProduct(@PathVariable("cartProductId") Long cartProductId,
+  public @ResponseBody ResponseEntity updateCartProduct(
+      @PathVariable("cartProductId") Long cartProductId,
       int count, Principal principal) {
 
     if (count <= 0) {
@@ -65,8 +65,10 @@ public class CartController {
       BindingResult bindingResult, Principal principal) {
 
     if (bindingResult.hasErrors()) {
-      List<String> messages = bindingResult.getFieldErrors().stream()
-          .map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
+      List<String> messages = bindingResult.getFieldErrors()
+          .stream()
+          .map(DefaultMessageSourceResolvable::getDefaultMessage)
+          .collect(Collectors.toList());
       return new ResponseEntity<>(messages.toString(), HttpStatus.BAD_REQUEST);
     }
 
@@ -78,8 +80,8 @@ public class CartController {
 
   // 장바구니 상품 삭제
   @DeleteMapping("/cartProduct/{cartProductId}")
-  public @ResponseBody ResponseEntity deleteCartProduct(@PathVariable("cartProductId") Long cartProductId,
-      Principal principal) {
+  public @ResponseBody ResponseEntity deleteCartProduct(
+      @PathVariable("cartProductId") Long cartProductId, Principal principal) {
 
     if (!cartService.validateCartProduct(cartProductId, principal.getName())) {
       return new ResponseEntity<String>("수정 권한이 없습니다.", HttpStatus.FORBIDDEN);

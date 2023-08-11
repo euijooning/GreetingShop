@@ -21,7 +21,7 @@ import store.greeting.product.entity.QProductImage;
 
 public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 
-  private JPAQueryFactory queryFactory; // 동적 쿼리 사용하기 위해 JPAQueryFactory 변수 선언
+  private final JPAQueryFactory queryFactory; // 동적 쿼리 사용하기 위해 JPAQueryFactory 변수 선언
 
   public ProductRepositoryCustomImpl(EntityManager em) {
     this.queryFactory = new JPAQueryFactory(em); // JPAQueryFactory 실질적인 객체가 만들어진다.
@@ -71,7 +71,8 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
   }
 
   private BooleanExpression productNameLike(String searchQuery) {
-    return StringUtils.isEmpty(searchQuery) ? null : QProduct.product.productName.like("%" + searchQuery + "%");
+    return StringUtils.isEmpty(searchQuery) ? null
+        : QProduct.product.productName.like("%" + searchQuery + "%");
   }
 
   private BooleanExpression categoryEqual(Category category) {
@@ -82,7 +83,6 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
   public Page<ProductDto> getMainProductPage(ProductSearchDto productSearchDto, Pageable pageable) {
     QProduct product = QProduct.product;
     QProductImage productImage = QProductImage.productImage;
-
 
     QueryResults<ProductDto> results = queryFactory.select(new QProductDto(product.id,
             product.productName,
@@ -95,7 +95,8 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
         .where(productImage.mainImageYn.eq("Y"))
         .where(productNameLike(productSearchDto.getSearchQuery()))
         .where(categoryEqual(productSearchDto.getSearchCategory()))
-        .orderBy(product.id.desc()).offset(pageable.getOffset()).limit(pageable.getPageSize()).fetchResults();
+        .orderBy(product.id.desc()).offset(pageable.getOffset()).limit(pageable.getPageSize())
+        .fetchResults();
 
     List<ProductDto> content = results.getResults();
     long total = results.getTotal();

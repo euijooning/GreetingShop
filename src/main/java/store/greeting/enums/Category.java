@@ -17,11 +17,24 @@ public enum Category {
   }
 
   public static Category from(int id) {
-    return Arrays.stream(Category.values()).filter(category -> category.id == id).findFirst().orElseThrow();
+    return Arrays.stream(Category.values())
+        .filter(category -> category.id == id)
+        .findFirst()
+        .orElseThrow();
   }
+//    Category[] values = Category.values();
+//    for (Category category : values) {
+//      if (category.id == id) {
+//        return category;
+//      }
+//    }
+//    throw new RuntimeException();
 
   public static Category from(String name) {
-    return Arrays.stream(Category.values()).filter(category -> category.name().equals(name)).findFirst().orElseThrow();
+    return Arrays.stream(Category.values())
+        .filter(category -> category.name().equals(name))
+        .findFirst()
+        .orElseThrow();
   }
 
 }

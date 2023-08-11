@@ -43,7 +43,8 @@ public class ProductController {
 
   // 새로운 상품 등록
   @PostMapping(value = "/admin/product/new")
-  public String productNew(@Valid ProductFormDto productFormDto, BindingResult bindingResult, Model model,
+  public String productNew(@Valid ProductFormDto productFormDto, BindingResult bindingResult,
+      Model model,
       @RequestParam("productImageFile") List<MultipartFile> productImageFileList) {
     if (bindingResult.hasErrors()) {
       return "product/productForm";
@@ -64,7 +65,7 @@ public class ProductController {
 
   //상품 상세 정보
   @GetMapping(value = "/admin/product/{productId}")
-  public String productDetail(@PathVariable("productId")Long productId, Model model) {
+  public String productDetail(@PathVariable("productId") Long productId, Model model) {
     try {
       ProductFormDto productFormDto = productService.getProductDetail(productId);
       model.addAttribute("productFormDto", productFormDto);
@@ -86,7 +87,7 @@ public class ProductController {
       return "product/productForm";
     }
 
-    if (productImageFileList.get(0).isEmpty() && productFormDto.getId() == null ) {
+    if (productImageFileList.get(0).isEmpty() && productFormDto.getId() == null) {
       model.addAttribute("errorMessage", "첫번째 상품 이미지는 필수 입력 값 입니다.");
       return "product/productForm";
     }
@@ -102,7 +103,8 @@ public class ProductController {
 
   //상품 관리(관리자)
   @GetMapping(value = {"/admin/products", "/admin/products/{page}"})
-  public String productManage(ProductSearchDto productSearchDto, @PathVariable("page") Optional<Integer> page, Model model){
+  public String productManage(ProductSearchDto productSearchDto,
+      @PathVariable("page") Optional<Integer> page, Model model) {
 
     Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 5);
     Page<Product> products = productService.getAdminProductPage(productSearchDto, pageable);
@@ -117,12 +119,11 @@ public class ProductController {
 
   // 상품 상세 페이지
   @GetMapping(value = "/product/{productId}")
-  public String productDetail(Model model, @PathVariable("productId") Long productId){
+  public String productDetail(Model model, @PathVariable("productId") Long productId) {
     ProductFormDto productFormDto = productService.getProductDetail(productId);
     model.addAttribute("product", productFormDto);
     return "product/productDetail";
   }
-
 
 
   //상품 목록 조회
