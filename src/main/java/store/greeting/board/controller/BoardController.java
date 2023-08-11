@@ -33,10 +33,17 @@ public class BoardController {
   @GetMapping("/boards")
   public String getBoards(Model model) {
     List<BoardResponseDto> boards = boardService.findAll()
-
         .stream()
         .map(BoardResponseDto::new)
         .collect(Collectors.toList());
+
+//    List<Board> boards = boardService.findAll();
+//    List<BoardResponseDto> responseDtos = new ArrayList<>();
+//    for (Board board : boards) {
+//      BoardResponseDto responseDto = new BoardResponseDto(board);
+//      responseDtos.add(responseDto);
+//    }
+
     model.addAttribute("boards", boards);
     model.addAttribute("dto", new AddBoardRequestDto());
 

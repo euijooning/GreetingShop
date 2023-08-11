@@ -34,8 +34,8 @@ function updateBoard() {
       'X-CSRF-Token': token
     },
     body: JSON.stringify({
-      "id":id,
-      "title" : title,
+      "id": id,
+      "title": title,
       "content": content
     })
   }).then(() => {
@@ -43,4 +43,3 @@ function updateBoard() {
     location.replace('/boards');
   });
 }
-

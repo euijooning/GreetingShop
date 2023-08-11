@@ -33,11 +33,9 @@ public class OrderServiceImpl implements OrderService {
   private final OrderRepository orderRepository;
   private final ProductImageRepository productImageRepository;
 
-
   //주문
   @Override
   public Long order(OrderDto orderDto, String email) {
-
     // 아이템 추출
     Product product = productRepository.findById(orderDto.getProductId())
         .orElseThrow(EntityNotFoundException::new);
@@ -45,7 +43,9 @@ public class OrderServiceImpl implements OrderService {
     Member member = memberRepository.findByEmail(email);
 
     List<OrderProduct> orderProductList = new ArrayList<>();
+
     Order order = Order.createOrder(member, orderProductList);
+
     OrderProduct orderProduct = OrderProduct.createOrderProduct(product, order,
         orderDto.getCount());
     orderProductList.add(orderProduct);
@@ -59,7 +59,6 @@ public class OrderServiceImpl implements OrderService {
   @Override
   @Transactional(readOnly = true)
   public Page<OrderHistoryDto> getOrderList(String email, Pageable pageable) {
-
     List<Order> orders = orderRepository.findOrders(email, pageable);
     Long totalCount = orderRepository.countOrder(email);
     List<OrderHistoryDto> historyDtos = new ArrayList<>();
@@ -76,7 +75,7 @@ public class OrderServiceImpl implements OrderService {
       }
       historyDtos.add(historyDto);
     }
-    return new PageImpl<OrderHistoryDto>(historyDtos, pageable, totalCount);
+    return new PageImpl<>(historyDtos, pageable, totalCount);
   }
 
   // 주문 유효성 검사
@@ -105,10 +104,10 @@ public class OrderServiceImpl implements OrderService {
 
     List<OrderProduct> orderProductList = new ArrayList<>();
     Order order = Order.createOrder(member, orderProductList);
+
     for (OrderDto orderDto : orderDtoList) {
       Product product = productRepository.findById(orderDto.getProductId())
           .orElseThrow(EntityNotFoundException::new);
-
       OrderProduct orderProduct = OrderProduct.createOrderProduct(product, order,
           orderDto.getCount());
       orderProductList.add(orderProduct);

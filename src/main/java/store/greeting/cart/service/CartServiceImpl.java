@@ -34,8 +34,8 @@ public class CartServiceImpl implements CartService {
 
   @Override
   public Long addCart(CartProductDto cartProductDto, String email) {
-    Product product = productRepository.findById(cartProductDto.getProductId()).orElseThrow(
-        EntityNotFoundException::new);
+    Product product = productRepository.findById(cartProductDto.getProductId())
+        .orElseThrow(EntityNotFoundException::new);
     Member member = memberRepository.findByEmail(email);
 
     Cart cart = cartRepository.findByMemberId(member.getId());
@@ -63,7 +63,6 @@ public class CartServiceImpl implements CartService {
   @Override
   @Transactional(readOnly = true)
   public List<CartDetailDto> getCartList(String email) {
-
     Member member = memberRepository.findByEmail(email);
     Cart cart = cartRepository.findByMemberId(member.getId());
 
@@ -91,7 +90,6 @@ public class CartServiceImpl implements CartService {
   public void updateCartProductCount(Long cartProductId, int count) {
     CartProduct cartProduct = cartProductRepository.findById(cartProductId)
         .orElseThrow(EntityNotFoundException::new);
-
     cartProduct.updateCount(count);
   }
 
@@ -100,7 +98,6 @@ public class CartServiceImpl implements CartService {
   public void deleteCartProduct(Long cartProductId) {
     CartProduct cartProduct = cartProductRepository.findById(cartProductId)
         .orElseThrow(EntityNotFoundException::new);
-
     cartProductRepository.delete(cartProduct);
   }
 

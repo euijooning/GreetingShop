@@ -60,7 +60,7 @@
     <th:block th:each="product, status: ${products.getContent()}">
       <div class="col-md-4 margin">
         <div class="card">
-          <a class="text-dark" th:href="'/product/goods/' +${product.id}">
+          <a class="text-dark" th:href="'/product/' +${product.id}">
             <img class="card-img-top" height="400" th:alt="${product.productName}"
                  th:src="${product.imageUrl}">
             <div class="card-body">

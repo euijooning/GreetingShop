@@ -79,7 +79,6 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
         : QProduct.product.productDetail.like("%" + searchQuery + "%");
   }
 
-
   private BooleanExpression categoryEqual(Category category) {
     return category == null ? null : QProduct.product.category.eq(category);
   }
@@ -132,4 +131,5 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
     long total = results.getTotal();
     return new PageImpl<>(content, pageable, total);
   }
+
 }
