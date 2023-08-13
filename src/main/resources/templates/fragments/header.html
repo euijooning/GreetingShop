@@ -1,60 +1,56 @@
 <!DOCTYPE html>
-<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec ="http://www.thymeleaf.org/extras/spring-security">
 
 <!--시큐리티 임포트 -->
 <div th:fragment="header">
   <nav class="navbar navbar-expand-lg bg-warning navbar-dark">
-    <button aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation"
-            class="navbar-toggler"
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
             data-bs-target="#navbarTogglerDemo03"
-            data-bs-toggle="collapse" type="button">
+            aria-controls="navbarTogglerDemo03"
+            aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <a class="navbar-brand" href="/">
-      <img alt="" height="35" src="/img/greeting.png" width="80"></a>
+      <img src="/img/greeting.png" alt="" width="80" height="35"></a>
 
     <div class="collapse navbar-collapse justify-content-end" id="navbarTogglerDemo03">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-product" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
+        <li class="nav-product" sec:authorize="hasAnyAuthority('ROLE_ADMIN')" >
           <a class="nav-link" href="/admin/product/new" style="color: #000000;">상품 등록</a>
         </li>
-        <li class="nav-product" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
+        <li class="nav-product" sec:authorize="hasAnyAuthority('ROLE_ADMIN')" >
           <a class="nav-link" href="/admin/products" style="color: #000000;">상품 관리</a>
         </li>
-        <li class="nav-product" sec:authorize="isAuthenticated()">
+        <li class="nav-product" sec:authorize="isAuthenticated()" >
           <a class="nav-link" href="/product?category=PHOTO_CARD" style="color: #000000;">포토카드</a>
         </li>
-        <li class="nav-product" sec:authorize="isAuthenticated()">
+        <li class="nav-product" sec:authorize="isAuthenticated()" >
           <a class="nav-link" href="/product?category=ALBUM" style="color: #000000;">앨범</a>
         </li>
-        <li class="nav-product" sec:authorize="isAuthenticated()">
+        <li class="nav-product" sec:authorize="isAuthenticated()" >
           <a class="nav-link" href="/product?category=GOODS" style="color: #000000;">굿즈</a>
         </li>
-        <li class="nav-product" sec:authorize="isAuthenticated()">
+        <li class="nav-product" sec:authorize="isAuthenticated()" >
           <a class="nav-link" href="/cart" style="color: #000000;">장바구니</a>
         </li>
-        <li class="nav-product" sec:authorize="isAuthenticated()">
+        <li class="nav-product" sec:authorize="isAuthenticated()" >
           <a class="nav-link" href="/orders" style="color: #000000;">구매이력</a>
         </li>
-        <li class="nav-product" sec:authorize="isAuthenticated()">
+        <li class="nav-product" sec:authorize="isAuthenticated()" >
           <a class="nav-link" href="/boards" style="color: #000000;">문의</a>
         </li>
-        <li class="nav-product" sec:authorize="isAnonymous()">
+        <li class="nav-product" sec:authorize="isAnonymous()" >
           <a class="nav-link" href="/members/login" style="color: #000000;">로그인</a>
         </li>
-        <li class="nav-product" sec:authorize="isAuthenticated()">
+        <li class="nav-product" sec:authorize="isAuthenticated()" >
           <a class="nav-link" href="/members/logout" style="color: #000000;">로그아웃</a>
         </li>
       </ul>
-      <form class="form-inline my-2 my-lg-0 ml-auto" method="get"
-            th:action="@{'/product?category='+${category}}">
-        <input aria-label="Search" class="form-control me-2" name="searchQuery" placeholder="Search"
-               type="search">
+      <form class="form-inline my-2 my-lg-0 ml-auto" th:action="@{'/product?category='+${category}}"  method="get">
+        <input name="searchQuery" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
         <span class="mx-2"></span>
-        <button class="btn btn-outline-info my-2 my-sm-0" style="color: #000000;" type="submit">
-          검색하기
-        </button>
+        <button class="btn btn-outline-info my-2 my-sm-0" type="submit" style="color: #000000;">검색하기</button>
       </form>
     </div>
   </nav>

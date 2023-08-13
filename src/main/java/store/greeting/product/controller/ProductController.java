@@ -1,9 +1,5 @@
 package store.greeting.product.controller;
 
-import java.util.List;
-import java.util.Optional;
-import javax.persistence.EntityNotFoundException;
-import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -24,6 +20,11 @@ import store.greeting.product.dto.ProductSearchDto;
 import store.greeting.product.entity.Product;
 import store.greeting.product.repository.ProductRepository;
 import store.greeting.product.service.ProductServiceImpl;
+
+import javax.persistence.EntityNotFoundException;
+import javax.validation.Valid;
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -105,8 +106,7 @@ public class ProductController {
 
   //상품 관리(관리자)
   @GetMapping(value = {"/admin/products", "/admin/products/{page}"})
-  public String productManage(ProductSearchDto productSearchDto,
-      @PathVariable("page") Optional<Integer> page, Model model) {
+  public String productManage(ProductSearchDto productSearchDto, @PathVariable("page") Optional<Integer> page, Model model) {
 
     Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 5);
     Page<Product> products = productService.getAdminProductPage(productSearchDto, pageable);
@@ -166,8 +166,7 @@ public class ProductController {
   @GetMapping("/product/search")
   public String searchProduct(@RequestParam String keyword,
       Model model) {
-    Page<ProductDto> products = productRepository.getProductByProductNameOrProductDetailLike(
-        keyword, PageRequest.of(0, 6));
+    Page<ProductDto> products = productRepository.getProductByProductNameOrProductDetailLike(keyword, PageRequest.of(0, 6));
     model.addAttribute("products", products);
     model.addAttribute("maxPage", 5);
 

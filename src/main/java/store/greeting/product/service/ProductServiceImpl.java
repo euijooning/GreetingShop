@@ -1,9 +1,5 @@
 package store.greeting.product.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.persistence.EntityExistsException;
-import javax.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +15,11 @@ import store.greeting.product.entity.ProductImage;
 import store.greeting.product.repository.ProductImageRepository;
 import store.greeting.product.repository.ProductRepository;
 
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -28,8 +29,7 @@ public class ProductServiceImpl implements ProductService {
   private final ProductImageServiceImpl productImageService;
   private final ProductImageRepository productImageRepository;
 
-  public Long saveProduct(ProductFormDto productFormDto, List<MultipartFile> productImageFileList)
-      throws Exception {
+  public Long saveProduct(ProductFormDto productFormDto, List<MultipartFile> productImageFileList) throws Exception {
     // 상품 등록
     Product product = productFormDto.createProduct();
     productRepository.save(product);
@@ -48,8 +48,7 @@ public class ProductServiceImpl implements ProductService {
   @Transactional(readOnly = true)
   public ProductFormDto getProductDetail(Long productId) {
 
-    List<ProductImage> productImageList = productImageRepository.findByProductIdOrderByIdAsc(
-        productId);
+    List<ProductImage> productImageList = productImageRepository.findByProductIdOrderByIdAsc(productId);
     List<ProductImageDto> productImageDtoList = new ArrayList<>();
 
     for (ProductImage productImage : productImageList) {
@@ -57,16 +56,14 @@ public class ProductServiceImpl implements ProductService {
       productImageDtoList.add(productImageDto);
     }
 
-    Product product = productRepository.findById(productId)
-        .orElseThrow(EntityNotFoundException::new);
+    Product product = productRepository.findById(productId).orElseThrow(EntityNotFoundException::new);
     ProductFormDto productFormDto = ProductFormDto.of(product);
     productFormDto.setProductImageDtoList(productImageDtoList);
     return productFormDto;
   }
 
   // 상품 수정
-  public Long updateProduct(ProductFormDto productFormDto, List<MultipartFile> productImageFileList)
-      throws Exception {
+  public Long updateProduct(ProductFormDto productFormDto, List<MultipartFile> productImageFileList) throws Exception {
     Product product = productRepository.findById(productFormDto.getId()).orElseThrow(
         EntityExistsException::new);
     product.updateProduct(productFormDto); // save 따로 부르지 않아도 변경이 됨.
@@ -90,5 +87,4 @@ public class ProductServiceImpl implements ProductService {
   public Page<ProductDto> getProducts(ProductSearchDto productSearchDto, Pageable pageable) {
     return productRepository.getMainProductPage(productSearchDto, pageable);
   }
-
 }

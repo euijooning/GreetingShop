@@ -1,8 +1,5 @@
 package store.greeting.order.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -22,6 +19,10 @@ import store.greeting.product.entity.Product;
 import store.greeting.product.entity.ProductImage;
 import store.greeting.product.repository.ProductImageRepository;
 import store.greeting.product.repository.ProductRepository;
+
+import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional
@@ -46,8 +47,7 @@ public class OrderServiceImpl implements OrderService {
 
     Order order = Order.createOrder(member, orderProductList);
 
-    OrderProduct orderProduct = OrderProduct.createOrderProduct(product, order,
-        orderDto.getCount());
+    OrderProduct orderProduct = OrderProduct.createOrderProduct(product, order, orderDto.getCount());
     orderProductList.add(orderProduct);
 
     orderRepository.save(order);
@@ -67,10 +67,8 @@ public class OrderServiceImpl implements OrderService {
       OrderHistoryDto historyDto = new OrderHistoryDto(order);
       List<OrderProduct> orderProducts = order.getOrderProducts();
       for (OrderProduct orderProduct : orderProducts) {
-        ProductImage productImage = productImageRepository.findByProductIdAndMainImageYn(
-            orderProduct.getProduct().getId(), "Y");
-        OrderProductDto orderProductDto = new OrderProductDto(orderProduct,
-            productImage.getImageUrl());
+        ProductImage productImage = productImageRepository.findByProductIdAndMainImageYn(orderProduct.getProduct().getId(), "Y");
+        OrderProductDto orderProductDto = new OrderProductDto(orderProduct, productImage.getImageUrl());
         historyDto.addOrderProductDto(orderProductDto);
       }
       historyDtos.add(historyDto);
@@ -106,10 +104,8 @@ public class OrderServiceImpl implements OrderService {
     Order order = Order.createOrder(member, orderProductList);
 
     for (OrderDto orderDto : orderDtoList) {
-      Product product = productRepository.findById(orderDto.getProductId())
-          .orElseThrow(EntityNotFoundException::new);
-      OrderProduct orderProduct = OrderProduct.createOrderProduct(product, order,
-          orderDto.getCount());
+      Product product = productRepository.findById(orderDto.getProductId()).orElseThrow(EntityNotFoundException::new);
+      OrderProduct orderProduct = OrderProduct.createOrderProduct(product, order, orderDto.getCount());
       orderProductList.add(orderProduct);
     }
 
