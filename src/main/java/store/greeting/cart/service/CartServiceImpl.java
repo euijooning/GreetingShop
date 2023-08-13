@@ -1,8 +1,5 @@
 package store.greeting.cart.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +18,10 @@ import store.greeting.order.service.OrderServiceImpl;
 import store.greeting.product.entity.Product;
 import store.greeting.product.repository.ProductRepository;
 
+import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -34,8 +35,7 @@ public class CartServiceImpl implements CartService {
 
   @Override
   public Long addCart(CartProductDto cartProductDto, String email) {
-    Product product = productRepository.findById(cartProductDto.getProductId())
-        .orElseThrow(EntityNotFoundException::new);
+    Product product = productRepository.findById(cartProductDto.getProductId()).orElseThrow(EntityNotFoundException::new);
     Member member = memberRepository.findByEmail(email);
 
     Cart cart = cartRepository.findByMemberId(member.getId());
@@ -44,15 +44,13 @@ public class CartServiceImpl implements CartService {
       cartRepository.save(cart);
     }
 
-    CartProduct savedCartProduct = cartProductRepository.findByCartIdAndProductId(cart.getId(),
-        product.getId());
+    CartProduct savedCartProduct = cartProductRepository.findByCartIdAndProductId(cart.getId(), product.getId());
 
     if (savedCartProduct != null) {
       savedCartProduct.addCount(cartProductDto.getCount());
       return savedCartProduct.getId();
     } else { // 카트에 아이템이 없는 경우
-      CartProduct cartProduct = CartProduct.createCartProduct(cart, product,
-          cartProductDto.getCount());
+      CartProduct cartProduct = CartProduct.createCartProduct(cart, product, cartProductDto.getCount());
       cartProductRepository.save(cartProduct); // 카트아이템 저장
       return cartProduct.getId();
     }
@@ -77,8 +75,7 @@ public class CartServiceImpl implements CartService {
   @Transactional(readOnly = true)
   public boolean validateCartProduct(Long cartProductId, String email) {
     Member currentMember = memberRepository.findByEmail(email);
-    CartProduct cartProduct = cartProductRepository.findById(cartProductId)
-        .orElseThrow(EntityNotFoundException::new);
+    CartProduct cartProduct = cartProductRepository.findById(cartProductId).orElseThrow(EntityNotFoundException::new);
     Member savedMember = cartProduct.getCart().getMember();
 
     return StringUtils.equals(currentMember.getEmail(), savedMember.getEmail());
@@ -88,16 +85,14 @@ public class CartServiceImpl implements CartService {
   // 장바구니 수량 업데이트 로직
   @Override
   public void updateCartProductCount(Long cartProductId, int count) {
-    CartProduct cartProduct = cartProductRepository.findById(cartProductId)
-        .orElseThrow(EntityNotFoundException::new);
+    CartProduct cartProduct = cartProductRepository.findById(cartProductId).orElseThrow(EntityNotFoundException::new);
     cartProduct.updateCount(count);
   }
 
   // 장바구니 상품 삭제
   @Override
   public void deleteCartProduct(Long cartProductId) {
-    CartProduct cartProduct = cartProductRepository.findById(cartProductId)
-        .orElseThrow(EntityNotFoundException::new);
+    CartProduct cartProduct = cartProductRepository.findById(cartProductId).orElseThrow(EntityNotFoundException::new);
     cartProductRepository.delete(cartProduct);
   }
 
@@ -108,8 +103,7 @@ public class CartServiceImpl implements CartService {
     List<OrderDto> orderDtoList = new ArrayList<>();
 
     for (CartOrderDto cartOrderDto : cartOrderDtoList) {
-      CartProduct cartProduct = cartProductRepository.findById(cartOrderDto.getCartProductId())
-          .orElseThrow(EntityNotFoundException::new);
+      CartProduct cartProduct = cartProductRepository.findById(cartOrderDto.getCartProductId()).orElseThrow(EntityNotFoundException::new);
 
       OrderDto orderDto = new OrderDto();
       orderDto.setProductId(cartProduct.getProduct().getId());

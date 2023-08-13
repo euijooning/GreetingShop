@@ -3,9 +3,6 @@ package store.greeting.product.repository;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import java.time.LocalDateTime;
-import java.util.List;
-import javax.persistence.EntityManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -19,9 +16,13 @@ import store.greeting.product.entity.Product;
 import store.greeting.product.entity.QProduct;
 import store.greeting.product.entity.QProductImage;
 
+import javax.persistence.EntityManager;
+import java.time.LocalDateTime;
+import java.util.List;
+
 public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 
-  private final JPAQueryFactory queryFactory; // 동적 쿼리 사용하기 위해 JPAQueryFactory 변수 선언
+  private JPAQueryFactory queryFactory; // 동적 쿼리 사용하기 위해 JPAQueryFactory 변수 선언
 
   public ProductRepositoryCustomImpl(EntityManager em) {
     this.queryFactory = new JPAQueryFactory(em); // JPAQueryFactory 실질적인 객체가 만들어진다.
@@ -75,8 +76,7 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
   }
 
   private BooleanExpression productDetailLike(String searchQuery) {
-    return StringUtils.isEmpty(searchQuery) ? null
-        : QProduct.product.productDetail.like("%" + searchQuery + "%");
+    return StringUtils.isEmpty(searchQuery) ? null : QProduct.product.productDetail.like("%" + searchQuery + "%");
   }
 
   private BooleanExpression categoryEqual(Category category) {
@@ -97,11 +97,9 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
         .from(productImage)
         .join(productImage.product, product)
         .where(productImage.mainImageYn.eq("Y"))
-        .where(productNameLike(productSearchDto.getSearchQuery()).or(
-            productDetailLike(productSearchDto.getSearchQuery())))
+        .where(productNameLike(productSearchDto.getSearchQuery()).or(productDetailLike(productSearchDto.getSearchQuery())))
         .where(categoryEqual(productSearchDto.getSearchCategory()))
-        .orderBy(product.id.desc()).offset(pageable.getOffset()).limit(pageable.getPageSize())
-        .fetchResults();
+        .orderBy(product.id.desc()).offset(pageable.getOffset()).limit(pageable.getPageSize()).fetchResults();
 
     List<ProductDto> content = results.getResults();
     long total = results.getTotal();
@@ -109,8 +107,7 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
   }
 
   @Override
-  public Page<ProductDto> getProductByProductNameOrProductDetailLike(String keyword,
-      Pageable pageable) {
+  public Page<ProductDto> getProductByProductNameOrProductDetailLike(String keyword, Pageable pageable) {
     QProduct product = QProduct.product;
     QProductImage productImage = QProductImage.productImage;
 
@@ -124,12 +121,10 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
         .join(productImage.product, product)
         .where(productImage.mainImageYn.eq("Y"))
         .where(productNameLike(keyword).or(productDetailLike(keyword)))
-        .orderBy(product.id.desc()).offset(pageable.getOffset()).limit(pageable.getPageSize())
-        .fetchResults();
+        .orderBy(product.id.desc()).offset(pageable.getOffset()).limit(pageable.getPageSize()).fetchResults();
 
     List<ProductDto> content = results.getResults();
     long total = results.getTotal();
     return new PageImpl<>(content, pageable, total);
   }
-
 }

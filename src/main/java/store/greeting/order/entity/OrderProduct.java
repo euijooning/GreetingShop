@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import store.greeting.common.BaseEntity;
 import store.greeting.product.entity.Product;
 
@@ -52,7 +53,7 @@ public class OrderProduct extends BaseEntity {
   }
 
   public int getTotalPrice() {
-    return orderPrice * count;
+    return orderPrice*count;
   }
 
   // 주문 취소
