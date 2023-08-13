@@ -24,7 +24,7 @@ class OrderProductTest {
     when(product.getPrice()).thenReturn(1000);
 
     // when
-    OrderProduct orderProduct = OrderProduct.createOrderProduct(product, orderCount);
+    OrderProduct orderProduct = OrderProduct.createOrderProduct(product, null, orderCount);
 
     // then
     assertEquals(product, orderProduct.getProduct());

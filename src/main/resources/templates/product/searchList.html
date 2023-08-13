@@ -2,11 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}">
+
 <head>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
 </head>
+
 <body>
 
 <!-- 사용자 css 추가 -->
@@ -46,7 +48,7 @@
          th:value="${productSearchDto.searchQuery}">
   <div th:if="${not #strings.isEmpty(productSearchDto.searchQuery)}"
        class="center">
-    <p class="h3 font-weight-bold" th:text="${productSearchDto.searchQuery} + '검색 결과'"></p>
+    <p class="h3 font-weight-bold" th:text="${productSearchDto.searchQuery} + ' 검색 결과'"></p>
   </div>
   <div class="row">
     <th:block th:each="product, status: ${products.getContent()}">
@@ -70,18 +72,18 @@
     <ul class="pagination justify-content-center">
 
       <li class="page-product" th:classappend="${products.number eq 0}?'disabled':''">
-        <a th:href="@{'/product?category=ALBUM' + '&searchQuery=' + ${productSearchDto.searchQuery} + '&page=' + ${products.number-1}}"
+        <a th:href="@{'/product?category=PHOTO_CARD' + '&searchQuery=' + ${productSearchDto.searchQuery} + '&page=' + ${products.number-1}}"
            aria-label='Previous' class="page-link">
           <span aria-hidden='true' style="color: #000000">이전</span>
         </a>
       </li>
       <li class="page-product" th:each="page: ${#numbers.sequence(start, end)}"
           th:classappend="${products.number eq page-1}?'active':''">
-        <a th:href="@{'/product?category=ALBUM' +'&searchQuery=' + ${productSearchDto.searchQuery} + '&page=' + ${page-1}}"
-           th:inline="text" class="page-link" style="color: #000000">[[${page}]]</a>
+        <a th:href="@{'/product?category=PHOTO_CARD' +'&searchQuery=' + ${productSearchDto.searchQuery} + '&page=' + ${page-1}}"
+           th:inline="text" class="page-link">[[${page}]]</a>
       </li>
       <li class="page-product" th:classappend="${products.number+1 ge products.totalPages}?'disabled':''">
-        <a th:href="@{'/product?category=ALBUM' +'&searchQuery=' + ${productSearchDto.searchQuery} + '&page=' + ${products.number+1}}"
+        <a th:href="@{'/product?category=PHOTO_CARD' +'&searchQuery=' + ${productSearchDto.searchQuery} + '&page=' + ${products.number+1}}"
            aria-label='Next' class="page-link">
           <span aria-hidden='true' style="color: #000000">다음</span>
         </a>

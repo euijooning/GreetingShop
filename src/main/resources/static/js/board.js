@@ -26,8 +26,8 @@ function updateBoard() {
   let title = document.getElementById('title').value;
   let content = document.getElementById('content').value;
 
-  fetch(`/boards2/${id}`, {
-    method: 'DELETE',
+  fetch(`/boards/${id}`, {
+    method: 'PATCH',
     headers: {
       'header': header,
       "Content-Type": "application/json",

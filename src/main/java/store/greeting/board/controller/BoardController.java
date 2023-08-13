@@ -1,5 +1,6 @@
 package store.greeting.board.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -28,10 +29,18 @@ public class BoardController {
   @GetMapping("/boards")
   public String getBoards(Model model) {
     List<BoardResponseDto> boards = boardService.findAll()
+            .stream()
+            .map(BoardResponseDto::new)
+            .collect(Collectors.toList());
 
-        .stream()
-        .map(BoardResponseDto::new)
-        .collect(Collectors.toList());
+//    List<Board> boards = boardService.findAll();
+//    List<BoardResponseDto> responseDtos = new ArrayList<>();
+//    for (Board board : boards) {
+//      BoardResponseDto responseDto = new BoardResponseDto(board);
+//      responseDtos.add(responseDto);
+//    }
+
+
     model.addAttribute("boards", boards);
     model.addAttribute("dto", new AddBoardRequestDto());
 
@@ -56,9 +65,9 @@ public class BoardController {
     return "board/updateBoard";
   }
 
-  @DeleteMapping("/boards2/{id}")
+  @PatchMapping("/boards/{id}")
   public ResponseEntity updateBoard(@PathVariable Long id, @RequestBody UpdateBoardRequestDto dto) {
-    boardService.deleteBoard(id);
+    boardService.updateBoard(id, dto);
 
     return ResponseEntity.ok().build();
   }
