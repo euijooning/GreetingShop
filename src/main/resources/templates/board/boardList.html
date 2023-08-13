@@ -66,7 +66,7 @@
 
   <h2>문의 등록하기</h2>
 
-  <form th:action="@{js}" th:object="${dto}" method="post">
+  <form th:action="@{/board}" th:object="${dto}" method="post">
     <div class="form-group">
       <input type="text" class="form-control" th:field="*{title}" placeholder="Title"/>
       <p th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="fieldError">Incorrect data</p>
