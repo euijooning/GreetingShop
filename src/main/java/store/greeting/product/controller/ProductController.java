@@ -97,6 +97,7 @@ public class ProductController {
     try {
       productService.updateProduct(productFormDto, productImageFileList);
     } catch (Exception e) {
+      e.printStackTrace();
       model.addAttribute("errorMessage", "상품 수정 중 에러 발생하였습니다.");
       return "product/productForm";
     }
