@@ -2,6 +2,7 @@ package store.greeting.cart.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import store.greeting.cart.dto.CartDetailDto;
 import store.greeting.cart.entity.CartProduct;
 
@@ -19,6 +20,6 @@ public interface CartProductRepository extends JpaRepository<CartProduct, Long> 
       "and pim.product.id = cp.product.id " +
       "and pim.mainImageYn = 'Y' " +
       "order by cp.createTime desc")
-  List<CartDetailDto> findCartDetailDtoList(Long cartId);
+  List<CartDetailDto> findCartDetailDtoList(@Param("cartId") Long cartId);
 
 }

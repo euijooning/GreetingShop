@@ -1,5 +1,6 @@
 package store.greeting.product.service;
 
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -59,7 +60,7 @@ public class ProductImageServiceImpl implements ProductImageService {
         fileService.deleteFile(productImageLocation + "/" + savedProductImage.getImageName());
       }
       String originImageName = productImageFile.getOriginalFilename();
-      String imgName = fileService.uploadFile(productImageLocation, productImageFile.getBytes()); // 파일 업로드
+      String imgName = fileService.uploadFile(productImageLocation+"/"+originImageName, productImageFile.getBytes()); // 파일 업로드
       String imgUrl = "/img/" + imgName;
 
       savedProductImage.updateProductImage(originImageName, imgName, imgUrl); // 이것 역시 save 부르지 않고 변경감지로 변경만 됨.

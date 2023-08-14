@@ -1,5 +1,6 @@
 package store.greeting.product.service;
 
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,8 @@ public class FileService { // 이미지 파일이 실제 저장소에 생성
 
   public String uploadFile(String originalFileName, byte[] fileData) throws Exception {
     String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
-    String savedFileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + extension;
+
+    String savedFileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + UUID.randomUUID().toString().substring(0,4)+extension;
 
     File staticFolder = ResourceUtils.getFile("classpath:static");
     System.out.println(staticFolder.getAbsolutePath() + "/img/" + savedFileName);
