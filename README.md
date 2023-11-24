@@ -1,4 +1,7 @@
 # GreetingStore
+
+<br>
+
 ![greeting-cutout](https://github.com/euijooning/GreetingStore/assets/49093239/91f30250-c1fc-44f6-be4b-1fc778c625d3)
 <br>
 <br>
@@ -6,16 +9,21 @@
 <br>
 메가스터디IT 백엔드 메가케어+ 6기(2023.03.13 - 2023.08.16) 개인프로젝트입니다.
 
+<br>
+
 ----
 
 ## 📋 개발 환경 및 주요 기술 스택
 ![image](https://github.com/euijooning/GreetingStore/assets/49093239/1c0eb1e6-7cd9-4faf-a47e-9ce11a01bf0c)
 
+<br>
+
 ----
 
-## 📋 DB 구성
-![image](https://github.com/euijooning/GreetingStore/assets/49093239/91658111-e7cb-447f-bdc0-ec973d9f0691)
+## 📋 프로젝트 정리 Notion(배지 클릭)
+- [![Notion](https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white)](https://codegradation.notion.site/GreetingStore-425aa485a25940c18829125da1926e0a?pvs=4)
 
+<br>
 
 ----
 
