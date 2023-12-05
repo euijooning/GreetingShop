@@ -1,17 +1,19 @@
 package store.greeting.member.controller;
 
-import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import store.greeting.member.dto.MemberFormDto;
 import store.greeting.member.entity.Member;
 import store.greeting.member.service.MemberServiceImpl;
+import store.greeting.plus.MailService;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/members")
@@ -20,6 +22,11 @@ public class MemberController {
 
   private final MemberServiceImpl memberService;
   private final PasswordEncoder passwordEncoder;
+  private final MailService mailService;
+
+  String confirm =""; //인증코드를 내가 미리 가지고 있다.
+  boolean confirmCheck = false;
+
 
 
   @GetMapping(value = "/new")
@@ -57,5 +64,21 @@ public class MemberController {
   public String loginError(Model model) {
     model.addAttribute("loginErrorMsg", "아이디 또는 비밀번호를 확인하세요");
     return "member/memberLoginForm";
+  }
+
+  // 이메일 인증 관련
+  @PostMapping("/{email}/emailConfirm")
+  public @ResponseBody ResponseEntity emailConfirm(@PathVariable("email") String email) throws Exception{
+    confirm = mailService.sendSimpleMessage(email);
+    return new ResponseEntity<String> ("인증 메일을 보냈습니다.", HttpStatus.OK);
+  }
+
+  @PostMapping("/{code}/codeCheck")
+  public @ResponseBody ResponseEntity codeConfirm(@PathVariable("code") String code) throws Exception{
+    if(code.equals(confirm)){
+      confirmCheck=true;
+      return new ResponseEntity<String> ("인증 성공하였습니다.", HttpStatus.OK);
+    }
+    return new ResponseEntity<String> ("인증 코드를 올바르게 입력해주세요.", HttpStatus.BAD_REQUEST);
   }
 }
