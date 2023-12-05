@@ -93,8 +93,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     } else { // 소셜로그인의 경우
       OAuth2AuthenticationToken authToken = (OAuth2AuthenticationToken) authentication;
       String[] parsedToken = AuthTokenParser.getParseToken(authToken);
-      // role 확인
-      //System.out.println("!OAuth2 role-loginType! : " + parsedToken[1]);
 
       if(parsedToken[1].equals("google")){
         //return "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=https://localhost/members/logout";

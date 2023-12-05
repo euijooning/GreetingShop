@@ -21,7 +21,6 @@ public class MailConfig {
     public JavaMailSender javaMailService(){
         JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
         javaMailSender.setHost("smtp.naver.com");
-        //System.out.println("smtp 사용 메일 : "+naverid);
         javaMailSender.setUsername(naverId);
         javaMailSender.setPassword(naverPasswd);
         javaMailSender.setPort(465);
