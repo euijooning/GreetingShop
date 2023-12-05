@@ -36,12 +36,12 @@ public class OrderServiceImpl implements OrderService {
 
   //주문
   @Override
-  public Long order(OrderDto orderDto, String email) {
+  public Long order(OrderDto orderDto, String email, String loginType) {
     // 아이템 추출
     Product product = productRepository.findById(orderDto.getProductId())
         .orElseThrow(EntityNotFoundException::new);
     // 이메일로 멤버 객체 추출
-    Member member = memberRepository.findByEmail(email);
+    Member member = memberRepository.findByEmailAndLoginType(email, loginType);
 
     List<OrderProduct> orderProductList = new ArrayList<>();
 
@@ -58,16 +58,22 @@ public class OrderServiceImpl implements OrderService {
   // 주문 목록 조회
   @Override
   @Transactional(readOnly = true)
-  public Page<OrderHistoryDto> getOrderList(String email, Pageable pageable) {
-    List<Order> orders = orderRepository.findOrders(email, pageable);
+  public Page<OrderHistoryDto> getOrderList(String email, String loginType, Pageable pageable) {
+    List<Order> orders = orderRepository.findOrdersByEmailAndLoginType(email, loginType, pageable);
     Long totalCount = orderRepository.countOrder(email);
     List<OrderHistoryDto> historyDtos = new ArrayList<>();
 
     for (Order order : orders) {
       OrderHistoryDto historyDto = new OrderHistoryDto(order);
       List<OrderProduct> orderProducts = order.getOrderProducts();
+
       for (OrderProduct orderProduct : orderProducts) {
         ProductImage productImage = productImageRepository.findByProductIdAndMainImageYn(orderProduct.getProduct().getId(), "Y");
+
+//        if (productImage == null){ // productId로 productImage를 못찾으면 -> customProductId로 찾는다
+//          productImage = productImageRepository.findByCustomProductIdAndMainImageYn(orderProduct.getProduct().getId(), "Y");
+//        }
+
         OrderProductDto orderProductDto = new OrderProductDto(orderProduct, productImage.getImageUrl());
         historyDto.addOrderProductDto(orderProductDto);
       }
@@ -79,8 +85,8 @@ public class OrderServiceImpl implements OrderService {
   // 주문 유효성 검사
   @Override
   @Transactional(readOnly = true)
-  public boolean validateOrder(Long orderId, String email) {
-    Member currentMember = memberRepository.findByEmail(email);
+  public boolean validateOrder(Long orderId, String email, String loginType) {
+    Member currentMember = memberRepository.findByEmailAndLoginType(email, loginType);
     Order order = orderRepository.findById(orderId).orElseThrow(EntityNotFoundException::new);
     Member savedMember = order.getMember();
 
@@ -97,8 +103,8 @@ public class OrderServiceImpl implements OrderService {
 
   //주문
   @Override
-  public Long orders(List<OrderDto> orderDtoList, String email) {
-    Member member = memberRepository.findByEmail(email);
+  public Long orders(List<OrderDto> orderDtoList, String email, String loginType) {
+    Member member = memberRepository.findByEmailAndLoginType(email, loginType);
 
     List<OrderProduct> orderProductList = new ArrayList<>();
     Order order = Order.createOrder(member, orderProductList);

@@ -15,6 +15,9 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
   )
   List<Order> findOrders(@Param("email") String email, Pageable pageable);
 
+  @Query("SELECT o FROM Order o WHERE o.member.email = :email AND o.member.loginType = :loginType ORDER BY o.orderDate DESC")
+  List<Order> findOrdersByEmailAndLoginType(@Param("email") String email, @Param("loginType") String loginType, Pageable pageable);
+
   @Query("select count(o) from Order o " +
       "where o.member.email = :email"
   )

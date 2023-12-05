@@ -1,8 +1,9 @@
 package store.greeting.product.repository;
 
-import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import store.greeting.product.entity.ProductImage;
+
+import java.util.List;
 
 public interface ProductImageRepository extends JpaRepository<ProductImage, Long> {
 

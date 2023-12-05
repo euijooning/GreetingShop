@@ -1,39 +1,66 @@
 package store.greeting.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import store.greeting.member.service.MemberServiceImpl;
+import store.greeting.social.CustomOAuth2UserService;
+import store.greeting.social.CustomUserDetailsService;
 
-@Configuration // 설정
+import java.io.IOException;
+
+@Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-  @Autowired
-  MemberServiceImpl memberService;
+  private final MemberServiceImpl memberService;
+  private final CustomUserDetailsService customUserDetailsService;
+  private final CustomOAuth2UserService customOAuth2UserService;
 
   @Override
-  protected void configure(HttpSecurity http) throws Exception{
+  protected void configure(HttpSecurity http) throws Exception {
     http.formLogin()
-        .loginPage("/members/login")
-        .defaultSuccessUrl("/")
-        .usernameParameter("email")
-        .failureUrl("/members/login/error")
-        .and()
-        .logout()
-        .logoutRequestMatcher(new AntPathRequestMatcher("/members/logout"))
-        .logoutSuccessUrl("/");
+            .loginPage("/members/login")
+            .defaultSuccessUrl("/")
+            .usernameParameter("email")
+            .failureUrl("/members/login/error")
+            .and()
+            .logout()
+            .logoutRequestMatcher(new AntPathRequestMatcher("/members/logout"))
 
-    http.authorizeRequests()
-        .mvcMatchers("/","/members/**","/product/**","/images/**", "boards/**").permitAll()
+            .logoutSuccessHandler((request, response, authentication) -> {
+              // 인증 정보 확인
+              if (authentication != null && authentication.isAuthenticated()) {
+                String redirectUrl = determineRedirectUrl(authentication);
+
+                // 로그아웃 후에 리다이렉트
+                response.sendRedirect(redirectUrl);
+              } else {
+                // 인증되지 않았거나 인증 정보가 없는 경우
+                response.sendRedirect("/");
+              }
+            })
+
+            //.logoutSuccessUrl("/")
+            .and()
+            .oauth2Login()
+            .userInfoEndpoint().userService(customOAuth2UserService);
+    ;
+
+    http.authorizeHttpRequests()
+        .mvcMatchers("/","/members/**", "/member/**","/product/**","/images/**", "/image/**", "boards/**").permitAll()
         .mvcMatchers("/admin/**").hasRole("ADMIN")
         .anyRequest().authenticated();
 
@@ -55,5 +82,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   public void configure(WebSecurity web) throws Exception{
     web.ignoring().antMatchers("/css/**", "/js/**","/img/**");
+  }
+
+  private String determineRedirectUrl(Authentication authentication) throws IOException {
+
+
+    if (authentication instanceof UsernamePasswordAuthenticationToken) { // 일반 로그인의 경우
+      return "/";
+
+    } else { // 소셜로그인의 경우
+      OAuth2AuthenticationToken authToken = (OAuth2AuthenticationToken) authentication;
+      String[] parsedToken = AuthTokenParser.getParseToken(authToken);
+
+      if(parsedToken[1].equals("google")){
+        //return "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=https://localhost/members/logout";
+
+      } else if (parsedToken[1].equals("naver")) {
+        //return "http://nid.naver.com/nidlogin.logout?";
+
+      }else if (parsedToken[1].equals("kakao")) {
+        return "https://kauth.kakao.com/oauth/logout/?client_id=0ea9af982ecb374ececf50d24a8894d6&logout_redirect_uri=https://localhost/members/logout";
+      }
+
+    }
+    return "/";
   }
 }

@@ -8,10 +8,10 @@ import store.greeting.order.dto.OrderHistoryDto;
 
 public interface OrderService {
 
-  Long order(OrderDto orderDto, String email);
-  Page<OrderHistoryDto> getOrderList(String email, Pageable pageable);
-  boolean validateOrder(Long orderId, String email);
+  Long order(OrderDto orderDto, String email, String loginType);
+  Page<OrderHistoryDto> getOrderList(String email, String loginType, Pageable pageable);
+  boolean validateOrder(Long orderId, String email, String loginType);
   void cancelOrder(Long orderId);
-  Long orders(List<OrderDto> orderDtoList, String email);
+  Long orders(List<OrderDto> orderDtoList, String email, String loginType);
 
 }
