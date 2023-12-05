@@ -56,6 +56,7 @@ public class GreetingApplication {
           .password(passwordEncoder.encode("12341234"))
           .tel("01012341234")
           .role(UserType.USER)
+          .loginType("normal")
           .build();
       memberRepository.save(userMember);
 
@@ -65,6 +66,7 @@ public class GreetingApplication {
           .password(passwordEncoder.encode("12341234"))
           .tel("01012341234")
           .role(UserType.ADMIN)
+          .loginType("normal")
           .build();
       memberRepository.save(adminMember);
 

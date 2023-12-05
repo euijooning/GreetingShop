@@ -34,16 +34,15 @@ public class CartServiceImpl implements CartService {
   private final OrderServiceImpl orderService;
 
   @Override
-  public Long addCart(CartProductDto cartProductDto, String email) {
+  public Long addCart(CartProductDto cartProductDto, String email, String loginType) {
     Product product = productRepository.findById(cartProductDto.getProductId()).orElseThrow(EntityNotFoundException::new);
-    Member member = memberRepository.findByEmail(email);
+    Member member = memberRepository.findByEmailAndLoginType(email, loginType);
 
     Cart cart = cartRepository.findByMemberId(member.getId());
     if (cart == null) {
       cart = Cart.createCart(member);
       cartRepository.save(cart);
     }
-
     CartProduct savedCartProduct = cartProductRepository.findByCartIdAndProductId(cart.getId(), product.getId());
 
     if (savedCartProduct != null) {
@@ -60,8 +59,8 @@ public class CartServiceImpl implements CartService {
   // 장바구니 아이템 조회
   @Override
   @Transactional(readOnly = true)
-  public List<CartDetailDto> getCartList(String email) {
-    Member member = memberRepository.findByEmail(email);
+  public List<CartDetailDto> getCartList(String email, String loginType) {
+    Member member = memberRepository.findByEmailAndLoginType(email, loginType);
     Cart cart = cartRepository.findByMemberId(member.getId());
 
     if (cart == null) {
@@ -73,7 +72,7 @@ public class CartServiceImpl implements CartService {
   // 현재 로그인한 회원과 해당 장바구니를 저장한 회원이 같은지 검사
   @Override
   @Transactional(readOnly = true)
-  public boolean validateCartProduct(Long cartProductId, String email) {
+  public boolean validateCartProduct(Long cartProductId, String email, String loginType) {
     Member currentMember = memberRepository.findByEmail(email);
     CartProduct cartProduct = cartProductRepository.findById(cartProductId).orElseThrow(EntityNotFoundException::new);
     Member savedMember = cartProduct.getCart().getMember();
@@ -99,7 +98,7 @@ public class CartServiceImpl implements CartService {
 
   // 장바구니 상품 주문
   @Override
-  public Long orderCartProduct(List<CartOrderDto> cartOrderDtoList, String email) {
+  public Long orderCartProduct(List<CartOrderDto> cartOrderDtoList, String email, String loginType) {
     List<OrderDto> orderDtoList = new ArrayList<>();
 
     for (CartOrderDto cartOrderDto : cartOrderDtoList) {
@@ -111,7 +110,7 @@ public class CartServiceImpl implements CartService {
       orderDtoList.add(orderDto);
     }
 
-    Long orderId = orderService.orders(orderDtoList, email);
+    Long orderId = orderService.orders(orderDtoList, email, loginType);
 
     for (CartOrderDto cartOrderDto : cartOrderDtoList) {
       CartProduct cartProduct = cartProductRepository

@@ -7,12 +7,12 @@ import store.greeting.cart.dto.CartProductDto;
 
 public interface CartService {
 
-  Long addCart(CartProductDto cartProductDto, String email);
-  List<CartDetailDto> getCartList(String email);
-  boolean validateCartProduct(Long cartProductId, String email);
+  Long addCart(CartProductDto cartProductDto, String email, String loginType);
+  List<CartDetailDto> getCartList(String email, String loginType);
+  boolean validateCartProduct(Long cartProductId, String email, String loginType);
   void updateCartProductCount(Long cartProductId, int count);
   void deleteCartProduct(Long cartProductId);
-  Long orderCartProduct(List<CartOrderDto> cartOrderDtoList, String email);
+  Long orderCartProduct(List<CartOrderDto> cartOrderDtoList, String email, String loginType);
 
 }
 

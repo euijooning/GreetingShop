@@ -8,7 +8,9 @@ import org.springframework.validation.Validator;
 import store.greeting.cart.dto.CartOrderDto;
 import store.greeting.cart.service.CartService;
 import store.greeting.exception.PermissionDeniedException;
+import store.greeting.plus.AuthTokenParser;
 
+import java.security.Principal;
 import java.util.List;
 
 @Component
@@ -28,13 +30,17 @@ public class CartOrderDtoValidator implements Validator {
     CartOrderDto dto = (CartOrderDto) target;
     List<CartOrderDto> cartOrderDtoList = dto.getCartOrderDtoList();
 
+    Principal principal = PrincipalContext.getPrincipal(); // Principal 가져오기
+    String[] userInfo = AuthTokenParser.getParseToken(principal);
+
+
     if (cartOrderDtoList == null || cartOrderDtoList.isEmpty()) {
       throw new RuntimeException("주문할 상품을 선택해주세요");
     }
 
     for (CartOrderDto cartOrder : cartOrderDtoList) {
       String name = SecurityContextHolder.getContext().getAuthentication().getName();
-      if (!cartService.validateCartProduct(cartOrder.getCartProductId(), name)) {
+      if (!cartService.validateCartProduct(cartOrder.getCartProductId(), userInfo[0], userInfo[1])) {
         throw new PermissionDeniedException("주문 권한이 없습니다.");
       }
     }
