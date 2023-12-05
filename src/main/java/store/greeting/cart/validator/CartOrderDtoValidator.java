@@ -8,7 +8,7 @@ import org.springframework.validation.Validator;
 import store.greeting.cart.dto.CartOrderDto;
 import store.greeting.cart.service.CartService;
 import store.greeting.exception.PermissionDeniedException;
-import store.greeting.plus.AuthTokenParser;
+import store.greeting.config.AuthTokenParser;
 
 import java.security.Principal;
 import java.util.List;

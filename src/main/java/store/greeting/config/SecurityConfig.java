@@ -15,9 +15,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import store.greeting.member.service.MemberServiceImpl;
-import store.greeting.plus.AuthTokenParser;
-import store.greeting.plus.CustomOAuth2UserService;
-import store.greeting.plus.CustomUserDetailsService;
+import store.greeting.social.CustomOAuth2UserService;
+import store.greeting.social.CustomUserDetailsService;
 
 import java.io.IOException;
 

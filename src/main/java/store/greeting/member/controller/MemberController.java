@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import store.greeting.member.dto.MemberFormDto;
 import store.greeting.member.entity.Member;
 import store.greeting.member.service.MemberServiceImpl;
-import store.greeting.plus.MailService;
+import store.greeting.mail.MailService;
 
 import javax.validation.Valid;
 

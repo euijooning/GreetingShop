@@ -15,7 +15,7 @@ import store.greeting.cart.dto.CartProductDto;
 import store.greeting.cart.service.CartServiceImpl;
 import store.greeting.cart.validator.CartOrderDtoValidator;
 import store.greeting.cart.validator.PrincipalContext;
-import store.greeting.plus.AuthTokenParser;
+import store.greeting.config.AuthTokenParser;
 
 import javax.validation.Valid;
 import java.security.Principal;

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import store.greeting.order.dto.OrderDto;
 import store.greeting.order.dto.OrderHistoryDto;
 import store.greeting.order.service.OrderServiceImpl;
-import store.greeting.plus.AuthTokenParser;
+import store.greeting.config.AuthTokenParser;
 
 import javax.validation.Valid;
 import java.security.Principal;

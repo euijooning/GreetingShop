@@ -1,4 +1,4 @@
-package store.greeting.plus;
+package store.greeting.mail;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.MailException;

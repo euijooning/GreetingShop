@@ -1,4 +1,4 @@
-package store.greeting.plus;
+package store.greeting.config;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;

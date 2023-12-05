@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import store.greeting.plus.SessionUser;
+import store.greeting.social.SessionUser;
 
 import javax.servlet.http.HttpSession;
 

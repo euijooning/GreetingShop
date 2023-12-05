@@ -1,4 +1,4 @@
-package store.greeting.plus;
+package store.greeting.social;
 
 import lombok.Builder;
 import lombok.Getter;
