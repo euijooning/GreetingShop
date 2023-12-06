@@ -4,9 +4,9 @@
 <div layout:fragment="content">
 
     <style>
-        #chatArea {
-            justify-content: center;
-        }
+        body {
+            font-family: 'Gowun Batang', serif;
+         }
 
         .card {
             width: 350px;
@@ -82,7 +82,7 @@
                 <div class="d-flex flex-row justify-content-start mb-4">
                     <img src="../img/operator.png" alt="avatar 1" style="width: 45px; height: 100%; border: 1px solid gray; border-radius: 5px; margin: 10px;">
                     
-                    <div class="p-3 ms-3 border" style="border-radius: 15px; background-color: rgba(57, 192, 237,.2);">
+                    <div class="p-3 ms-3 border" style="border-radius: 15px; background-color: rgba(255, 255, 126,.2);">
                         <p class="small mb-0 messageText">`+ result[1] + `</p>
                     </div>
 
@@ -103,24 +103,24 @@
 
                     <div class="card" id="chat1" style="border-radius: 15px;">
 
-                        <div class="card-header d-flex justify-content-between align-items-center p-3 bg-info text-white border-bottom-0"
+                        <div class="card-header d-flex justify-content-between align-items-center p-3 bg-warning text-black border-bottom-0"
                              style="border-top-left-radius: 15px; border-top-right-radius: 15px;">
                             <i class="fas fa-angle-left"></i>
-                            <p class="mb-0 fw-bold">Live chat</p>
+                            <p class="mb-0 fw-bold">채팅 상담</p>
                             <i class="fas fa-times"></i>
                         </div>
 
                         <div class="card-body">
 
-                            <!--메세지 부분-->
+                            <!--메시지 부분-->
                             <div id="message-area">
                             </div>
 
                             <!--입력 부분-->
                             <div class="form-outline" id="input">
                                 <textarea class="form-control" id="msg" rows="4"></textarea>
-                                <label class="form-label" for="msg">Type your message</label>
-                                <button class="btn btn-outline-secondary" type="button" id="button-send">전송</button>
+                                <label class="form-label" for="msg">메시지를 입력하세요!</label>
+                                <button class="btn btn-outline-warning btn-sm" type="button" id="button-send">전송하기</button>
                             </div>
 
                         </div>
