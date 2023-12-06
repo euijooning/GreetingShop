@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html layout:decorate="~{layouts/layout1}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html layout:decorate="~{layouts/layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <div layout:fragment="content">
 
@@ -23,14 +23,14 @@
 
     <script th:inline="javascript">
 
-        const websocket = new WebSocket("wss://ec2-13-209-198-40.ap-northeast-2.compute.amazonaws.com:443/ws/chat");
+        const websocket = new WebSocket("ws://localhost:443/ws/chat");
         // 웹소켓 메세지 수신시 = onMessage() 실행;
         websocket.onmessage = onMessage;
 
         //-------------------------------------------------[메세지 발신]---------------------------------------------------------------------//
 
         function send(event) {
-            
+
             // 웹소켓으로 보내기
             var button = event.target;
             var sendTo = button.value;

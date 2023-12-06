@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html layout:decorate="~{layouts/layout1}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html layout:decorate="~{layouts/layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <div layout:fragment="content">
 
@@ -29,7 +29,7 @@
                 send();
             });
 
-            const websocket = new WebSocket("wss://ec2-13-209-198-40.ap-northeast-2.compute.amazonaws.com:443/ws/chat");
+            const websocket = new WebSocket("ws://localhost:443/ws/chat");
 
             websocket.onmessage = onMessage;
 
@@ -94,35 +94,35 @@
     </script>
 
     <h1>채팅 상담</h1>
-    
+
     <section style="background-color: #eee;">
         <div class="container py-5">
-    
+
             <div class="row d-flex justify-content-center">
                 <div class="col-md-8 col-lg-6 col-xl-4">
-    
+
                     <div class="card" id="chat1" style="border-radius: 15px;">
-    
+
                         <div class="card-header d-flex justify-content-between align-items-center p-3 bg-info text-white border-bottom-0"
-                            style="border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                             style="border-top-left-radius: 15px; border-top-right-radius: 15px;">
                             <i class="fas fa-angle-left"></i>
                             <p class="mb-0 fw-bold">Live chat</p>
                             <i class="fas fa-times"></i>
                         </div>
-    
+
                         <div class="card-body">
-    
+
                             <!--메세지 부분-->
                             <div id="message-area">
                             </div>
-    
+
                             <!--입력 부분-->
                             <div class="form-outline" id="input">
                                 <textarea class="form-control" id="msg" rows="4"></textarea>
                                 <label class="form-label" for="msg">Type your message</label>
                                 <button class="btn btn-outline-secondary" type="button" id="button-send">전송</button>
                             </div>
-    
+
                         </div>
                     </div>
                 </div>
