@@ -43,15 +43,14 @@ public class GreetingApplication {
   @Bean
   public ApplicationRunner applicationRunner() {
     return args -> {
-      Board board1 = Board.builder().title("배송 문의드립니다.").content("안녕하세요. 이틀 전 주문한 상품 배송추적 하고 싶습니다.")
-          .build();
-      Board board2 = Board.builder().title("휴무일").content("이번 명절에 쉬시나요?").build();
+      Board board1 = Board.builder().title("제품 후기").content("제가 지난달에 뉴진스 앨범을 여기서 구매했습니다! 정말 좋아요!").build();
+      Board board2 = Board.builder().title("과연 4세대 아이돌 원탑은 누구인가?").content("저는 뉴진스라고 생각합니다.").build();
 
       boardRepository.save(board1);
       boardRepository.save(board2);
 
       Member userMember = Member.builder()
-          .email("user@naver.com")
+          .email("user@gmail.com")
           .name("사용자")
           .password(passwordEncoder.encode("12341234"))
           .tel("01012341234")
@@ -61,7 +60,7 @@ public class GreetingApplication {
       memberRepository.save(userMember);
 
       Member adminMember = Member.builder()
-          .email("admin@naver.com")
+          .email("admin@gmail.com")
           .name("관리자")
           .password(passwordEncoder.encode("12341234"))
           .tel("01012341234")
