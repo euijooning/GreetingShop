@@ -64,15 +64,15 @@
 
   <br>
 
-  <h2>문의 등록하기</h2>
+  <h2>글 등록하기</h2>
 
   <form th:action="@{/board}" th:object="${dto}" method="post">
     <div class="form-group">
-      <input type="text" class="form-control" th:field="*{title}" placeholder="Title"/>
+      <input type="text" class="form-control" th:field="*{title}" placeholder="제목"/>
       <p th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="fieldError">Incorrect data</p>
     </div>
     <div class="form-group">
-      <input type="text" class="form-control" th:field="*{content}" placeholder="Content"/>
+      <input type="text" class="form-control" th:field="*{content}" placeholder="내용"/>
       <p th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="fieldError">Incorrect data</p>
     </div>
     <button type="submit" class="btn btn-warning">등록</button>
