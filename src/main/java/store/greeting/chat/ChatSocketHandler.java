@@ -16,7 +16,7 @@ import java.util.Map;
 @Component
 public class ChatSocketHandler extends TextWebSocketHandler {
 
-    private static final Map<String, WebSocketSession> userList = new HashMap<>(); // <메일+type : 세션>
+    private static final Map<String, WebSocketSession> userList = new HashMap<>(); // <메일 + type = 세션>
     private static final List<WebSocketSession> adminList = new ArrayList<>();
 
     // 메세지 처리
@@ -34,7 +34,6 @@ public class ChatSocketHandler extends TextWebSocketHandler {
         System.out.println("sessionId : " + sessionId);
         System.out.println("identification : " + identificationRaw[0] + " / type : " + identificationRaw[1]);
         System.out.println("payload : " + payload);
-        System.out.println("admin? : " + isAdmin);
 
         /*---------------------------------------[공통 처리사항]-------------------------------------*/
 
@@ -52,7 +51,6 @@ public class ChatSocketHandler extends TextWebSocketHandler {
                     WebSocketMessage<String> errorMessage = new TextMessage("상담 대상이 없습니다.");
                     session.sendMessage(errorMessage); // 관리자에게 에러메세지를 되돌려 보낸다
                 } else { // 타겟 세션이 있으면 메세지 내용물 보냄
-                    //targetSession.sendMessage(new TextMessage(Message[0]+",admin,"+Message[2])); //{이메일,admin,내용}
                     targetSession.sendMessage(new TextMessage(Message[0] + ",admin," + Message[2])); //{내용}
                 }
             }
@@ -85,7 +83,7 @@ public class ChatSocketHandler extends TextWebSocketHandler {
         } else { // 사용자 연결 시
             if (adminList.size() != 0) { // 관리자가 한 명이라도 있으면
                 String[] userInfo = AuthTokenParser.getParseToken(session.getPrincipal());
-                String userInfoString = userInfo[0]+","+userInfo[1]; // "이메일, type" 형식
+                String userInfoString = userInfo[0] + ", " + userInfo[1]; // "이메일, type" 형식
 
                 System.out.println("새 사용자 등록 : "+userInfoString);
 
@@ -93,7 +91,7 @@ public class ChatSocketHandler extends TextWebSocketHandler {
                 for (WebSocketSession sessions : adminList) { // 모든 admin에게 알림
                     WebSocketMessage<String> newUserMessage =
                             // {이메일, type, 메세지 내용}
-                            new TextMessage(userInfo[0] + "," + userInfo[1] + "," + userInfo[0] + " 님이 상담을 요청했습니다.");
+                            new TextMessage(userInfo[0] + "," + userInfo[1] + "," + userInfo[0] + "님이 상담을 요청했습니다.");
                     sessions.sendMessage(newUserMessage);
                 }
             } else { // 관리자가 없으면
@@ -104,15 +102,13 @@ public class ChatSocketHandler extends TextWebSocketHandler {
             }
         }
 
-        System.out.println("현재 접속 session");
-
-        System.out.println("admin session");
+        System.out.println("[[[Admin Session]]]");
         for (WebSocketSession sessions : adminList) {
             System.out.println(sessions);
         }
 
-        System.out.println("user session");
-        userList.forEach((key, value) -> System.out.println("키: " + key + "/ 값: " + value));
+        System.out.println("[[[User Session]]]");
+        userList.forEach((key, value) -> System.out.println("KEY: " + key + " / VALUE: " + value));
 
     }
 
@@ -124,8 +120,9 @@ public class ChatSocketHandler extends TextWebSocketHandler {
             adminList.remove(session); // 관리자 목록에서 삭제
         } else { // 사용자가 연결 종료시
             String[] userInfo = AuthTokenParser.getParseToken(session.getPrincipal());
-            String userInfoString = userInfo[0]+","+userInfo[1]; // "이메일,type" 형식
-            //System.out.println("사용자 연결 종료 : "+userInfoString);
+            String userInfoString = userInfo[0] + ", " + userInfo[1]; // "이메일, type" 형식
+            System.out.println("사용자 연결 종료 : " + userInfoString);
+
             for (WebSocketSession sessions : adminList) { // 모든 admin에게 알리고
                 WebSocketMessage<String> endUserMessage =
                         // {이메일, type, 메세지 내용}
@@ -135,7 +132,7 @@ public class ChatSocketHandler extends TextWebSocketHandler {
 
             userList.remove(session); // 목록에서 삭제
         }
-        System.out.println(session + " 클라이언트 접속 해제");
+        System.out.println(session + " 클라이언트 접속이 해제됨.");
     }
 
 }
