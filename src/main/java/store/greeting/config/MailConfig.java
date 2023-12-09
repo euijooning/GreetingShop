@@ -1,4 +1,4 @@
-package store.greeting.mail;
+package store.greeting.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
