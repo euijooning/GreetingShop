@@ -47,6 +47,9 @@
           <a class="nav-link" href="/members/login" style="color: #000000;">로그인</a>
         </li>
         <li class="nav-product" sec:authorize="isAuthenticated()" >
+          <a class="nav-link" href="/members/my" style="color: #000000;">마이페이지</a>
+        </li>
+        <li class="nav-product" sec:authorize="isAuthenticated()" >
           <a class="nav-link" href="/members/logout" style="color: #000000;">로그아웃</a>
         </li>
       </ul>
