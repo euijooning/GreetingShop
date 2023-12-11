@@ -94,13 +94,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       OAuth2AuthenticationToken authToken = (OAuth2AuthenticationToken) authentication;
       String[] parsedToken = AuthTokenParser.getParseToken(authToken);
 
-      if(parsedToken[1].equals("google")){
-        //return "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=https://localhost/members/logout";
+      if (parsedToken[1].equals("google")){
+        return "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=https://localhost/members/logout";
 
       } else if (parsedToken[1].equals("naver")) {
-        //return "http://nid.naver.com/nidlogin.logout?";
+        return "http://nid.naver.com/nidlogin.logout?";
 
-      }else if (parsedToken[1].equals("kakao")) {
+      } else if (parsedToken[1].equals("kakao")) {
         return "https://kauth.kakao.com/oauth/logout/?client_id=0ea9af982ecb374ececf50d24a8894d6&logout_redirect_uri=https://localhost/members/logout";
       }
 
