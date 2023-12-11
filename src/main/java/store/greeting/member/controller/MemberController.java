@@ -8,12 +8,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import store.greeting.config.AuthTokenParser;
+import store.greeting.mail.MailService;
 import store.greeting.member.dto.MemberFormDto;
 import store.greeting.member.entity.Member;
+import store.greeting.member.repository.MemberRepository;
 import store.greeting.member.service.MemberServiceImpl;
-import store.greeting.mail.MailService;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @Controller
 @RequestMapping("/members")
@@ -23,6 +26,7 @@ public class MemberController {
   private final MemberServiceImpl memberService;
   private final PasswordEncoder passwordEncoder;
   private final MailService mailService;
+  private final MemberRepository memberRepository;
 
   String confirm =""; //인증코드를 내가 미리 가지고 있다.
   boolean confirmCheck = false;
@@ -80,5 +84,15 @@ public class MemberController {
       return new ResponseEntity<String> ("인증 성공하였습니다.", HttpStatus.OK);
     }
     return new ResponseEntity<String> ("인증 코드를 올바르게 입력해주세요.", HttpStatus.BAD_REQUEST);
+  }
+
+  // 프로필 정보
+  @GetMapping("/my")
+  public String memberInfo(Principal principal, Model model){
+    String[] userInfo = AuthTokenParser.getParseToken(principal);
+    Member member = memberRepository.findByEmailAndLoginType(userInfo[0], userInfo[1]);
+    model.addAttribute("member", member);
+
+    return "member/my";
   }
 }
