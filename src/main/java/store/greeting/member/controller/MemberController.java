@@ -1,20 +1,20 @@
 package store.greeting.member.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import store.greeting.config.AuthTokenParser;
-import store.greeting.mail.GoogleMailService;
+import store.greeting.mail.MailDto;
+import store.greeting.mail.MailService;
 import store.greeting.member.dto.MemberFormDto;
 import store.greeting.member.entity.Member;
 import store.greeting.member.repository.MemberRepository;
 import store.greeting.member.service.MemberServiceImpl;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.security.Principal;
 
@@ -25,7 +25,7 @@ public class MemberController {
 
   private final MemberServiceImpl memberService;
   private final PasswordEncoder passwordEncoder;
-  private final GoogleMailService mailService;
+  private final MailService mailService;
   private final MemberRepository memberRepository;
 
   String confirm =""; //인증코드를 내가 미리 가지고 있다.
@@ -77,14 +77,14 @@ public class MemberController {
 //    return new ResponseEntity<String> ("인증 메일을 보냈습니다.", HttpStatus.OK);
 //  }
 
-  @PostMapping("/{code}/codeCheck")
-  public @ResponseBody ResponseEntity codeConfirm(@PathVariable("code") String code) throws Exception{
-    if(code.equals(confirm)){
-      confirmCheck=true;
-      return new ResponseEntity<String> ("인증 성공하였습니다.", HttpStatus.OK);
-    }
-    return new ResponseEntity<String> ("인증 코드를 올바르게 입력해주세요.", HttpStatus.BAD_REQUEST);
-  }
+//  @PostMapping("/{code}/codeCheck")
+//  public @ResponseBody ResponseEntity codeConfirm(@PathVariable("code") String code) throws Exception{
+//    if(code.equals(confirm)){
+//      confirmCheck=true;
+//      return new ResponseEntity<String> ("인증 성공하였습니다.", HttpStatus.OK);
+//    }
+//    return new ResponseEntity<String> ("인증 코드를 올바르게 입력해주세요.", HttpStatus.BAD_REQUEST);
+//  }
 
   // 프로필 정보
   @GetMapping("/my")
@@ -95,5 +95,39 @@ public class MemberController {
 
     return "member/my";
   }
+
+
+  // 회원 아이디(이메일) 찾기
+  @PostMapping("/findId")
+  @ResponseBody
+  public String findId(@RequestParam("email") String email) {
+    String foundEmail = String.valueOf(memberRepository.findByEmail(email));
+    System.out.println("회원 이메일 : " + foundEmail);
+
+    if (email == null) {
+      return "해당 이메일로 등록된 회원이 없습니다.";
+    } else {
+      return foundEmail;
+    }
+  }
+
+
+ // 회원 비밀번호 찾기
+  @GetMapping(value = "/findMember")
+  public String findMember(Model model) {
+    return "member/findMemberForm";
+  }
+
+
+  // 비밀번호 찾기시, 임시 비밀번호 담긴 이메일 보내기
+  @Transactional
+  @PostMapping("/sendEmail")
+  public String sendEmail(@RequestParam("email") String email) {
+    MailDto dto = mailService.createMailContentAndChangePassword(email);
+    mailService.mailSend(dto);
+
+    return "member/memberLoginForm";
+  }
+
 
 }
