@@ -60,9 +60,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     ;
 
     http.authorizeHttpRequests()
-        .mvcMatchers("/","/members/**", "/member/**","/product/**","/images/**", "/image/**", "/favicon.ico/**", "boards/**").permitAll()
+        .mvcMatchers("/","/members/**", "/member/**","/product/**","/images/**", "/image/**", "/favicon.ico/**", "/boards/**", "/mail/**", "/mainpage/**").permitAll()
         .mvcMatchers("/admin/**").hasRole("ADMIN")
-        .anyRequest().authenticated();
+        .anyRequest().authenticated()
+        .and()
+        .csrf()
+        .ignoringAntMatchers("/mail/**")
+         .ignoringAntMatchers("/mainpage/**")
+        .ignoringAntMatchers("/members/findId");
 
     http.exceptionHandling()
         .authenticationEntryPoint(new CustomAuthenticationEntryPoint());
