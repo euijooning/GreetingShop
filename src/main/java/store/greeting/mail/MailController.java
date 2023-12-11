@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequiredArgsConstructor
 public class MailController {
 
-    private final GoogleMailService mailService;
+    private final MailService mailService;
 
     @GetMapping("/mainpage")
     public String MailPage(){
-        return "mainpage";
+        return "mailSample/mainpage";
     }
 
     @ResponseBody
