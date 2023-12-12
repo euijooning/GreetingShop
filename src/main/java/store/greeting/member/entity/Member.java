@@ -48,18 +48,18 @@ public class Member extends BaseEntity {
                                     PasswordEncoder passwordEncoder) {
     String password = passwordEncoder.encode(memberFormDto.getPassword());
     return Member.builder()
-        .name(memberFormDto.getName())
-        .tel(memberFormDto.getTel())
-        .email(memberFormDto.getEmail())
-        .address(memberFormDto.getAddress())
-        .password(password)
-        .role(UserType.from(memberFormDto.getType()))
-        .loginType("normal")
-        .build();
+            .name(memberFormDto.getName())
+            .tel(memberFormDto.getTel())
+            .email(memberFormDto.getEmail())
+            .address(memberFormDto.getAddress())
+            .password(password)
+            .role(UserType.from(memberFormDto.getType()))
+            .loginType("normal")
+            .build();
   }
 
   @Builder
-  public Member(String name, String email, String picture, UserType role, String loginType){
+  public Member(String name, String email, String picture, UserType role, String loginType) {
     this.name = name;
     this.email = email;
     this.picture = picture;
@@ -67,13 +67,17 @@ public class Member extends BaseEntity {
     this.loginType = loginType;
   }
 
-  public Member update(String name, String picture){
+  public Member update(String name, String picture) {
     this.name = name;
     this.picture = picture;
     return this;
   }
 
-  public String getRoleKey(){
+  public String getRoleKey() {
     return this.role.toString();
+  }
+
+  public void updatePassword(String newPassword) {
+    this.password = newPassword;
   }
 }
