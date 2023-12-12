@@ -77,7 +77,10 @@ public class Member extends BaseEntity {
     return this.role.toString();
   }
 
-  public void updatePassword(String newPassword) {
+  public void updateTemporalPassword(String newPassword) {
     this.password = newPassword;
+  }
+  public void updatePassword(String password) {
+    this.password = password;
   }
 }

@@ -1,21 +1,30 @@
 package store.greeting.member.service;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import store.greeting.member.dto.PasswordUpdateDto;
 import store.greeting.member.entity.Member;
 import store.greeting.member.repository.MemberRepository;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
 public class MemberServiceImpl implements UserDetailsService, MemberService {
 
   private final MemberRepository memberRepository;
+
+  private final PasswordEncoder passwordEncoder; // 추가 및 Lazy로 순환참조 문제 해결
+  @Autowired
+  public MemberServiceImpl(MemberRepository memberRepository, @Lazy PasswordEncoder passwordEncoder) {
+    this.memberRepository = memberRepository;
+    this.passwordEncoder = passwordEncoder;
+  }
 
 
   public Member saveMember(Member member) {
@@ -43,5 +52,19 @@ public class MemberServiceImpl implements UserDetailsService, MemberService {
         .password(member.getPassword())
         .roles(member.getRole().toString())
         .build();
+  }
+
+  // 비밀번호 변경
+  public Long updateMemberPassword(PasswordUpdateDto passwordUpdateDto, String email) {
+    Member member = memberRepository.findByEmail(email);
+
+    if (!passwordEncoder.matches(passwordUpdateDto.getOldPassword(), member.getPassword())) {
+      return null;
+    } else {
+      passwordUpdateDto.setNewPassword(passwordEncoder.encode(passwordUpdateDto.getNewPassword()));
+      member.updatePassword(passwordUpdateDto.getNewPassword());
+      memberRepository.save(member);
+    }
+    return member.getId();
   }
 }
