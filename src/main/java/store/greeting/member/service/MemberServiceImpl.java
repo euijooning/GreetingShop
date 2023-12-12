@@ -27,6 +27,7 @@ public class MemberServiceImpl implements UserDetailsService, MemberService {
   }
 
 
+  @Override
   public Member saveMember(Member member) {
     validateDuplicateMember(member);
     return memberRepository.save(member);
@@ -55,6 +56,7 @@ public class MemberServiceImpl implements UserDetailsService, MemberService {
   }
 
   // 비밀번호 변경
+  @Override
   public Long updateMemberPassword(PasswordUpdateDto passwordUpdateDto, String email) {
     Member member = memberRepository.findByEmail(email);
 
