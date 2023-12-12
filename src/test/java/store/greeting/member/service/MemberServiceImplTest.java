@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import store.greeting.enums.UserType;
 import store.greeting.member.entity.Member;
 import store.greeting.member.repository.MemberRepository;
@@ -27,11 +28,15 @@ public class MemberServiceImplTest {
   @Mock
   private MemberRepository memberRepository;
 
+  @Mock
+  private PasswordEncoder passwordEncoder;
+
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    memberService = new MemberServiceImpl(memberRepository);
+    memberService = new MemberServiceImpl(memberRepository, passwordEncoder);
   }
+
 
   String email = "newjeans123@abc.com";
   String password = "password456";

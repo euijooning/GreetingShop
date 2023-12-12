@@ -101,7 +101,7 @@ public class MailService {
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
             String encodedPassword = encoder.encode(str); // 패스워드 암호화
             Member member = memberRepository.findByEmail(email);
-            member.updatePassword(encodedPassword);
+            member.updateTemporalPassword(encodedPassword);
             memberRepository.save(member);
             return true;
         } catch (Exception e) {

@@ -1,6 +1,8 @@
 package store.greeting.member.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +12,7 @@ import store.greeting.config.AuthTokenParser;
 import store.greeting.mail.MailDto;
 import store.greeting.mail.MailService;
 import store.greeting.member.dto.MemberFormDto;
+import store.greeting.member.dto.PasswordUpdateDto;
 import store.greeting.member.entity.Member;
 import store.greeting.member.repository.MemberRepository;
 import store.greeting.member.service.MemberServiceImpl;
@@ -17,6 +20,7 @@ import store.greeting.member.service.MemberServiceImpl;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/members")
@@ -27,10 +31,6 @@ public class MemberController {
   private final PasswordEncoder passwordEncoder;
   private final MailService mailService;
   private final MemberRepository memberRepository;
-
-  String confirm =""; //인증코드를 내가 미리 가지고 있다.
-  boolean confirmCheck = false;
-
 
 
   @GetMapping(value = "/new")
@@ -82,7 +82,7 @@ public class MemberController {
   }
 
 
-  // 회원 아이디(이메일) 찾기
+  // 회원 아이디(이메일) 가입 여부 판단
   @PostMapping("/findId")
   @ResponseBody
   public String findId(@RequestParam("email") String email) {
@@ -112,6 +112,35 @@ public class MemberController {
     mailService.mailSend(dto);
 
     return "member/memberLoginForm";
+  }
+
+
+  // 비밀번호 변경
+  @GetMapping("/my/password")
+  public String updatePasswordForm() {
+    return "member/passwordUpdateForm";
+  }
+
+  @PostMapping("/my/password")
+  public String updatePassword(@Valid PasswordUpdateDto passwordUpdateDto, Model model, Authentication authentication) {
+    // new password 비교
+    if (!Objects.equals(passwordUpdateDto.getNewPassword(), passwordUpdateDto.getConfirmPassword())) {
+      model.addAttribute("dto", passwordUpdateDto);
+      model.addAttribute("mismatched", "비밀번호가 일치하지 않습니다.");
+      return "member/passwordUpdateForm";
+    }
+
+    UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+    Long result = memberService.updateMemberPassword(passwordUpdateDto, userDetails.getUsername());
+
+    // 현재 비밀번호가 불일치할 경우
+    if (result == null) {
+      model.addAttribute("dto", passwordUpdateDto);
+      model.addAttribute("wrongPassword", "비밀번호가 일치하지 않습니다.");
+      return "member/passwordUpdateForm";
+    }
+
+    return "redirect:/members/my";
   }
 
 }
