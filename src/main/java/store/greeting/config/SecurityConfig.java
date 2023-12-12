@@ -26,7 +26,6 @@ import java.io.IOException;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   private final MemberServiceImpl memberService;
-  private final CustomUserDetailsService customUserDetailsService;
   private final CustomOAuth2UserService customOAuth2UserService;
 
   @Override
@@ -66,8 +65,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
         .csrf()
         .ignoringAntMatchers("/mail/**")
-         .ignoringAntMatchers("/mainpage/**")
-        .ignoringAntMatchers("/members/findId");
+        .ignoringAntMatchers("/mainpage/**")
+        .ignoringAntMatchers("/members/findId")
+        .ignoringAntMatchers("/members/my/password");
 
     http.exceptionHandling()
         .authenticationEntryPoint(new CustomAuthenticationEntryPoint());
