@@ -12,20 +12,18 @@ public class MailController {
 
     private final MailService mailService;
 
-    @GetMapping("/mainpage")
-    public String MailPage(){
-        return "mailSample/mainpage";
+    @GetMapping("/sample")
+    public String mailSample(){
+        return "mailSample/sample";
     }
 
     @ResponseBody
     @PostMapping("/mail")
-    public String MailSend(String mail){
+    public String sendMail(String mail){
 
         int number = mailService.sendMail(mail);
 
-        String num = "" + number;
-
-        return num;
+        return String.valueOf(number);
     }
 
 }

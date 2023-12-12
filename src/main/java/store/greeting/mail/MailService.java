@@ -19,6 +19,7 @@ public class MailService {
     private static final String senderEmail= "euijoonism@gmail.com";
     private static int number;
 
+
     public static void createNumber() {
         number = (int)(Math.random() * (90000)) + 100000;// (int) Math.random() * (최댓값-최소값+1) + 최소값
         System.out.println("인증 번호 : " + number);

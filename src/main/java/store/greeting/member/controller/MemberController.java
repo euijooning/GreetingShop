@@ -70,21 +70,6 @@ public class MemberController {
     return "member/memberLoginForm";
   }
 
-//  // 이메일 인증 관련
-//  @PostMapping("/{email}/emailConfirm")
-//  public @ResponseBody ResponseEntity emailConfirm(@PathVariable("email") String email) throws Exception{
-//    confirm = mailService.sendSimpleMessage(email);
-//    return new ResponseEntity<String> ("인증 메일을 보냈습니다.", HttpStatus.OK);
-//  }
-
-//  @PostMapping("/{code}/codeCheck")
-//  public @ResponseBody ResponseEntity codeConfirm(@PathVariable("code") String code) throws Exception{
-//    if(code.equals(confirm)){
-//      confirmCheck=true;
-//      return new ResponseEntity<String> ("인증 성공하였습니다.", HttpStatus.OK);
-//    }
-//    return new ResponseEntity<String> ("인증 코드를 올바르게 입력해주세요.", HttpStatus.BAD_REQUEST);
-//  }
 
   // 프로필 정보
   @GetMapping("/my")
@@ -119,7 +104,7 @@ public class MemberController {
   }
 
 
-  // 비밀번호 찾기시, 임시 비밀번호 담긴 이메일 보내기
+  // 비밀번호 찾을 때, 임시 비밀번호 담긴 이메일 보내기
   @Transactional
   @PostMapping("/sendEmail")
   public String sendEmail(@RequestParam("email") String email) {
@@ -128,6 +113,5 @@ public class MemberController {
 
     return "member/memberLoginForm";
   }
-
 
 }
