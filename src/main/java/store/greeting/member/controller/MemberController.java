@@ -123,24 +123,25 @@ public class MemberController {
 
   @PostMapping("/my/password")
   public String updatePassword(@Valid PasswordUpdateDto passwordUpdateDto, Model model, Authentication authentication) {
-    // new password 비교
-    if (!Objects.equals(passwordUpdateDto.getNewPassword(), passwordUpdateDto.getConfirmPassword())) {
-      model.addAttribute("dto", passwordUpdateDto);
-      model.addAttribute("mismatched", "비밀번호가 일치하지 않습니다.");
-      return "member/passwordUpdateForm";
-    }
+      // new password 비교
+      if (!Objects.equals(passwordUpdateDto.getNewPassword(), passwordUpdateDto.getConfirmPassword())) {
+          model.addAttribute("dto", passwordUpdateDto);
+          model.addAttribute("resultMessage", "비밀번호가 일치하지 않습니다.");
+          return "member/passwordUpdateForm";
+      }
 
-    UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-    Long result = memberService.updateMemberPassword(passwordUpdateDto, userDetails.getUsername());
+      UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+      Long result = memberService.updateMemberPassword(passwordUpdateDto, userDetails.getUsername());
 
-    // 현재 비밀번호가 불일치할 경우
-    if (result == null) {
-      model.addAttribute("dto", passwordUpdateDto);
-      model.addAttribute("wrongPassword", "비밀번호가 일치하지 않습니다.");
-      return "member/passwordUpdateForm";
-    }
+      // 현재 비밀번호가 불일치할 경우
+      if (result == null) {
+          model.addAttribute("dto", passwordUpdateDto);
+          model.addAttribute("resultMessage", "비밀번호가 일치하지 않습니다.");
+          return "member/passwordUpdateForm";
+      }
 
-    return "redirect:/members/my";
+      model.addAttribute("resultMessage", "비밀번호가 성공적으로 변경되었습니다.");
+      return "redirect:/members/my";
   }
 
 }
