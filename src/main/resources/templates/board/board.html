@@ -16,10 +16,21 @@
 
 </head>
 
+<!-- CSS -->
 <th:block layout:fragment="css">
   <style>
     body {
       font-family: 'Gowun Batang', serif;
+    }
+    .board-part {
+      background-color: #FAFDD3;
+      border: 2px solid #BCE0E3;
+      padding: 20px;
+    }
+    .comment-divider {
+      border-bottom: 1px solid #ddd;
+      margin-bottom: 30px;
+      padding-bottom: 30px;
     }
   </style>
 
@@ -29,7 +40,7 @@
 </th:block>
 
 <div layout:fragment="content">
-  <div class="p-5 mb-5 text-center bg-light">
+  <div class="p-5 mb-5 text-center --bs-warning-bg-subtle">
     <h1 class="mb-3">자유게시판</h1>
     <h5 class="mb-3">자유롭게 글을 쓰는 공간입니다.</h5>
   </div>
@@ -37,7 +48,7 @@
   <div class="container mt-5">
     <div class="row">
       <div class="col-lg-8">
-        <article>
+        <article class="board-part">
           <input type="hidden" id="board_id" th:value="${board.id}">
           <header class="mb-4">
             <h1 class="fw-bolder mb-1" th:text="${board.title}"></h1>
@@ -47,7 +58,7 @@
             <p class="fs-5 mb-4" th:text="${board.content}"></p>
           </section>
           <button type="button" id="modify-btn"
-                  th:onclick="|location.href='@{/boards/update/{boardId}(boardId=${board.id})}'|"
+                  th:onclick="|location.href='@{/boards/{boardId}/update(boardId=${board.id})}'|"
                   class="btn btn-warning btn-sm"
                   sec:authorize="hasAnyAuthority('ROLE_ADMIN')">수정</button>
           <button type="button" id="delete-btn"
@@ -55,6 +66,46 @@
                   class="btn btn-secondary btn-sm"
                   sec:authorize="hasAnyAuthority('ROLE_ADMIN')">삭제</button>
         </article>
+
+        <!-- Comments Form -->
+        <div class="card my-4">
+          <h5 class="card-header">댓글을 남겨주세요.</h5>
+          <div class="card-body">
+            <form th:action="@{/boards/{id}/comment(id=${id})}" th:method="post">
+              <div class="form-group" style="margin-bottom: 10px;">
+                <input type="hidden" name="idx" th:value="*{id}" />
+                <textarea name="content" class="form-control" rows="3"></textarea>
+              </div>
+              <button type="submit" class="btn btn-warning">등록</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Comment List -->
+        <div class="card my-4" th:if="${comments.size()} != 0">
+          <h5 class="card-header">댓글</h5>
+          <div class="card-body">
+            <div th:each="comment : ${comments}">
+              <div class="media mb-4 comment-divider"> <!--custom class-->
+                <div class="media-body">
+                  <div class="d-flex align-items-start">
+                    <div>
+                      <h6 class="mt-0" th:text="'[' + ${comment.getName()} + ']'">사용자명</h6>
+                      <p th:text="${comment.getContent()}" th:id="'comment-' + ${comment.getId()}">내용</p>
+                      <small class="text-muted" th:text="${#temporals.format(comment.getCreateTime(), 'yyyy-MM-dd HH:mm')}">등록시간</small>
+                    </div>
+                  </div>
+
+                  <div th:if="${comment.getEmail() == #authentication.principal.username}">
+                    <button class="btn btn-sm btn-outline-warning" th:attr="data-id=${comment.getId()}" onclick="editComment(this)">수정하기</button>
+                    <a th:href="@{/boards/{id}/comment/{commentId}/delete(id=${id}, commentId=${comment.getId()})}" class="btn btn-sm btn-outline-danger" onclick="return confirm('댓글을 지우시겠습니까?')">삭제</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
