@@ -7,11 +7,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import store.greeting.common.service.GlobalServiceImpl;
 import store.greeting.config.AuthTokenParser;
 import store.greeting.mail.MailDto;
 import store.greeting.mail.MailService;
 import store.greeting.member.dto.MemberFormDto;
+import store.greeting.member.dto.MemberProfileDto;
 import store.greeting.member.dto.PasswordUpdateDto;
 import store.greeting.member.entity.Member;
 import store.greeting.member.repository.MemberRepository;
@@ -31,6 +34,7 @@ public class MemberController {
   private final PasswordEncoder passwordEncoder;
   private final MailService mailService;
   private final MemberRepository memberRepository;
+  private final GlobalServiceImpl globalService;
 
 
   @GetMapping(value = "/new")
@@ -123,24 +127,47 @@ public class MemberController {
 
   @PostMapping("/my/password")
   public String updatePassword(@Valid PasswordUpdateDto passwordUpdateDto, Model model, Authentication authentication) {
-    // new password 비교
-    if (!Objects.equals(passwordUpdateDto.getNewPassword(), passwordUpdateDto.getConfirmPassword())) {
-      model.addAttribute("dto", passwordUpdateDto);
-      model.addAttribute("mismatched", "비밀번호가 일치하지 않습니다.");
-      return "member/passwordUpdateForm";
-    }
+      // new password 비교
+      if (!Objects.equals(passwordUpdateDto.getNewPassword(), passwordUpdateDto.getConfirmPassword())) {
+          model.addAttribute("dto", passwordUpdateDto);
+          model.addAttribute("resultMessage", "비밀번호가 일치하지 않습니다.");
+          return "member/passwordUpdateForm";
+      }
 
-    UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-    Long result = memberService.updateMemberPassword(passwordUpdateDto, userDetails.getUsername());
+      UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+      Long result = memberService.updateMemberPassword(passwordUpdateDto, userDetails.getUsername());
 
-    // 현재 비밀번호가 불일치할 경우
-    if (result == null) {
-      model.addAttribute("dto", passwordUpdateDto);
-      model.addAttribute("wrongPassword", "비밀번호가 일치하지 않습니다.");
-      return "member/passwordUpdateForm";
-    }
+      // 현재 비밀번호가 불일치할 경우
+      if (result == null) {
+          model.addAttribute("dto", passwordUpdateDto);
+          model.addAttribute("resultMessage", "비밀번호가 일치하지 않습니다.");
+          return "member/passwordUpdateForm";
+      }
 
-    return "redirect:/members/my";
+      model.addAttribute("resultMessage", "비밀번호가 성공적으로 변경되었습니다.");
+      return "redirect:/members/my";
   }
 
+    @GetMapping("/my/renewal")
+    public String updateProfileForm(Model model, Authentication authentication) {
+
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        MemberFormDto member = memberService.findMember(userDetails.getUsername());
+        model.addAttribute("member", member);
+
+        return "member/profileUpdate";
+    }
+
+    @PostMapping("/my/renewal")
+    public String updateProfile(@Valid MemberProfileDto memberProfileDto, Errors errors, Model model, Authentication authentication) {
+        if (errors.hasErrors()) {
+            model.addAttribute("member", memberProfileDto);
+            globalService.messageHandling(errors, model);
+            return "member/profileUpdate";
+        }
+
+        memberService.updateProfile(memberProfileDto);
+
+        return "redirect:/members/my";
+    }
 }

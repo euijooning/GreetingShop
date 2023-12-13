@@ -22,16 +22,23 @@ public class Member extends BaseEntity {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
+  @Column
   private String name;
 
+  @Column
   private String tel;
 
   @Column(unique = true)
   private String email;
 
+  @Column
   private String password;
 
+  @Column
   private String address;
+
+  @Column
+  private String addressDetail;
 
   @Enumerated(EnumType.STRING)
   private UserType role;
@@ -52,6 +59,7 @@ public class Member extends BaseEntity {
             .tel(memberFormDto.getTel())
             .email(memberFormDto.getEmail())
             .address(memberFormDto.getAddress())
+            .addressDetail(memberFormDto.getAddressDetail())
             .password(password)
             .role(UserType.from(memberFormDto.getType()))
             .loginType("normal")
@@ -80,7 +88,17 @@ public class Member extends BaseEntity {
   public void updateTemporalPassword(String newPassword) {
     this.password = newPassword;
   }
+
   public void updatePassword(String password) {
     this.password = password;
   }
+
+
+  public void updateProfile(String name, String tel, String address, String addressDetail) {
+    this.name = name;
+    this.tel = tel;
+    this.address = address;
+    this.addressDetail = addressDetail;
+  }
+
 }

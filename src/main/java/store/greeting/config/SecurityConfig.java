@@ -16,7 +16,6 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import store.greeting.member.service.MemberServiceImpl;
 import store.greeting.social.CustomOAuth2UserService;
-import store.greeting.social.CustomUserDetailsService;
 
 import java.io.IOException;
 
@@ -67,7 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .ignoringAntMatchers("/mail/**")
         .ignoringAntMatchers("/mainpage/**")
         .ignoringAntMatchers("/members/findId")
-        .ignoringAntMatchers("/members/my/password");
+        .ignoringAntMatchers("/members/my/**");
 
     http.exceptionHandling()
         .authenticationEntryPoint(new CustomAuthenticationEntryPoint());

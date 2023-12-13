@@ -56,6 +56,7 @@ public class GreetingApplication {
           .tel("01012341234")
           .role(UserType.USER)
           .address("서울특별시 종로구 청와대로 1")
+          .addressDetail("대통령집무실")
           .loginType("normal")
           .build();
       memberRepository.save(userMember);
@@ -67,6 +68,7 @@ public class GreetingApplication {
           .tel("01012341234")
           .role(UserType.ADMIN)
           .address("서울특별시 동대문구 서울시립대로 163")
+          .addressDetail("서울시립대학교 중앙도서관")
           .loginType("normal")
           .build();
       memberRepository.save(adminMember);
