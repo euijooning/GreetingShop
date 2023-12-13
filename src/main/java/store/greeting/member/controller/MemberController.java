@@ -104,7 +104,7 @@ public class MemberController {
  // 회원 비밀번호 찾기
   @GetMapping(value = "/findMember")
   public String findMember(Model model) {
-    return "member/findMemberForm";
+    return "member/memberFindForm";
   }
 
 
@@ -155,7 +155,7 @@ public class MemberController {
         MemberFormDto member = memberService.findMember(userDetails.getUsername());
         model.addAttribute("member", member);
 
-        return "member/profileUpdate";
+        return "member/profileUpdateForm";
     }
 
     @PostMapping("/my/renewal")
@@ -163,7 +163,7 @@ public class MemberController {
         if (errors.hasErrors()) {
             model.addAttribute("member", memberProfileDto);
             globalService.messageHandling(errors, model);
-            return "member/profileUpdate";
+            return "member/profileUpdateForm";
         }
 
         memberService.updateProfile(memberProfileDto);
