@@ -53,7 +53,7 @@
 
   <!--  @{|/resources/libs/css/${view_name}.css|}-->
 
-  <!--  '@{/boards/update/{boardId}(boardId=${board.id})}'-->
+  <!--  '@{/boards/{boardId}/update(boardId=${board.id})}'-->
   <form th:object="${dto}">
     <div class="form-group">
       <input type="hidden" id="board_id" th:value="${dto.id}">
@@ -64,7 +64,7 @@
       <input type="text" class="form-control" th:field="*{content}" placeholder="Content"/>
       <p th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="fieldError">Incorrect data</p>
     </div>
-    <button th:onclick="updateBoard()" class="btn btn-warning">게시글 수정하기</button>
+    <button th:onclick="updateBoard()" class="btn btn-warning">수정하기</button>
   </form>
 </div>
 </html>
