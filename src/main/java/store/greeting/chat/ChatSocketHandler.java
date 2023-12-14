@@ -83,7 +83,7 @@ public class ChatSocketHandler extends TextWebSocketHandler {
         } else { // 사용자 연결 시
             if (adminList.size() != 0) { // 관리자가 한 명이라도 있으면
                 String[] userInfo = AuthTokenParser.getParseToken(session.getPrincipal());
-                String userInfoString = userInfo[0] + ", " + userInfo[1]; // "이메일, type" 형식
+                String userInfoString = userInfo[0] + "," + userInfo[1]; // "이메일, type" 형식
 
                 System.out.println("새 사용자 등록 : "+userInfoString);
 
@@ -120,7 +120,7 @@ public class ChatSocketHandler extends TextWebSocketHandler {
             adminList.remove(session); // 관리자 목록에서 삭제
         } else { // 사용자가 연결 종료시
             String[] userInfo = AuthTokenParser.getParseToken(session.getPrincipal());
-            String userInfoString = userInfo[0] + ", " + userInfo[1]; // "이메일, type" 형식
+            String userInfoString = userInfo[0] + "," + userInfo[1]; // "이메일, type" 형식
             System.out.println("사용자 연결 종료 : " + userInfoString);
 
             for (WebSocketSession sessions : adminList) { // 모든 admin에게 알리고

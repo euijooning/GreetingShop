@@ -21,7 +21,7 @@ public class ChatController {
                 return "chat/chatAdmin";
             }
         }
-        System.out.println("일반 채팅입니다.");
+        System.out.println("일반 이용자 채팅입니다.");
 
         return "chat/chat";
     }
