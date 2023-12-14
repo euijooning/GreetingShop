@@ -2,6 +2,7 @@ package store.greeting.member.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -99,5 +100,20 @@ public class MemberServiceImpl implements UserDetailsService, MemberService {
         memberRepository.save(member);
 
         return member.getId();
+    }
+
+
+    // 회원 탈퇴
+    @Override
+    public boolean quitMembership(String email, String password) {
+        Member member = memberRepository.findByEmail(email);
+
+        if (passwordEncoder.matches(password, member.getPassword())) {
+            memberRepository.delete(member);
+            SecurityContextHolder.clearContext();
+            return true;
+        } else {
+            return false;
+        }
     }
 }

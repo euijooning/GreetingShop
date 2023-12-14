@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head>
+    <title>그리팅스토어</title>
+
+    <th:block layout:fragment="css">
+        <style>
+            body {
+                font-family: 'Gowun Batang', serif;
+            }
+        </style>
+    </th:block>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2 class="mb-4">
+        회원 탈퇴하기
+    </h2>
+    <form method="post">
+        <div class="form-floating mb-3" th:if="${resultMessage == null}">
+            <label for="password">비밀번호 확인</label>
+            <input type="password" name="password" class="form-control" id="password"  placeholder="현재 사용중인 비밀번호를 입력하세요." required>
+        </div>
+        <div class="form-floating mb-3 has-danger" th:unless="${resultMessage == null}">
+            <label for="password">비밀번호 확인</label>
+            <input type="password" name="password" class="form-control is-invalid" id="password" placeholder="현재 사용중인 비밀번호를 입력하세요." required>
+            <div class="invalid-feedback" th:text="${resultMessage}"></div>
+        </div>
+        <button type="submit" class="btn btn-outline-danger">탈퇴하기</button>
+    </form>
+</div>
+</body>
+</html>
