@@ -53,7 +53,7 @@ function editComment(button) {
 
   const newContent = prompt('Edit your comment:', commentContent);
   if (newContent) {
-    $.post(`/board/${id}/comment/${commentId}/update`, {content: newContent}, function(data) {
+    $.post(`/boards/${id}/comment/${commentId}/update`, {content: newContent}, function(data) {
       window.location.href = data;
     });
   }

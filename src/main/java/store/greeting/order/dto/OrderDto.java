@@ -14,7 +14,7 @@ public class OrderDto {
   private Long productId;
 
   @Min(value = 1, message = "최소 주문수량은 1개입니다.")
-  @Max(value = 10, message = "최대 주문수량은 10개입니다.")
+  @Max(value = 50, message = "최대 주문수량은 50개입니다.")
   private int count;
 }
 

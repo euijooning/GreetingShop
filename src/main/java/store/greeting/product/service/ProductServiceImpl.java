@@ -29,6 +29,7 @@ public class ProductServiceImpl implements ProductService {
   private final ProductImageServiceImpl productImageService;
   private final ProductImageRepository productImageRepository;
 
+  @Override
   public Long saveProduct(ProductFormDto productFormDto, List<MultipartFile> productImageFileList) throws Exception {
     // 상품 등록
     Product product = productFormDto.createProduct();
@@ -46,6 +47,7 @@ public class ProductServiceImpl implements ProductService {
   }
 
   @Transactional(readOnly = true)
+  @Override
   public ProductFormDto getProductDetail(Long productId) {
 
     List<ProductImage> productImageList = productImageRepository.findByProductIdOrderByIdAsc(productId);
@@ -62,7 +64,9 @@ public class ProductServiceImpl implements ProductService {
     return productFormDto;
   }
 
+
   // 상품 수정
+  @Override
   public Long updateProduct(ProductFormDto productFormDto, List<MultipartFile> productImageFileList) throws Exception {
     Product product = productRepository.findById(productFormDto.getId()).orElseThrow(
         EntityExistsException::new);
@@ -78,12 +82,14 @@ public class ProductServiceImpl implements ProductService {
 
   //상품 관리 페이지 조회
   @Transactional(readOnly = true)
+  @Override
   public Page<Product> getAdminProductPage(ProductSearchDto productSearchDto, Pageable pageable) {
     return productRepository.getAdminProductPage(productSearchDto, pageable);
   }
 
   // 상품 조회하기
   @Transactional(readOnly = true)
+  @Override
   public Page<ProductDto> getProducts(ProductSearchDto productSearchDto, Pageable pageable) {
     return productRepository.getMainProductPage(productSearchDto, pageable);
   }

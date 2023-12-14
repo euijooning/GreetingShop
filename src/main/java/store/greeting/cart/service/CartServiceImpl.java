@@ -73,7 +73,7 @@ public class CartServiceImpl implements CartService {
   @Override
   @Transactional(readOnly = true)
   public boolean validateCartProduct(Long cartProductId, String email, String loginType) {
-    Member currentMember = memberRepository.findByEmail(email);
+    Member currentMember = memberRepository.findByEmailAndLoginType(email, loginType);
     CartProduct cartProduct = cartProductRepository.findById(cartProductId).orElseThrow(EntityNotFoundException::new);
     Member savedMember = cartProduct.getCart().getMember();
 

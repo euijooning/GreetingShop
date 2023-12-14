@@ -10,5 +10,4 @@ public class CartOrderDto {
 
   Long cartProductId;
   List<CartOrderDto> cartOrderDtoList;
-
 }

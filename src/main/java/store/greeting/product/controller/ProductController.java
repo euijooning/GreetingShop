@@ -34,6 +34,7 @@ public class ProductController {
   private final ProductServiceImpl productService;
   private final ProductRepository productRepository;
 
+
   // 상품 등록 폼
   @GetMapping(value = "/admin/product/new")
   public String productForm(Model model) {

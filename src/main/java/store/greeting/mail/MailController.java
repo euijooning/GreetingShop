@@ -12,6 +12,8 @@ public class MailController {
 
     private final MailService mailService;
 
+
+    // 이메일 인증 연습 샘플 페이지
     @GetMapping("/sample")
     public String mailSample(){
         return "mailSample/sample";

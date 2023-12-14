@@ -46,7 +46,6 @@ public class OrderServiceImpl implements OrderService {
     List<OrderProduct> orderProductList = new ArrayList<>();
 
     Order order = Order.createOrder(member, orderProductList);
-
     OrderProduct orderProduct = OrderProduct.createOrderProduct(product, order, orderDto.getCount());
     orderProductList.add(orderProduct);
 
@@ -54,6 +53,7 @@ public class OrderServiceImpl implements OrderService {
 
     return order.getId();
   }
+
 
   // 주문 목록 조회
   @Override
@@ -69,11 +69,6 @@ public class OrderServiceImpl implements OrderService {
 
       for (OrderProduct orderProduct : orderProducts) {
         ProductImage productImage = productImageRepository.findByProductIdAndMainImageYn(orderProduct.getProduct().getId(), "Y");
-
-//        if (productImage == null){ // productId로 productImage를 못찾으면 -> customProductId로 찾는다
-//          productImage = productImageRepository.findByCustomProductIdAndMainImageYn(orderProduct.getProduct().getId(), "Y");
-//        }
-
         OrderProductDto orderProductDto = new OrderProductDto(orderProduct, productImage.getImageUrl());
         historyDto.addOrderProductDto(orderProductDto);
       }

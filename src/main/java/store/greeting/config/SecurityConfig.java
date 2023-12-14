@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import store.greeting.member.service.MemberServiceImpl;
 import store.greeting.social.CustomOAuth2UserService;
@@ -64,9 +65,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
         .csrf()
         .ignoringAntMatchers("/mail/**")
+        .ignoringAntMatchers("/boards/**")
         .ignoringAntMatchers("/mainpage/**")
         .ignoringAntMatchers("/members/findId")
-        .ignoringAntMatchers("/members/my/**");
+        .ignoringAntMatchers("/members/my/**")
+    ;
 
     http.exceptionHandling()
         .authenticationEntryPoint(new CustomAuthenticationEntryPoint());

@@ -34,7 +34,7 @@ public class CartController {
   @GetMapping(value = "/cart")
   public String orderHistory(Principal principal, Model model) {
     String[] userInfo = AuthTokenParser.getParseToken(principal);
-//    List<CartDetailDto> cartDetailList = cartService.getCartList(principal.getName());
+
     List<CartDetailDto> cartDetailList = cartService.getCartList(userInfo[0],userInfo[1]);
     model.addAttribute("cartProducts", cartDetailList);
     return "cart/cartList";
@@ -45,6 +45,7 @@ public class CartController {
   public @ResponseBody ResponseEntity updateCartProduct(@PathVariable("cartProductId") Long cartProductId,
                                                         int count,
                                                         Principal principal) {
+
     String[] userInfo = AuthTokenParser.getParseToken(principal);
 
     if (count <= 0) {
@@ -62,6 +63,7 @@ public class CartController {
   public ResponseEntity addCartProduct(@RequestBody @Valid CartProductDto cartProductDto,
                                        BindingResult bindingResult,
                                        Principal principal) {
+
     String[] userInfo = AuthTokenParser.getParseToken(principal);
 
     if (bindingResult.hasErrors()) {
@@ -72,7 +74,6 @@ public class CartController {
       return new ResponseEntity<>(messages.toString(), HttpStatus.BAD_REQUEST);
     }
 
-//    String email = principal.getName();
     Long cartProductId = cartService.addCart(cartProductDto, userInfo[0], userInfo[1]);
     return new ResponseEntity<>(cartProductId, HttpStatus.OK);
   }
@@ -82,6 +83,7 @@ public class CartController {
   @DeleteMapping("/cartProduct/{cartProductId}")
   public @ResponseBody ResponseEntity deleteCartProduct(@PathVariable("cartProductId") Long cartProductId,
                                                         Principal principal) {
+
     String[] userInfo = AuthTokenParser.getParseToken(principal);
 
     if (!cartService.validateCartProduct(cartProductId, userInfo[0], userInfo[1])) {
@@ -96,12 +98,10 @@ public class CartController {
   @PostMapping(value = "/cart/orders")
   public @ResponseBody ResponseEntity orderCartProduct(@RequestBody CartOrderDto cartOrderDto,
                                                        Principal principal) {
+
     String[] userInfo = AuthTokenParser.getParseToken(principal);
-//    List<CartOrderDto> cartOrderDtoList = cartOrderDto.getCartOrderDtoList();
-//    Long orderId = cartService.orderCartProduct(cartOrderDtoList, principal.getName());
-//    return new ResponseEntity<>(orderId, HttpStatus.OK);
-//  }
     PrincipalContext.setPrincipal(principal);
+
     try {
       List<CartOrderDto> cartOrderDtoList = cartOrderDto.getCartOrderDtoList();
       if (cartOrderDtoList == null || cartOrderDtoList.isEmpty()) {

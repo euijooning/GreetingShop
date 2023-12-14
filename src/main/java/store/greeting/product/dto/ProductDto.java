@@ -15,8 +15,7 @@ public class ProductDto {
   private Integer price;
 
   @QueryProjection
-  public ProductDto(Long id, String productName, String productDetail, String imageUrl,
-      Integer price) {
+  public ProductDto(Long id, String productName, String productDetail, String imageUrl, Integer price) {
     this.id = id;
     this.productName = productName;
     this.productDetail = productDetail;
