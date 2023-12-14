@@ -14,4 +14,6 @@ public interface MemberService {
 
   MemberFormDto findMember(String email);
   Long updateProfile(MemberProfileDto memberProfileDto);
+
+  boolean quitMembership(String email, String password);
 }
