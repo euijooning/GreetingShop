@@ -93,7 +93,7 @@
                 var backgroundColor = '';
                 // 로그인 타입별 색깔 구분
                 if (messageParts[1] == 'google') {
-                    var backgroundColor = 'background-color: #4285F4 !important;';
+                    var backgroundColor = 'background-color: #00A0E2 !important;';
                 }
                 else if (messageParts[1] == 'naver') {
                     var backgroundColor = 'background-color: #03C75A !important;';
@@ -109,7 +109,8 @@
 
                     <div class="card-header d-flex justify-content-between align-items-center p-3 bg-warning text-black border-bottom-0" style="border-top-left-radius: 15px; border-top-right-radius: 15px; `+ backgroundColor + `">
                         <i class="fas fa-angle-left"></i>
-                        <p class="mb-0 fw-bold">`+ messageParts[0] + `</p>
+
+                        <p class="mb-0 fw-bold">대상 : ${messageParts[0]}</p>
                         <i class="fas fa-times"></i>
                     </div>
 
@@ -121,7 +122,7 @@
                         <div class="form-outline">
                             <textarea class="form-control" rows="4"></textarea>
                             <label class="form-label" for="textAreaExample">답변을 입력해주세요.</label>
-                            <button class="btn btn-outline-secondary" type="button" onclick="send(event)" value="`+ result[0] + `">전송</button>
+                            <button class="btn btn-outline-success btn-sm" type="button" onclick="send(event)" value="`+ result[0] + `">답변하기</button>
                         </div>
 
                     </div>
