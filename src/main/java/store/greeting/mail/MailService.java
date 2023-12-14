@@ -20,11 +20,13 @@ public class MailService {
     private static int number;
 
 
+    // 인증번호 생성
     public static void createNumber() {
         number = (int)(Math.random() * (90000)) + 100000;// (int) Math.random() * (최댓값-최소값+1) + 최소값
         System.out.println("인증 번호 : " + number);
     }
 
+    // 메일 생성
     public MimeMessage CreateMail(String mail) {
         createNumber();
         MimeMessage message = javaMailSender.createMimeMessage();
@@ -45,6 +47,7 @@ public class MailService {
         return message;
     }
 
+    // 메일 전송
     public int sendMail(String mail){
 
         MimeMessage message = CreateMail(mail);

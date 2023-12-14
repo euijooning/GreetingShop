@@ -74,7 +74,7 @@ public class ChatSocketHandler extends TextWebSocketHandler {
         }
     }
 
-    // 연결후
+    // 연결 후
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 

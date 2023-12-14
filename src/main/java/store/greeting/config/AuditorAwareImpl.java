@@ -12,7 +12,7 @@ public class AuditorAwareImpl implements AuditorAware<String > {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     String userId = "";
     if (authentication != null) {
-      if (authentication instanceof AnonymousAuthenticationToken) { // 익명 사용자일경우 (ex. 회원가입시 member의 created_by는 익명이다)
+      if (authentication instanceof AnonymousAuthenticationToken) { // 익명 사용자일 경우 (ex. 회원가입 시 member의 created_by는 익명이다)
         // 기존 코드
         userId = authentication.getName();
       } else {

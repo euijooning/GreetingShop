@@ -21,7 +21,7 @@ public enum Category {
         .filter(category -> category.id == id)
         .findFirst()
         .orElseThrow();
-
+// 다른 표현
 //    Category[] values = Category.values();
 //    for (Category category : values) {
 //      if (category.id == id) {

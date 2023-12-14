@@ -42,9 +42,8 @@ public class OrderController {
       }
       return new ResponseEntity<>(sb.toString(), HttpStatus.BAD_REQUEST);
     }
-
-//    String email = principal.getName();
     Long orderId;
+
     try {
       orderId = orderService.order(orderDto, userInfo[0], userInfo[1]);
     } catch (Exception e) {

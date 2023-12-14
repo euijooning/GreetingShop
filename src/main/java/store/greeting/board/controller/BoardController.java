@@ -61,7 +61,7 @@ public class BoardController {
             .stream()
             .map(BoardResponseDto::new)
             .collect(Collectors.toList());
-
+// 다른 표현
 //    List<Board> boards = boardService.findAll();
 //    List<BoardResponseDto> responseDtos = new ArrayList<>();
 //    for (Board board : boards) {

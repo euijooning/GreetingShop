@@ -62,12 +62,13 @@ public class MemberController {
     }
 
 
+    // 로그인 페이지
     @GetMapping(value = "/login")
     public String loginMember() {
         return "member/memberLoginForm";
     }
 
-
+    // 로그인 에러 시
     @GetMapping(value = "/login/error")
     public String loginError(Model model) {
         model.addAttribute("loginErrorMsg", "아이디 또는 비밀번호를 확인하세요");
@@ -103,7 +104,7 @@ public class MemberController {
 
     // 회원 비밀번호 찾기
     @GetMapping(value = "/findMember")
-    public String findMember(Model model) {
+    public String findMember() {
         return "member/memberFindForm";
     }
 
