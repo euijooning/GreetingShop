@@ -27,7 +27,7 @@
 
     <script th:inline="javascript">
 
-        const websocket = new WebSocket("ws://localhost:8080/ws/chat");
+        const websocket = new WebSocket("wss://api.ejgreeting.store:443/ws/chat");
         // 웹소켓 메세지 수신시 = onMessage() 실행;
         websocket.onmessage = onMessage;
 

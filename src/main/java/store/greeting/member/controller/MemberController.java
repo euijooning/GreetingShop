@@ -88,6 +88,11 @@ public class MemberController {
 
 
     // 회원 아이디(이메일) 가입 여부 판단
+    /**
+     *
+     * @param email
+     * @return 회원 가입 여부 판단(이메일 검증)
+     */
     @PostMapping("/findId")
     @ResponseBody
     public String findId(@RequestParam("email") String email) {
@@ -126,7 +131,13 @@ public class MemberController {
         return "member/passwordUpdateForm";
     }
 
-    // 비밀번호 변경
+    /**
+     *
+     * @param passwordUpdateDto
+     * @param model
+     * @param authentication
+     * @return 비밀번호 변경
+     */
     @PostMapping("/my/password")
     public String updatePassword(@Valid PasswordUpdateDto passwordUpdateDto, Model model, Authentication authentication) {
         // new password 비교
