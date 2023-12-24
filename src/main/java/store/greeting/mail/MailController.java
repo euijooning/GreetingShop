@@ -19,6 +19,11 @@ public class MailController {
         return "mailSample/sample";
     }
 
+    /**
+     * 인증번호가 담긴 메일을 보낸다.
+     * @param mail
+     * @return 인증번호
+     */
     @ResponseBody
     @PostMapping("/mail")
     public String sendMail(String mail){

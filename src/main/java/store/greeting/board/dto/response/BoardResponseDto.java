@@ -1,12 +1,15 @@
 package store.greeting.board.dto.response;
 
-import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import store.greeting.board.entity.Board;
 
+import java.time.LocalDateTime;
+
 @NoArgsConstructor
 @Getter
+@AllArgsConstructor
 public class BoardResponseDto {
 
   private Long id;
@@ -19,5 +22,10 @@ public class BoardResponseDto {
     this.title = board.getTitle();
     this.content = board.getContent();
     this.createdAt = board.getCreatedAt();
+  }
+
+  public static BoardResponseDto of(Long id, String title, String content, LocalDateTime createdAt) {
+    return new BoardResponseDto(id, title, content, createdAt);
+
   }
 }

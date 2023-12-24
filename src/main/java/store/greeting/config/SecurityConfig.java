@@ -13,7 +13,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import store.greeting.member.service.MemberServiceImpl;
 import store.greeting.social.CustomOAuth2UserService;
@@ -102,13 +101,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       String[] parsedToken = AuthTokenParser.getParseToken(authToken);
 
       if (parsedToken[1].equals("google")){
-        return "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=https://localhost/members/logout";
+        return "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=https://api.ejgreeting.store/members/logout";
 
       } else if (parsedToken[1].equals("naver")) {
-        return "http://nid.naver.com/nidlogin.logout?";
+        return "https://nid.naver.com/nidlogin.logout?";
 
       } else if (parsedToken[1].equals("kakao")) {
-        return "https://kauth.kakao.com/oauth/logout/?client_id=0ea9af982ecb374ececf50d24a8894d6&logout_redirect_uri=https://localhost/members/logout";
+        return "https://kauth.kakao.com/oauth/logout/?client_id=eca4b47472b8c54c7b56f803de88c27b&logout_redirect_uri=https://api.ejgreeting.store/members/logout";
       }
 
     }

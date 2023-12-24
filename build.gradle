@@ -57,10 +57,24 @@ dependencies {
     implementation 'org.modelmapper:modelmapper:2.4.4'
     implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
     implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+
+    implementation 'org.springdoc:springdoc-openapi-ui:1.6.12'
+//    implementation 'org.springdoc:springdoc-openapi-data-rest:1.6.12'
+    annotationProcessor 'com.github.therapi:therapi-runtime-javadoc-scribe:0.15.0'
 }
 
-tasks.named('test') {
-    useJUnitPlatform()
+//tasks.named('test') {
+//    useJUnitPlatform()
+//}
+
+// 이거
+test.onlyIf {
+    !project.hasProperty('test')
+}
+
+// 이거
+jar {
+    enabled = false
 }
 
 // querydsl 관련 내용 추가
