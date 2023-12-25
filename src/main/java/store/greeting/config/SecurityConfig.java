@@ -101,13 +101,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       String[] parsedToken = AuthTokenParser.getParseToken(authToken);
 
       if (parsedToken[1].equals("google")){
-        return "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=https://api.ejgreeting.store/members/logout";
+        return "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=https://localhost/members/logout";
 
       } else if (parsedToken[1].equals("naver")) {
         return "https://nid.naver.com/nidlogin.logout?";
 
       } else if (parsedToken[1].equals("kakao")) {
-        return "https://kauth.kakao.com/oauth/logout/?client_id=eca4b47472b8c54c7b56f803de88c27b&logout_redirect_uri=https://api.ejgreeting.store/members/logout";
+        return "https://kauth.kakao.com/oauth/logout/?client_id=eca4b47472b8c54c7b56f803de88c27b&logout_redirect_uri=localhost/members/logout";
       }
 
     }
