@@ -21,9 +21,6 @@ public class FileService { // 이미지 파일이 실제 저장소에 생성
   public String uploadFile(String uploadPath, String originalFileName, byte[] fileData) throws Exception {
     String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
     String savedFileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + UUID.randomUUID().toString().substring(0,4)+extension;
-
-//    File staticFolder = ResourceUtils.getFile("classpath:static");
-//    System.out.println(staticFolder.getAbsolutePath() + "/img/" + savedFileName);
     String fileUploadFullUrl = uploadPath + "/" + savedFileName;
 
     Path path = Paths.get(fileUploadFullUrl);
@@ -32,7 +29,6 @@ public class FileService { // 이미지 파일이 실제 저장소에 생성
       Files.createDirectories(parentDir);
     }
 
-//    FileOutputStream fos = new FileOutputStream(staticFolder.getAbsolutePath() + "/img/" + savedFileName);
     FileOutputStream fos = new FileOutputStream(fileUploadFullUrl);
     fos.write(fileData);
     fos.close();
