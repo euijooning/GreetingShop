@@ -40,5 +40,5 @@
 
 ---
 ### 🛒 시연 영상
-- https://youtu.be/IDN6WMgx_sY
+💳 https://youtu.be/b3eAiQbUR7s
 
